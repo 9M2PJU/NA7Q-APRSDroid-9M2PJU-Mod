@@ -108,7 +108,7 @@
 <string name="update_install_failed">Could not launch installer. Opening browser instead.</string>
 
 <!-- about dialog -->
-<string name="ad_title">About APRSdroid 9M2PJU Mod v%s</string>
+<string name="ad_title">About APRSdroid 9M2PJU Mod %s</string>
 <string name="ad_copyright">APRSdroid 9M2PJU Mod\n
 	Copyright © 2024-2026 9M2PJU (Kuala Lumpur, Malaysia)\n
 	https://aprsdroid.hamradio.my
