@@ -40,7 +40,7 @@ class PrefSymbolAct extends Activity with TextWatcher with View.OnClickListener 
 
 	override def onCreate(savedInstanceState: Bundle) {
 		super.onCreate(savedInstanceState)
-		WindowCompat.setDecorFitsSystemWindows(getWindow(), true)
+		UIHelper.applySystemBarInsets(this)
 		setContentView(R.layout.prefsymbol)
 		val gv = findViewById(R.id.gridview).asInstanceOf[GridView]
 		gv.setAdapter(new SymbolAdapter(this))

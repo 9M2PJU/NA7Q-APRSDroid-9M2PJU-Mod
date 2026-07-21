@@ -56,7 +56,7 @@ class PrefsAct extends PreferenceActivity {
 	}
 	override def onCreate(savedInstanceState: Bundle) {
 		super.onCreate(savedInstanceState)
-		WindowCompat.setDecorFitsSystemWindows(getWindow(), true)
+		UIHelper.applySystemBarInsets(this)
 		addPreferencesFromResource(R.xml.preferences)
 
 		// Set up "Grant Storage Permissions" button

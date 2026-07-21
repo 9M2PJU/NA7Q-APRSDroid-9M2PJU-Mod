@@ -28,7 +28,7 @@ class KeyfileImportActivity extends AppCompatActivity {
 
 	override def onCreate(savedInstanceState: Bundle) {
 		super.onCreate(savedInstanceState)
-		WindowCompat.setDecorFitsSystemWindows(getWindow(), true)
+		UIHelper.applySystemBarInsets(this)
 		Log.d(TAG, "created: " + getIntent())
 		query_for_password()
 	}

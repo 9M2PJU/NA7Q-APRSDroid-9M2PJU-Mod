@@ -54,6 +54,20 @@ object UIHelper
 		}
 	}
 
+	/**
+	 * Opt out of edge-to-edge on Android 15+ (targetSdk 35). Call from
+	 * any Activity's onCreate or onResume. Uses the native Window API
+	 * on API 30+ for reliability.
+	 */
+	def applySystemBarInsets(act : android.app.Activity) {
+		if (Build.VERSION.SDK_INT >= 30) {
+			act.getWindow().setDecorFitsSystemWindows(true)
+		} else {
+			androidx.core.view.WindowCompat.setDecorFitsSystemWindows(
+				act.getWindow(), true)
+		}
+	}
+
 }
 
 trait UIHelper extends Activity
@@ -300,8 +314,13 @@ trait UIHelper extends Activity
 	// pre-API 35 behavior. Called from LoadingListActivity.onResume and
 	// from AppCompatActivity-based activities' onCreate.
 	def applySystemBarInsets() {
-		androidx.core.view.WindowCompat.setDecorFitsSystemWindows(
-			getWindow(), true)
+		if (Build.VERSION.SDK_INT >= 30) {
+			// Use native API on Android 11+ — more reliable than WindowCompat
+			getWindow().setDecorFitsSystemWindows(true)
+		} else {
+			androidx.core.view.WindowCompat.setDecorFitsSystemWindows(
+				getWindow(), true)
+		}
 	}
 
 	// for AFSK, set the right volume controls

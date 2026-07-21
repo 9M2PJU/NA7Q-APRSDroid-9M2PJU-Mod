@@ -18,7 +18,7 @@ class MessagingPrefs extends PreferenceActivity with OnSharedPreferenceChangeLis
   // Called when the activity is created
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
-		WindowCompat.setDecorFitsSystemWindows(getWindow(), true)
+		UIHelper.applySystemBarInsets(this)
     loadXml() // Load the XML file containing preferences
     getPreferenceScreen.getSharedPreferences.registerOnSharedPreferenceChangeListener(this) // Register listener for preference changes
   }

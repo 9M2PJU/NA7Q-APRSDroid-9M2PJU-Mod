@@ -27,7 +27,7 @@ class FirstRunActivity extends AppCompatActivity {
 
     override def onCreate(savedInstanceState : Bundle) {
         super.onCreate(savedInstanceState)
-		WindowCompat.setDecorFitsSystemWindows(getWindow(), true)
+		UIHelper.applySystemBarInsets(this)
         setContentView(R.layout.firstrun_permissions)
 
         findViewById(R.id.btn_grant_permissions).asInstanceOf[View]

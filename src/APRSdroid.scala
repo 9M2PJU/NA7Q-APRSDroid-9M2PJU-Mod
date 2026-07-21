@@ -18,7 +18,7 @@ class APRSdroid extends AppCompatActivity {
 
 	override def onCreate(savedInstanceState : Bundle) {
 		super.onCreate(savedInstanceState)
-		WindowCompat.setDecorFitsSystemWindows(getWindow(), true)
+		UIHelper.applySystemBarInsets(this)
 		setContentView(R.layout.splash)
 		val prefs = PreferenceManager.getDefaultSharedPreferences(this)
 

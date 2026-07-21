@@ -17,7 +17,7 @@ class IgatePrefs extends PreferenceActivity with SharedPreferences.OnSharedPrefe
 
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
-		WindowCompat.setDecorFitsSystemWindows(getWindow(), true)
+		UIHelper.applySystemBarInsets(this)
     loadXml()
     getPreferenceScreen().getSharedPreferences.registerOnSharedPreferenceChangeListener(this)
 

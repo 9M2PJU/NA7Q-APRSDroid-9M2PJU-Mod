@@ -20,7 +20,7 @@ class LocationPrefs extends PreferenceActivity with OnSharedPreferenceChangeList
 
 	override def onCreate(savedInstanceState: Bundle) {
 		super.onCreate(savedInstanceState)
-		WindowCompat.setDecorFitsSystemWindows(getWindow(), true)
+		UIHelper.applySystemBarInsets(this)
 		loadXml()
 		getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this)
 	}
