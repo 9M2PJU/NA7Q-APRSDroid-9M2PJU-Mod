@@ -71,7 +71,7 @@ class PrefsAct extends PreferenceActivity {
 		val navBarHeight = if (navBarResId > 0) res.getDimensionPixelSize(navBarResId) else 0
 		val lv = findViewById(android.R.id.list).asInstanceOf[android.view.View]
 		if (lv != null) {
-			lv.setClipToPadding(false)
+			lv.asInstanceOf[android.view.ViewGroup].setClipToPadding(false)
 			if (lv.getPaddingTop != statusBarHeight || lv.getPaddingBottom != navBarHeight) {
 				lv.setPadding(lv.getPaddingLeft, statusBarHeight,
 					lv.getPaddingRight, navBarHeight)

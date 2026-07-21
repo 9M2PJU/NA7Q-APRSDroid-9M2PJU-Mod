@@ -211,7 +211,7 @@ object UIHelper
 		if (prefList != null) {
 			// clipToPadding=false so scrolled items look clean under the
 			// status bar padding area without being clipped.
-			prefList.setClipToPadding(false)
+			prefList.asInstanceOf[android.view.ViewGroup].setClipToPadding(false)
 		}
 
 		val content = act.getWindow().getDecorView().findViewById(
@@ -261,7 +261,7 @@ object UIHelper
 	def applyPrefListPadding(act : android.app.Activity) {
 		val prefList = act.findViewById(android.R.id.list).asInstanceOf[View]
 		if (prefList != null) {
-			prefList.setClipToPadding(false)
+			prefList.asInstanceOf[android.view.ViewGroup].setClipToPadding(false)
 			val res = act.getResources()
 			val resId = res.getIdentifier("status_bar_height", "dimen", "android")
 			val navBarResId = res.getIdentifier("navigation_bar_height", "dimen", "android")
