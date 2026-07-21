@@ -67,7 +67,75 @@
   </p>
 </section>
 
-<section id="features" class="section alt">
+<section id="whatsnew" class="section alt">
+  <h2>What's new in the 9M2PJU-Mod</h2>
+  <p class="section-sub">
+    A comprehensive refresh of NA7Q's enhanced APRSdroid. Below is everything that changed
+    compared to the upstream NA7Q fork.
+  </p>
+
+  <div class="whatsnew-group">
+    <h3>Repo &amp; branding</h3>
+    <ul>
+      <li><strong>Repo renamed</strong> <code>NA7Q-APRSdroid</code> → <code>NA7Q-APRSDroid-9M2PJU-Mod</code>.</li>
+      <li><strong>Version bumped</strong> to <code>v1.8</code> (APRS tocall <code>APDR18</code>, displayed as "APRSdroid 1.8"). Versioning is tag-driven via <code>grgit.describe()</code>.</li>
+      <li><strong>New app icon &amp; logo</strong> — all 6 density-specific <code>icon.png</code> files regenerated from a new 2048×2048 source, plus a 512×512 <code>logo.png</code>.</li>
+      <li><strong>Branded splash screen</strong> on cold start — full-screen splash via <code>SplashTheme</code>, 153 KB lossy WebP (down from 4.7 MB PNG).</li>
+    </ul>
+  </div>
+
+  <div class="whatsnew-group">
+    <h3>Modern Android support (targetSdk 33 → 35)</h3>
+    <ul>
+      <li><strong><code>targetSdkVersion</code> 33 → 35</strong> (Android 15). Satisfies the Google Play targetSdk floor. <code>minSdkVersion</code> bumped 14 → 19 to enable modern AndroidX libraries.</li>
+      <li><strong>Foreground service types</strong> (Android 14+) — <code>AprsService</code> declares <code>location|microphone|connectedDevice</code>; <code>ServiceNotifier</code> passes an explicit type bitmask to <code>startForeground()</code> on API 29+.</li>
+      <li><strong>Bluetooth permissions</strong> (Android 12+) — added <code>BLUETOOTH_SCAN</code> with <code>neverForLocation</code> and <code>BLUETOOTH_CONNECT</code>; legacy <code>BLUETOOTH</code>/<code>BLUETOOTH_ADMIN</code> capped at <code>maxSdkVersion=30</code>.</li>
+      <li><strong>Storage permissions</strong> (Android 11+) — added <code>MANAGE_EXTERNAL_STORAGE</code> for offline MBTiles map files; legacy storage perms capped at <code>maxSdkVersion=32</code>.</li>
+      <li><strong><code>POST_NOTIFICATIONS</code></strong> (Android 13+) — requested at runtime via <code>PermissionHelper</code>.</li>
+      <li><strong>Edge-to-edge opt-out</strong> (Android 15+) — <code>WindowCompat.setDecorFitsSystemWindows(window, true)</code> prevents content from going under system bars.</li>
+    </ul>
+  </div>
+
+  <div class="whatsnew-group">
+    <h3>UI modernization (Phase 1 — theme &amp; chrome)</h3>
+    <ul>
+      <li><strong>Material Design DayNight theme</strong> — migrated from <code>Theme.Holo</code> (2011) to <code>Theme.MaterialComponents.DayNight.DarkActionBar</code>. The app now <strong>auto-switches between dark and light modes</strong> following the system setting.</li>
+      <li><strong>Brand palette</strong> derived from the app icon — dark mode: navy surfaces <code>#0D182D</code>/<code>#1C2F51</code>, amber accent <code>#CEB619</code>, cool grey text; light mode: white surfaces, navy primary, amber accent.</li>
+      <li><strong>New dependencies:</strong> <code>androidx.appcompat:appcompat:1.6.1</code> + <code>com.google.android.material:material:1.9.0</code>.</li>
+      <li><strong>Material buttons</strong> with amber background and navy text, applied via <code>materialButtonStyle</code>.</li>
+      <li><strong>Activity migrations:</strong> <code>APRSdroid</code>, <code>ProfileImportActivity</code>, <code>KeyfileImportActivity</code> → <code>AppCompatActivity</code>.</li>
+      <li><strong>Map activity excluded</strong> — <code>MapAct</code> (MapsForge) keeps Holo theme for compatibility; will be migrated in a later phase.</li>
+    </ul>
+    <p class="whatsnew-note">
+      <strong>Phase 2 (not yet done):</strong> ListActivity → RecyclerView,
+      PreferenceActivity → PreferenceFragmentCompat, Material dialogs, layout hardcoded
+      colors → <code>@color/</code> resources, dynamic color (Material You), core-splashscreen API.
+    </p>
+  </div>
+
+  <div class="whatsnew-group">
+    <h3>CI/CD — GitHub Actions</h3>
+    <ul>
+      <li><strong>Signed release APK builds</strong> on every push to <code>master</code> and on <code>v*</code> tags. No debug APK is produced.</li>
+      <li><strong>Tests + lint</strong> (<code>./gradlew test lintRelease</code>) run before every build; reports uploaded as artifacts.</li>
+      <li><strong>Signed releases</strong> — the workflow decodes <code>RELEASE_KEYSTORE_BASE64</code> from GitHub Secrets and runs <code>assembleRelease</code> with signing properties. Verifies the APK with <code>apksigner verify --print-certs</code>.</li>
+      <li><strong>Automatic GitHub Releases</strong> on <code>v*</code> tags — release title <code>&lt;tag&gt;-9M2PJU</code>, APK named <code>NA7Q-APRSDroid-&lt;tag&gt;-9M2PJU.apk</code>, auto-generated release notes.</li>
+    </ul>
+  </div>
+
+  <div class="whatsnew-group">
+    <h3>This landing page</h3>
+    <ul>
+      <li><strong>Custom domain:</strong> <a href="https://aprsdroid.hamradio.my/">aprsdroid.hamradio.my</a> (CNAME → <code>9m2pju.github.io</code>).</li>
+      <li><strong>Static site</strong> in <code>docs/</code> — <code>index.html</code>, <code>style.css</code>, <code>script.js</code>, <code>assets/</code>.</li>
+      <li><strong>Dark navy + amber theme</strong> matching the app icon.</li>
+      <li><strong>Live download counters</strong> — no backend. <code>script.js</code> fetches the GitHub API client-side and sums <code>download_count</code> across all assets of all releases. Shows per-release and total counts.</li>
+      <li><strong>Download buttons</strong> for every release APK, with file size and per-asset download count.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="features" class="section">
   <h2>Features</h2>
   <div class="features-grid">
     <div class="feature">

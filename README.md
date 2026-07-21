@@ -32,23 +32,103 @@ NA7Q's enhanced APRSdroid and adds modern Android compatibility, a branded splas
 CI/CD with signed release APKs, and a project landing page.
 
 ### 🆕 **What's new in the 9M2PJU-Mod**
-- 🎨 **Branded splash screen** on cold start (matching app icon)
-- 🖼️ **New app icon & logo**
-- 📱 **Modern Android support** — `targetSdk 35` (Android 15), per-type foreground service
-  permissions, `BLUETOOTH_SCAN`/`BLUETOOTH_CONNECT` for Android 12+, `MANAGE_EXTERNAL_STORAGE`
-  for offline map files on Android 11+, `POST_NOTIFICATIONS` for Android 13+
-- 🤖 **GitHub Actions CI/CD** — signed release APK builds on every push and tag, automatic
-  GitHub Releases on `v*` tags
-- 🌐 **GitHub Pages landing page** with live download counters (no backend — counts come
-  straight from the GitHub API)
-- 🏷️ **Version `v1.8`** (tocall `APDR18`)
+
+This mod is a comprehensive refresh of NA7Q's enhanced APRSdroid. Below is everything that
+changed compared to the upstream NA7Q fork.
+
+#### 🏗️ **Repo & branding**
+- 🔖 **Repo renamed** `NA7Q-APRSdroid` → `NA7Q-APRSDroid-9M2PJU-Mod` (clearer identity)
+- 🏷️ **Version bumped** to `v1.8` (APRS tocall `APDR18`, displayed as "APRSdroid 1.8" in
+  IGATE comment strings). Versioning is tag-driven via `grgit.describe()`.
+- 🖼️ **New app icon & logo** — replaced all 6 density-specific `icon.png` files
+  (ldpi/mdpi/hdpi/xhdpi/xxhdpi/xxxhdpi) from a new 2048×2048 source. Added a 512×512
+  `logo.png` for in-app branding and Play Store listing.
+- 🎨 **Branded splash screen** — added `SplashTheme` that shows a full-screen splash image
+  as the launcher activity's `windowBackground` during cold start. Splash image is a 153 KB
+  lossy WebP (down from 4.7 MB PNG) in `drawable-nodpi/`. No activity code changes needed —
+  pure theme-based splash.
+
+#### 📱 **Modern Android support (targetSdk 33 → 35)**
+- 🎯 **`targetSdkVersion` 33 → 35** (Android 15). Satisfies the Google Play targetSdk floor
+  (within 1 year of latest). `compileSdkVersion` stays at 33 due to the Scala plugin's AGP
+  limitation (see build notes below). `minSdkVersion` bumped 14 → 19 to enable modern
+  AndroidX libraries.
+- 🔐 **Foreground service types** (Android 14+ requirement): `AprsService` now declares
+  `foregroundServiceType="location|microphone|connectedDevice"` and the manifest requests
+  `FOREGROUND_SERVICE_LOCATION`, `FOREGROUND_SERVICE_MICROPHONE`,
+  `FOREGROUND_SERVICE_CONNECTED_DEVICE`. `ServiceNotifier.start()` passes an explicit type
+  bitmask to `startForeground()` on API 29+, selecting `microphone` and `connectedDevice`
+  only when the corresponding runtime permission is granted.
+- 📶 **Bluetooth permissions** (Android 12+): added `BLUETOOTH_SCAN` with `neverForLocation`
+  and `BLUETOOTH_CONNECT`. `BLUETOOTH`/`BLUETOOTH_ADMIN` now have `maxSdkVersion="30"`.
+- 📂 **Storage permissions** (Android 11+): added `MANAGE_EXTERNAL_STORAGE` for all-files
+  access to offline MBTiles map files. `READ_EXTERNAL_STORAGE`/`WRITE_EXTERNAL_STORAGE` now
+  have `maxSdkVersion="32"`.
+- 🔔 **`POST_NOTIFICATIONS`** (Android 13+): already declared; now requested at runtime via
+  `PermissionHelper` when starting the service.
+- 🪟 **Edge-to-edge opt-out** (Android 15+): `UIHelper.applySystemBarInsets()` calls
+  `WindowCompat.setDecorFitsSystemWindows(window, true)` to prevent content from going under
+  the status/navigation bars. Applied to all list-based activities via
+  `LoadingListActivity.onResume`.
+
+#### 🎨 **UI modernization (Phase 1 — theme & chrome)**
+- 🌗 **Material Design DayNight theme** — migrated from `Theme.Holo` (2011) to
+  `Theme.MaterialComponents.DayNight.DarkActionBar`. The app now **auto-switches between
+  dark and light modes** following the system setting.
+- 🎨 **Brand palette** derived from the app icon:
+  - **Dark mode (night):** navy surfaces `#0D182D`/`#1C2F51`, amber accent `#CEB619`, cool
+    grey text `#ADB2BF`/`#E8EAEF` — matches the icon's aesthetic.
+  - **Light mode (day):** white/light surfaces, navy primary `#1C2F51`, amber accent
+    `#B89E0F`, navy text.
+- 🧩 **New dependencies:** `androidx.appcompat:appcompat:1.6.1` +
+  `com.google.android.material:material:1.9.0`.
+- 🪟 **Status bar** now colored to match the navy primary (`colorPrimaryDark`).
+- 🔘 **Material buttons** — `Widget.AppTheme.Button` style with amber background and navy
+  text, applied via `materialButtonStyle`.
+- 🧱 **Activity migrations:** `APRSdroid`, `ProfileImportActivity`,
+  `KeyfileImportActivity` → `AppCompatActivity`. ListActivity-based and
+  PreferenceActivity-based activities keep their superclasses for now (the Material theme
+  applies to them via the manifest).
+- 🗺️ **Map activity excluded** — `MapAct` (MapsForge) keeps `MapViewTheme` (Holo-based) for
+  compatibility. Will be migrated in a later phase.
+
+> **Phase 2 (not yet done):** ListActivity → RecyclerView, PreferenceActivity →
+> PreferenceFragmentCompat, Material dialogs (`MaterialAlertDialogBuilder`), layout
+> hardcoded colors → `@color/` resources, dynamic color (Material You), core-splashscreen
+> API. See [`AGENTS.md`](AGENTS.md) §12c for the full Phase 2 list.
+
+#### 🤖 **CI/CD — GitHub Actions**
+- 📝 **`.github/workflows/build.yml`** — signed release APK builds on every push to `master`
+  and on `v*` tags. No debug APK is produced.
+- ✅ **Tests + lint** (`./gradlew test lintRelease`) run before every build; reports uploaded
+  as artifacts.
+- 🔏 **Signed releases** — the workflow decodes `RELEASE_KEYSTORE_BASE64` from GitHub
+  Secrets and runs `assembleRelease` with signing properties. Verifies the APK is actually
+  signed with `apksigner verify --print-certs`. Fails early with a clear error if any of the
+  4 signing secrets are missing.
+- 🏷️ **Automatic GitHub Releases** on `v*` tags — release title `<tag>-9M2PJU`, APK named
+  `NA7Q-APRSDroid-<tag>-9M2PJU.apk`, auto-generated release notes.
+- 🔑 **Signing key** generated locally and stored in `.dev/secrets/` (git-ignored). The
+  keystore is PKCS12, RSA 4096, 9125-day validity, alias `na7q-aprsdroid-9m2pju`.
+
+#### 🌐 **GitHub Pages landing page**
+- 🌍 **Custom domain:** <https://aprsdroid.hamradio.my/> (CNAME `aprsdroid.hamradio.my` →
+  `9m2pju.github.io`).
+- 📄 **Static site** in `docs/` — `index.html`, `style.css`, `script.js`, `assets/`.
+- 🎨 **Dark navy + amber theme** matching the app icon.
+- 📊 **Live download counters** — no backend. `script.js` fetches
+  `https://api.github.com/repos/9M2PJU/NA7Q-APRSDroid-9M2PJU-Mod/releases` client-side and
+  sums `download_count` across all assets of all releases. Shows per-release and total
+  counts. The GitHub API is CORS-enabled for unauthenticated requests (60 req/hour per IP).
+- ⬇️ **Download buttons** for every release APK, with file size and per-asset download count.
+- 🖼️ **Splash preview**, **features grid**, **build-from-source** snippet, **credits**.
 
 ### 🎯 **Core Features**
 - 📍 **Real-time Position Reporting** — Share your location with the APRS network
 - 🗺️ **Interactive Station Map** — Visualize nearby amateur radio stations with offline mapping
 - 💬 **APRS Messaging** — Send and receive messages through the network
 - 🔄 **Network Integration** — Full compatibility with APRS infrastructure
-- 🎨 **Clean Android UI** — Holo-based interface designed for mobile use
+- 🎨 **Material Design UI** — DayNight theme with navy/amber branding, auto dark/light
 
 ### 🚀 **Enhanced Features (inherited from NA7Q, not in official APRSdroid)**
 

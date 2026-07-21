@@ -200,6 +200,57 @@ h2 { font-size: 1.8rem; margin-top: 0; }
 .feature h3 { font-size: 1.05rem; margin: 0 0 0.5rem; color: var(--accent); }
 .feature p { margin: 0; font-size: 0.92rem; }
 
+/* ---------- What's new ---------- */
+.whatsnew-group {
+  background: var(--surface);
+  border: 1px solid var(--surface-2);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+}
+.whatsnew-group h3 {
+  font-size: 1.1rem;
+  margin: 0 0 0.75rem;
+  color: var(--accent);
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--surface-2);
+}
+.whatsnew-group ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  list-style: none;
+}
+.whatsnew-group li {
+  position: relative;
+  margin-bottom: 0.5rem;
+  padding-left: 0.5rem;
+  line-height: 1.5;
+  font-size: 0.93rem;
+}
+.whatsnew-group li::before {
+  content: "▸";
+  position: absolute;
+  left: -1rem;
+  color: var(--accent);
+}
+.whatsnew-group code {
+  background: var(--bg);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: var(--accent);
+}
+.whatsnew-note {
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(206,182,25,0.1);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  font-size: 0.88rem;
+  color: var(--text);
+}
+.whatsnew-note strong { color: var(--text-bright); }
+
 /* ---------- Splash ---------- */
 .splash-wrap { text-align: center; }
 .splash-img {
