@@ -188,7 +188,7 @@ object UpdateChecker {
         progress.setProgress(0)
         progress.show()
 
-        new MyAsyncTask[Integer, File]() {
+        new MyAsyncTask[Void, File]() {
             override def doInBackground1(params : Array[String]) : File = {
                 try {
                     val url = new URL(info.apkUrl)
@@ -214,6 +214,7 @@ object UpdateChecker {
                     val buffer = new Array[Byte](8192)
                     var bytesRead = 0
                     var totalRead = 0
+                    var lastPct = -1
 
                     while ({ bytesRead = input.read(buffer); bytesRead != -1 }) {
                         if (isCancelled) {
@@ -227,7 +228,15 @@ object UpdateChecker {
                         totalRead += bytesRead
                         if (totalSize > 0) {
                             val pct = (totalRead * 100 / totalSize).toInt
-                            publishProgress(new Integer(pct))
+                            if (pct != lastPct) {
+                                lastPct = pct
+                                act.runOnUiThread(new Runnable {
+                                    override def run() : Unit = {
+                                        if (progress.isShowing)
+                                            progress.setProgress(pct)
+                                    }
+                                })
+                            }
                         }
                     }
                     output.close()
@@ -240,12 +249,6 @@ object UpdateChecker {
                     case e : Exception =>
                         Log.e(TAG, "Download failed: " + e.getMessage)
                         null
-                }
-            }
-
-            override def onProgressUpdate1(values : Array[Integer]) : Unit = {
-                if (values != null && values.length > 0) {
-                    progress.setProgress(values(0).intValue)
                 }
             }
 
