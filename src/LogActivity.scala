@@ -74,6 +74,33 @@ class LogActivity extends MainListActivity("log", R.id.log) {
 		openDetails(call)
 	}
 
+	// Handle "Clear Log" menu item: after the StorageCleaner async task
+	// clears the database and broadcasts UPDATE, the locReceiver should
+	// reload the cursor. However, the broadcast may arrive while a
+	// previous query is still running (LocationReceiver2.pending > 1),
+	// causing the reload to use stale data or be deferred. To ensure the
+	// UI refreshes immediately, we directly trigger a cursor reload
+	// after the clear completes.
+	override def onOptionsItemSelected(item : android.view.MenuItem) : Boolean = {
+		if (item.getItemId == R.id.clear) {
+			Log.d(TAG, "Clear Log: starting clear + reload")
+			onStartLoading()
+			new StorageCleaner(StorageDatabase.open(this)) {
+				override def onPostExecute(x : Unit) {
+					super.onPostExecute(x)
+					// Force an immediate cursor reload on the UI thread.
+					// The broadcast in super.onPostExecute may have been
+					// absorbed by LocationReceiver2's pending counter;
+					// this direct reload ensures the list clears instantly.
+					Log.d(TAG, "Clear Log: forcing cursor reload")
+					locReceiver.startTask(null)
+				}
+			}.execute()
+			true
+		} else
+			super.onOptionsItemSelected(item)
+	}
+
 	def load_cursor(i : Intent) = {
 		val c = storage.getPosts("300")
 		Log.d(TAG, "load_cursor: count=" + c.getCount())
