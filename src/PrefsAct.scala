@@ -149,9 +149,10 @@ class PrefsAct extends PreferenceActivity {
 
 	// Apply top (status bar) and bottom (nav bar) padding to the
 	// PreferenceScreen dialog's ListView. Uses getDialog() reflection
-	// to access the system-created dialog, finds its ListView, and
-	// sets padding with clipToPadding=false for smooth edge-to-edge
-	// scrolling.
+	// to access the system-created dialog, then sets an
+	// OnApplyWindowInsetsListener on the dialog's decorView so padding
+	// is applied during the layout pass (not overridden by the dialog's
+	// internal layout logic).
 	def applyDialogInsetPadding(screen : android.preference.PreferenceScreen) {
 		new android.os.Handler(getMainLooper).postDelayed(new Runnable {
 			override def run() : Unit = {
@@ -163,16 +164,43 @@ class PrefsAct extends PreferenceActivity {
 						val lv = dialog.findViewById(android.R.id.list)
 							.asInstanceOf[android.widget.ListView]
 						if (lv != null) {
+							lv.setClipToPadding(false)
+							// Set an insets listener on the dialog's decorView
+							// so padding is applied during layout and survives
+							// any internal re-layout by the AlertDialog.
+							val decor = dialog.getWindow().getDecorView()
+							decor.setOnApplyWindowInsetsListener(
+								new android.view.View.OnApplyWindowInsetsListener {
+									override def onApplyWindowInsets(v : android.view.View,
+											insets : android.view.WindowInsets
+											) : android.view.WindowInsets = {
+										var topPad = 0
+										var bottomPad = 0
+										if (Build.VERSION.SDK_INT >= 30) {
+											topPad = insets.getInsets(
+												android.view.WindowInsets.Type.statusBars()).top
+											bottomPad = insets.getInsets(
+												android.view.WindowInsets.Type.navigationBars()).bottom
+										} else {
+											topPad = insets.getSystemWindowInsetTop()
+											bottomPad = insets.getSystemWindowInsetBottom()
+										}
+										lv.setPadding(0, topPad, 0, bottomPad)
+										android.util.Log.d("PrefsAct",
+											"Dialog inset listener: top=%d bottom=%d"
+												.format(topPad, bottomPad))
+										insets
+									}
+								})
+							// Also apply padding immediately as fallback
 							val res = getResources()
 							val resId = res.getIdentifier("status_bar_height", "dimen", "android")
 							val navBarResId = res.getIdentifier("navigation_bar_height", "dimen", "android")
 							val statusBarHeight = if (resId > 0) res.getDimensionPixelSize(resId) else 0
 							val navBarHeight = if (navBarResId > 0) res.getDimensionPixelSize(navBarResId) else 0
-							lv.setClipToPadding(false)
 							lv.setPadding(0, statusBarHeight, 0, navBarHeight)
-							android.util.Log.d("PrefsAct",
-								"Applied dialog inset padding: top=%d bottom=%d"
-									.format(statusBarHeight, navBarHeight))
+							// Request a new insets dispatch to trigger the listener
+							decor.requestApplyInsets()
 						}
 					}
 				} catch {
