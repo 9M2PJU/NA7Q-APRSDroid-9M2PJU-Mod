@@ -26,14 +26,9 @@ class APRSdroid extends AppCompatActivity {
 
 		// Determine the destination activity, then show the splash for
 		// SPLASH_DELAY_MS before navigating to it.
-		// - First run (no permissions requested yet) → FirstRunActivity
-		// - No background service running → always show Log
-		// - Service running → show the last activity the user was on
 		val target : Class[_] =
 			if (!prefs.getBoolean("permissions_requested", false))
 				classOf[FirstRunActivity]
-			else if (!AprsService.running && !prefs.getBoolean("service_running", false))
-				classOf[LogActivity]
 			else {
 				val mapmode = MapModes.defaultMapMode(this, new PrefsWrapper(this))
 				prefs.getString("activity", "log") match {

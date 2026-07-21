@@ -72,7 +72,7 @@ class MapAct extends MapActivity with MapMenuHelper {
 		if (isCoordinateChooser)
 			setTitle(R.string.p_source_from_map)
 		else if (targetcall == "")
-			makeLaunchActivity("map")
+			setTitle(R.string.app_map)
 		else
 			setLongTitle(R.string.app_map, targetcall)
 		setKeepScreenOn()
