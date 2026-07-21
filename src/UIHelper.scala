@@ -73,14 +73,16 @@ object UIHelper
 	 * AndroidX dependency upgrade is needed.
 	 */
 	def applySystemBarInsets(act : android.app.Activity) {
-		// Detect PreferenceActivity by looking for its built-in ListView.
-		// PreferenceActivity's internal layout has fitsSystemWindows="true"
-		// built in, so the system auto-applies the top (status bar) inset
-		// to an intermediate LinearLayout. If we also apply top padding
-		// manually, we get double padding. For PreferenceActivity, we let
-		// the system handle the top inset (setDecorFitsSystemWindows(true))
-		// and only add bottom (nav bar) padding to the ListView.
-		val is_pref_activity = act.findViewById(android.R.id.list) != null
+		// Detect PreferenceActivity by type, NOT by looking for
+		// android.R.id.list — ListActivity-based screens (LogActivity,
+		// HubActivity, ConversationsActivity) also have android.R.id.list
+		// but are NOT PreferenceActivity. PreferenceActivity's internal
+		// layout has fitsSystemWindows="true" built in, so the system
+		// auto-applies the top (status bar) inset. If we also apply top
+		// padding manually, we get double padding. For PreferenceActivity,
+		// we let the system handle the top inset and only add bottom
+		// (nav bar) padding to the ListView.
+		val is_pref_activity = act.isInstanceOf[android.preference.PreferenceActivity]
 
 		if (is_pref_activity) {
 			// Let the system handle top inset via PreferenceActivity's
