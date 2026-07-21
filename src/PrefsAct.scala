@@ -111,11 +111,19 @@ class PrefsAct extends PreferenceActivity {
 	// Called when the window focus changes. This fires after layout
 	// is complete, so padding set here won't be reset by the layout pass.
 	// This catches PreferenceScreen sub-screen navigation where the
-	// ListView content is swapped.
+	// ListView content is swapped. Also handles PreferenceScreen dialog
+	// sub-screens: when the activity loses focus (dialog appeared), we
+	// apply insets to the dialog's ListView.
 	override def onWindowFocusChanged(hasFocus : Boolean) {
 		super.onWindowFocusChanged(hasFocus)
 		if (hasFocus)
 			applyPrefTopInset()
+		// When the dialog sub-screen appears, the activity loses focus.
+		// Apply insets to the dialog's ListView.
+		if (pending_dialog_screen && !hasFocus) {
+			pending_dialog_screen = false
+			applyDialogScreenInsets()
+		}
 	}
 
 	// Intercept clicks on PreferenceScreen items (sub-screens like
@@ -150,51 +158,27 @@ class PrefsAct extends PreferenceActivity {
 	// needs inset padding applied when its window gains focus.
 	@volatile var pending_dialog_screen = false
 
-	// When a PreferenceScreen dialog sub-screen opens, it creates a new
-	// window that gains focus. We detect this via onWindowFocusChanged
-	// and apply top (status bar) + bottom (nav bar) padding to the
-	// dialog's ListView. The dialog's ListView has android.R.id.list,
-	// which we can find via the activity's window context after the
-	// dialog is shown.
-	override def onWindowFocusChanged(hasFocus : Boolean) {
-		super.onWindowFocusChanged(hasFocus)
-		if (hasFocus)
-			applyPrefTopInset()
-		// When the dialog sub-screen window gains focus, apply insets.
-		// hasFocus=false means the activity lost focus (dialog appeared),
-		// hasFocus=true means the activity regained focus (dialog closed).
-		// We need to apply insets when the dialog appears, which is when
-		// the activity LOSES focus. But we can't access the dialog's
-		// views from here. Instead, we use a delayed post to find the
-		// dialog's ListView via the decor view's window.
-		if (pending_dialog_screen && !hasFocus) {
-			pending_dialog_screen = false
-			applyDialogScreenInsets()
-		}
-	}
-
 	// Apply insets to a PreferenceScreen dialog sub-screen by finding
-	// its ListView through the window manager. The dialog has its own
-	// window with android.R.id.list. We iterate through all views
-	// attached to the window manager to find the dialog's decor view,
-	// then find its ListView and apply padding.
+	// its ListView through the activity's window list. The dialog has
+	// its own window with android.R.id.list. We iterate through all
+	// windows to find the dialog's decor view, then find its ListView
+	// and apply top (status bar) + bottom (nav bar) padding.
 	def applyDialogScreenInsets() {
 		val applyInsets = new Runnable {
 			override def run() : Unit = {
 				try {
-					// getWindows() requires API 21+. On API 19, the
-					// dialog sub-screen is handled differently and this
-					// is a no-op.
+					// Activity.getWindows() requires API 21+. Use
+					// reflection to call it (Scala compiler may not
+					// resolve it at compileSdkVersion 33).
 					if (Build.VERSION.SDK_INT < 21)
 						return
-					// The dialog's content is accessible via the
-					// activity's getWindows() (API 21+). We find the
-					// dialog's ListView by searching for android.R.id.list
-					// in windows that are NOT the activity's own window.
 					val activity_list = findViewById(android.R.id.list)
 						.asInstanceOf[android.view.View]
 					val activity_decor = getWindow.getDecorView
-					val roots = getWindows()
+					val getWindows = classOf[android.app.Activity]
+						.getMethod("getWindows")
+					val roots = getWindows.invoke(PrefsAct.this)
+						.asInstanceOf[java.util.Collection[android.view.Window]]
 					android.util.Log.d("PrefsAct", "applyDialogScreenInsets: " +
 						roots.size() + " windows")
 					val it = roots.iterator()
