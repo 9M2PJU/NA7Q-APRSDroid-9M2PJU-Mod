@@ -38,8 +38,8 @@ changed compared to the upstream NA7Q fork.
 
 #### 🏗️ **Repo & branding**
 - 🔖 **Repo renamed** `NA7Q-APRSdroid` → `NA7Q-APRSDroid-9M2PJU-Mod` (clearer identity)
-- 🏷️ **Version bumped** to `v1.9` (APRS tocall `APDR19`, displayed as "APRSdroid 1.9" in
-  IGATE comment strings). Versioning is tag-driven via `grgit.describe()`.
+- 🏷️ **Version bumped** to `v2.0.0` (APRS tocall `APDR20`, displayed as "APRSdroid 2.0.0" in
+  IGATE comment strings). Versioning is tag-driven — each release gets a `vX.Y.Z` tag.
 - 🖼️ **New app icon & logo** — replaced all 6 density-specific `icon.png` files
   (ldpi/mdpi/hdpi/xhdpi/xxhdpi/xxxhdpi) from a new 2048×2048 source. Added a 512×512
   `logo.png` for in-app branding and Play Store listing.
@@ -250,7 +250,7 @@ Please open an issue or pull request at the
   - 🎨 Material 3-inspired UI design system — `Theme.MaterialComponents` with tonal navy/amber palette, shape theming, refined typography, modern component styles (buttons, text fields, dialogs, cards, bottom sheets), dark-only
   - 🤖 GitHub Actions CI/CD — signed release APK builds, automatic GitHub Releases on `v*` tags
   - 🌐 GitHub Pages landing page at <https://aprsdroid.hamradio.my/> with live download counters
-  - 🏷️ Version bumped to `v1.9` (tocall `APDR19`)
+  - 🏷️ Version bumped to `v2.0.0` (tocall `APDR20`)
   - 📝 Comprehensive README rewrite documenting all changes
 - **Bob Bruninga, WB4APR** — creator of APRS
 
