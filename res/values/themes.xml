@@ -73,23 +73,26 @@
     </style>
 
     <!-- ============================================================
-         MapViewTheme — Material-based theme for the map activities.
+         MapViewTheme — dark Material theme for the map activities.
          Uses Theme.MaterialComponents (required by BottomNavigationView
-         and other Material components). MapsForge works fine with this.
+         and other Material components). Matches AppTheme so the bottom
+         navigation bar has the same dark background on all screens.
+         MapsForge works fine with this.
          ============================================================ -->
     <style name="MapViewTheme"
-           parent="Theme.MaterialComponents.Light.DarkActionBar">
+           parent="Theme.MaterialComponents">
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:actionBarStyle">@style/Map.ActionBar</item>
         <item name="colorPrimary">@color/md_primary</item>
         <item name="colorPrimaryDark">@color/md_primary_dark</item>
         <item name="colorAccent">@color/md_accent</item>
+        <item name="android:colorBackground">@color/md_background</item>
         <item name="android:statusBarColor">@color/md_status_bar</item>
         <item name="android:navigationBarColor">@color/md_navigation_bar</item>
     </style>
 
     <style name="Map.ActionBar"
-           parent="Widget.MaterialComponents.Light.ActionBar.Solid">
+           parent="Widget.MaterialComponents.ActionBar.Solid">
         <item name="android:background">#a0000000</item>
     </style>
 
