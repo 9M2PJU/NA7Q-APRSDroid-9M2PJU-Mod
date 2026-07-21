@@ -5,7 +5,6 @@ import _root_.android.app.AlertDialog
 import _root_.android.content.{Context, DialogInterface, Intent}
 import _root_.android.content.pm.PackageManager
 import _root_.android.net.Uri
-import _root_.android.os.AsyncTask
 import _root_.android.preference.PreferenceManager
 import _root_.android.util.Log
 import _root_.android.widget.Toast
@@ -159,8 +158,8 @@ object UpdateChecker {
 
         markChecked(act)  // record check time regardless of result
 
-        new AsyncTask[Void, Void, String]() {
-            override def doInBackground(params : Array[Void]) : String = {
+        new MyAsyncTask[Void, String]() {
+            override def doInBackground1(params : Array[String]) : String = {
                 fetchLatestReleaseTag()
             }
             override def onPostExecute(remoteTag : String) : Unit = {
