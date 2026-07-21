@@ -53,18 +53,18 @@
 	<PreferenceCategory
 	    android:title="@string/p_offlinemap">
 
-	<CheckBoxPreference
-		android:key="p.offlinemap"
-		android:title="@string/p_offlinemap_entry"
-		android:summary="@string/p_offlinemap_summary"
-		android:defaultValue="false" />
-
 	<Preference
 		android:key="tilepath"
 		android:title="@string/p_mbtiles_file_picker_title"
 		android:summary="@string/p_mbtiles_file_picker_summary"
 		android:defaultValue=""
 		android:selectable="true" />
+
+	<CheckBoxPreference
+		android:key="p.offlinemap"
+		android:title="@string/p_offlinemap_entry"
+		android:summary="@string/p_offlinemap_summary"
+		android:defaultValue="false" />
 
 	<Preference
 		android:key="all_files_access"
