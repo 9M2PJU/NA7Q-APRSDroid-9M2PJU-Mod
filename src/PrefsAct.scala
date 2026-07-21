@@ -119,26 +119,73 @@ class PrefsAct extends PreferenceActivity {
 	}
 
 	// Intercept clicks on PreferenceScreen items (sub-screens like
-	// Notifications, Connection Preferences, etc.). PreferenceScreen
-	// sub-screens are shown as dialogs with their own window. On Android
-	// 15+ (targetSdk 35), dialogs are edge-to-edge by default, causing
-	// section headers like "Incoming Messages" to bleed under the status
-	// bar. The dialog theme (ThemeOverlay.AppTheme.Dialog) has
-	// android:fitsSystemWindows=true which makes the dialog's window
-	// apply system window insets as padding, pushing content below the
-	// status bar. No runtime code is needed — the theme handles it.
+	// Notifications, Connection Preferences, etc.). Instead of letting
+	// PreferenceScreen show its own dialog (which creates a window we
+	// can't control on Android 16), we create our own AlertDialog and
+	// call setDecorFitsSystemWindows(true) on its window. This makes the
+	// system apply insets as padding, pushing content below the status
+	// bar. Falls back to super if anything goes wrong.
 	override def onPreferenceTreeClick(preferenceScreen : android.preference.PreferenceScreen,
 			preference : android.preference.Preference) : Boolean = {
 		android.util.Log.d("PrefsAct", "onPreferenceTreeClick: " + preference)
-		val result = super.onPreferenceTreeClick(preferenceScreen, preference)
-		postApplyPrefTopInset()
-		new android.os.Handler(getMainLooper).postDelayed(new Runnable {
-			override def run() : Unit = applyPrefTopInset()
-		}, 100)
-		new android.os.Handler(getMainLooper).postDelayed(new Runnable {
-			override def run() : Unit = applyPrefTopInset()
-		}, 300)
-		result
+		if (preference.isInstanceOf[android.preference.PreferenceScreen]) {
+			try {
+				showSubScreenDialog(preference.asInstanceOf[android.preference.PreferenceScreen])
+				true
+			} catch {
+				case e : Exception =>
+					android.util.Log.e("PrefsAct", "showSubScreenDialog failed, falling back", e)
+					super.onPreferenceTreeClick(preferenceScreen, preference)
+			}
+		} else {
+			super.onPreferenceTreeClick(preferenceScreen, preference)
+		}
+	}
+
+	// Show a PreferenceScreen sub-screen as a dialog with proper inset
+	// handling. We use getRootAdapter() to get the screen's preferences,
+	// create our own AlertDialog with a ListView, and set
+	// setDecorFitsSystemWindows(true) on the dialog's window so the
+	// system applies status bar insets as padding.
+	def showSubScreenDialog(screen : android.preference.PreferenceScreen) {
+		val adapter = screen.getRootAdapter()
+		if (adapter == null) throw new RuntimeException("getRootAdapter() returned null")
+
+		val title = screen.getTitle()
+		val builder = new AlertDialog.Builder(this)
+		if (title != null) builder.setTitle(title)
+
+		val listView = new android.widget.ListView(this)
+		listView.setAdapter(adapter)
+		listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener {
+			override def onItemClick(parent : android.widget.AdapterView[_], view : android.view.View,
+					position : Int, id : Long) {
+				val item = adapter.getItem(position).asInstanceOf[android.preference.Preference]
+				if (item != null) {
+					if (item.isInstanceOf[android.preference.PreferenceScreen])
+						showSubScreenDialog(item.asInstanceOf[android.preference.PreferenceScreen])
+					else
+						item.performClick()
+				}
+			}
+		})
+
+		builder.setView(listView)
+		val dialog = builder.create()
+		// Set DecorFitsSystemWindows(true) BEFORE show() so the window
+		// is configured as non-edge-to-edge before content is laid out.
+		androidx.core.view.WindowCompat.setDecorFitsSystemWindows(
+			dialog.getWindow(), true)
+		dialog.show()
+
+		// Fallback: apply top padding for status bar in case
+		// setDecorFitsSystemWindows doesn't fully work on some ROMs.
+		val res = getResources()
+		val resId = res.getIdentifier("status_bar_height", "dimen", "android")
+		val statusBarHeight = if (resId > 0) res.getDimensionPixelSize(resId) else 0
+		if (statusBarHeight > 0) {
+			listView.setPadding(0, statusBarHeight, 0, 0)
+		}
 	}
 
 	override def onCreate(savedInstanceState: Bundle) {
