@@ -1,10 +1,12 @@
 package org.aprsdroid.app
 
-import _root_.android.content.{Context, Intent, SharedPreferences}
+import _root_.android.app.{AlertDialog, ListActivity}
+import _root_.android.content.{Context, DialogInterface, Intent, SharedPreferences}
 import _root_.android.net.Uri
 import _root_.android.content.ContentUris
 import _root_.android.os.{Build, Bundle, Environment}
 import _root_.android.preference.Preference
+import _root_.android.preference.Preference.OnPreferenceChangeListener
 import _root_.android.preference.Preference.OnPreferenceClickListener
 import _root_.android.preference.{PreferenceActivity, PreferenceManager}
 import _root_.android.view.{Menu, MenuItem}
@@ -65,10 +67,40 @@ class PrefsAct extends PreferenceActivity {
 				}
 			})
 		}
+		// Warn user to restart app when offline map is toggled
+		val offlineMapPref = findPreference("p.offlinemap")
+		if (offlineMapPref != null) {
+			offlineMapPref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+				def onPreferenceChange(preference : Preference, newValue : Object) : Boolean = {
+					val enabled = newValue.asInstanceOf[Boolean]
+					if (enabled)
+						showRestartDialog()
+					true
+				}
+			})
+		}
 		// File pickers
 		fileChooserPreference("tilepath", 123456, R.string.p_mbtiles_file_picker_title)
 		fileChooserPreference("mapfile", 123460, R.string.p_mapfile_choose)
 		fileChooserPreference("themefile", 123457, R.string.p_themefile_choose)
+	}
+
+	def showRestartDialog() {
+		new AlertDialog.Builder(this)
+			.setTitle(R.string.restart_required_title)
+			.setMessage(R.string.restart_required_body)
+			.setPositiveButton(R.string.restart_now, new DialogInterface.OnClickListener() {
+				override def onClick(d : DialogInterface, which : Int) {
+					val pm = getPackageManager().getLaunchIntentForPackage(getPackageName())
+					val intent = pm.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK)
+					finishAffinity()
+					startActivity(intent)
+					// hard kill so the process restarts cleanly
+					android.os.Process.killProcess(android.os.Process.myPid())
+				}
+			})
+			.setNegativeButton(R.string.restart_later, null)
+			.show()
 	}
 	override def onResume() {
 		super.onResume()

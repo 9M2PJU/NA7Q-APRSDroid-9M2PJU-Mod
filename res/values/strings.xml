@@ -175,6 +175,10 @@
 <string name="p_offlinemap">OSM Maps</string>
 <string name="p_offlinemap_entry">Enable offline mapping</string>
 <string name="p_offlinemap_summary">Uses local maps files</string>
+<string name="restart_required_title">Restart required</string>
+<string name="restart_required_body">Offline mapping has been enabled. Please restart the app for the map to load from the offline file.</string>
+<string name="restart_now">Restart now</string>
+<string name="restart_later">Restart later</string>
 <string name="p_mbtiles_file_picker_title">Select MapsforgeV3 or .mbtiles map</string>
 <string name="p_mbtiles_file_picker_summary">No file selected</string>
 <string name="p_all_files_access_title">Grant Storage Permissions</string>
