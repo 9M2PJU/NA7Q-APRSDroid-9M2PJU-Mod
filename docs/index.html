@@ -65,6 +65,99 @@
     (different signing key). Android 11+ devices need to grant
     <em>All files access</em> for offline MBTiles maps (see Settings → OSM Maps).
   </p>
+  <p class="section-sub">
+    <strong>Note:</strong> This build is a work in progress — some features may be
+    incomplete or broken at the time of download, as it is actively updated.
+    Google Maps is not included; build from source with your own API key if needed.
+    The mod focuses on offline mapping (MBTiles + MapsForge V3) for privacy and
+    reduced dependencies.
+  </p>
+</section>
+
+<section id="setup" class="section">
+  <h2>Setup &amp; offline maps</h2>
+
+  <div class="whatsnew-group">
+    <h3>1. Install APRSdroid</h3>
+    <ol>
+      <li>Uninstall any previous <strong>official</strong> version of APRSdroid (different signing key).</li>
+      <li>Download the latest signed release APK from the <a href="#download">Download section</a> above or the <a href="https://github.com/9M2PJU/NA7Q-APRSDroid-9M2PJU-Mod/releases/latest" target="_blank" rel="noopener">GitHub Releases page</a>.</li>
+      <li>Install the APK on your Android device (enable <em>Install from unknown sources</em> if prompted).</li>
+    </ol>
+  </div>
+
+  <div class="whatsnew-group">
+    <h3>2. Grant All Files Access (Android 11+)</h3>
+    <p>
+      Required for offline mapping files on Android 11 and above:
+    </p>
+    <ol>
+      <li>In APRSdroid settings, go to the <strong>OSM Maps</strong> category.</li>
+      <li>Tap <strong>"Grant Storage Permissions"</strong>.</li>
+      <li>Grant <strong>ALL file permissions</strong> for device storage access.</li>
+    </ol>
+  </div>
+
+  <div class="whatsnew-group">
+    <h3>3. Use MBTiles or MapsForge V3 maps</h3>
+    <ol>
+      <li>Set the map viewer to <strong>OpenStreetMap.org</strong> to use offline maps.</li>
+      <li>Select offline maps and enable offline mode from the preferences in the <strong>OSM Maps</strong> section.</li>
+      <li>If offline mode is not enabled, the online OSM maps server will be used.</li>
+    </ol>
+  </div>
+
+  <div class="whatsnew-group">
+    <h3>Where to get maps</h3>
+    <p>
+      APRSdroid requires MBTiles in <strong>PNG or JPG format</strong> (NOT Vector or PBF).
+      NA7Q provides several tools for downloading offline maps:
+    </p>
+    <table class="map-tools">
+      <thead>
+        <tr><th>Tool</th><th>Platform</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="https://na7q.com/wp-content/uploads/2024/12/map.mbtiles" target="_blank" rel="noopener">World Map</a></td>
+          <td>Any</td>
+          <td>Ready-to-use starter world map (zoom level 6).</td>
+        </tr>
+        <tr>
+          <td><a href="https://downloads.aprs.wiki/APRSdroid/gui7-concurrency.exe" target="_blank" rel="noopener">OSM Map Maker</a></td>
+          <td>Windows</td>
+          <td>GUI tool for downloading OSM maps.</td>
+        </tr>
+        <tr>
+          <td><a href="https://na7q.com/wp-content/uploads/2025/01/gui7-concurrency.py" target="_blank" rel="noopener">Python Map Maker</a></td>
+          <td>Win/Mac/Linux</td>
+          <td>Python script version, cross-platform.</td>
+        </tr>
+        <tr>
+          <td><a href="https://na7q.com/wp-content/uploads/2025/02/mapmaker-0.2.exe" target="_blank" rel="noopener">Multi-Map Maker</a></td>
+          <td>Windows</td>
+          <td>Supports Google, Google Sat, Google Terrain, OSM, USGS, USFS, Canada Topo, Thunderforest, MapBuilder Light/Dark, and more.</td>
+        </tr>
+        <tr>
+          <td><a href="https://na7q.com/wp-content/uploads/2025/02/mapviewer.exe" target="_blank" rel="noopener">Map Viewer</a></td>
+          <td>Windows</td>
+          <td>Preview different map types to see which style you prefer.</td>
+        </tr>
+        <tr>
+          <td><a href="https://extract.bbbike.org/" target="_blank" rel="noopener">BBBike MapsForge</a></td>
+          <td>Web</td>
+          <td>Custom MapsForge OSM maps online.</td>
+        </tr>
+      </tbody>
+    </table>
+    <p><strong>Map tips:</strong></p>
+    <ul>
+      <li>Use a <strong>precise location</strong> for best results (e.g. "Portland, Oregon", "Oregon USA", "Texas USA"). Use the Map Viewer to double-check the selected area.</li>
+      <li><strong>Zoom level</strong> is required (1-18). A distance input is optional — if left blank for a city, state, or region, it will download everything within that boundary.</li>
+      <li>For <strong>states or larger</strong>, zoom 13-14 is recommended. Washington State at zoom 15 is 2-5GB depending on the map used.</li>
+      <li>Not all maps support all zoom levels or areas — research the map type you want.</li>
+    </ul>
+  </div>
 </section>
 
 <section id="whatsnew" class="section alt">

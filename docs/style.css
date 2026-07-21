@@ -240,6 +240,53 @@ h2 { font-size: 1.8rem; margin-top: 0; }
   font-size: 0.85rem;
   color: var(--accent);
 }
+.whatsnew-group ol {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+.whatsnew-group ol li {
+  margin-bottom: 0.5rem;
+  padding-left: 0.25rem;
+  line-height: 1.5;
+  font-size: 0.93rem;
+}
+.whatsnew-group ol li::before {
+  content: none;
+}
+.whatsnew-group p {
+  margin: 0 0 0.75rem;
+  line-height: 1.5;
+  font-size: 0.93rem;
+}
+
+/* Map tools table */
+.map-tools {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+}
+.map-tools th {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  background: var(--bg);
+  color: var(--accent);
+  font-weight: 600;
+  border-bottom: 2px solid var(--surface-2);
+}
+.map-tools td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--surface-2);
+  vertical-align: top;
+  line-height: 1.45;
+}
+.map-tools tr:last-child td {
+  border-bottom: none;
+}
+.map-tools a {
+  color: var(--accent);
+  font-weight: 600;
+}
 .whatsnew-note {
   margin-top: 0.75rem;
   padding: 0.75rem 1rem;

@@ -165,6 +165,10 @@ changed compared to the upstream NA7Q fork.
 
 ## 🚀 **Quick Start**
 
+> ⚠️ **Note**: This build is a work in progress — some features may be incomplete or
+> broken at the time of download, as it is actively updated.
+> See the [**ChangeLog**](ChangeLog) for details.
+
 ### 📲 **Installation**
 
 > ⚠️ **Important**: Uninstall any previous OFFICIAL version of APRSdroid before installing
@@ -177,6 +181,11 @@ changed compared to the upstream NA7Q fork.
 2. **Install** the APK on your Android device (enable "Install from unknown sources" if prompted)
 3. On **Android 11+**, grant *All files access* for offline MBTiles maps (see below)
 
+> 🗺️ **Google Maps not included**: This build does not include the Google Maps API.
+> If you need Google Maps functionality, build the app from source and add your own API key.
+> The mod focuses on offline mapping (MBTiles + MapsForge V3) for privacy and reduced
+> dependencies.
+
 ### 🗺️ **Setting Up Offline Maps**
 
 For Android 11+ devices, manual storage permissions are required for offline mapping files:
@@ -187,22 +196,31 @@ For Android 11+ devices, manual storage permissions are required for offline map
 4. Set map viewer to **OpenStreetMap.org** to use offline maps
 5. Configure offline maps in the **OSM Maps** preferences section
 
+If offline mode is not enabled, the online OSM maps server will be used.
+
 #### 🗺️ **Getting Maps**
 
-NA7Q provides several tools for downloading offline maps:
+There are various providers who offer paid or free MBTiles maps. APRSdroid requires
+MBTiles in **PNG or JPG format** (NOT Vector or PBF). NA7Q provides several tools for
+downloading offline maps:
 
-- 🌍 [**World Map**](https://na7q.com/wp-content/uploads/2024/12/map.mbtiles) — Ready-to-use world map
-- 🖥️ [**OSM Map Maker (Windows)**](https://downloads.aprs.wiki/APRSdroid/gui7-concurrency.exe) — Windows GUI tool
-- 🐍 [**Python Map Maker**](https://na7q.com/wp-content/uploads/2025/01/gui7-concurrency.py) — Python script version
-- 🗺️ [**Multi-Map Maker**](https://na7q.com/wp-content/uploads/2025/02/mapmaker-0.2.exe) — Advanced mapping tool
-- 👁️ [**Map Viewer**](https://na7q.com/wp-content/uploads/2025/02/mapviewer.exe) — Preview downloaded maps
-- 🌐 [**BBBike MapsForge**](https://extract.bbbike.org/) — Alternative map source
+| Tool | Platform | Description |
+|---|---|---|
+| 🌍 [**World Map**](https://na7q.com/wp-content/uploads/2024/12/map.mbtiles) | Any | Ready-to-use starter world map (zoom level 6) |
+| 🖥️ [**OSM Map Maker**](https://downloads.aprs.wiki/APRSdroid/gui7-concurrency.exe) | Windows | GUI tool for downloading OSM maps |
+| 🐍 [**Python Map Maker**](https://na7q.com/wp-content/uploads/2025/01/gui7-concurrency.py) | Win/Mac/Linux | Python script version, cross-platform |
+| 🗺️ [**Multi-Map Maker**](https://na7q.com/wp-content/uploads/2025/02/mapmaker-0.2.exe) | Windows | Supports Google, Google Sat, Google Terrain, OSM, USGS, USFS, Canada Topo, Thunderforest, MapBuilder Light/Dark, and more |
+| 👁️ [**Map Viewer**](https://na7q.com/wp-content/uploads/2025/02/mapviewer.exe) | Windows | Preview different map types to see which style you prefer |
+| 🌐 [**BBBike MapsForge**](https://extract.bbbike.org/) | Web | Custom MapsForge OSM maps online |
 
-**Map Requirements**:
-- Use **MBTiles format** (PNG or JPG, NOT Vector/PBF)
-- Specify precise locations like "Portland, Oregon" or "Texas USA"
-- Zoom levels 1-18 (recommend 13-14 for states)
-- Note: Large areas at high zoom can be 2-5GB+
+**Map tips**:
+- Use a **precise location** for best results (e.g. "Portland, Oregon", "Oregon USA",
+  "Texas USA"). Use the Map Viewer to double-check the selected area.
+- **Zoom level** is required (1-18). A distance input is optional — if left blank for a
+  city, state, or region, it will download everything within that boundary.
+- For **states or larger**, zoom 13-14 is recommended. Washington State at zoom 15 is
+  2-5GB depending on the map used.
+- Not all maps support all zoom levels or areas — research the map type you want.
 
 ### 📚 **Documentation & Support**
 - 🌐 [**9M2PJU-Mod Landing Page**](https://aprsdroid.hamradio.my/)
