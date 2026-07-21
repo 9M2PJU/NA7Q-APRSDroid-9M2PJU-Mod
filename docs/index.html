@@ -524,5 +524,65 @@
 </footer>
 
 <script src="script.js"></script>
+
+<!-- Donation popup -->
+<div id="donation-popup" class="donation-popup-overlay" style="display:none;">
+  <div class="donation-popup">
+    <button class="donation-close" id="donation-close" aria-label="Close">&times;</button>
+    <h2>Support APRSdroid 9M2PJU Mod</h2>
+    <p class="donation-sub">If you find this app useful, consider supporting development.</p>
+    <div class="donation-qr-wrap">
+      <img src="assets/donation-qr.png" alt="Malaysia e-wallet donation QR" class="donation-qr">
+      <p class="donation-qr-caption">Scan with Boost, Touch 'n Go, GrabPay, or any Malaysian e-wallet</p>
+    </div>
+    <div class="donation-buttons">
+      <a href="https://www.buymeacoffee.com/9m2pju" target="_blank" rel="noopener" class="btn btn-primary">
+        Buy Me a Coffee
+      </a>
+      <a href="https://wise.me/faizulz13" target="_blank" rel="noopener" class="btn btn-secondary">
+        Wise (tag: faizulz13)
+      </a>
+    </div>
+    <p class="donation-auto-close" id="donation-countdown">Auto-closing in 5&hellip;</p>
+  </div>
+</div>
+
+<script>
+(function() {
+  // Show donation popup on page load
+  function showDonationPopup() {
+    var popup = document.getElementById('donation-popup');
+    if (!popup) return;
+    // Only show once per session
+    if (sessionStorage.getItem('donationShown')) return;
+    sessionStorage.setItem('donationShown', '1');
+    popup.style.display = 'flex';
+    var countdown = 5;
+    var countdownEl = document.getElementById('donation-countdown');
+    var timer = setInterval(function() {
+      countdown--;
+      if (countdownEl) countdownEl.innerHTML = 'Auto-closing in ' + countdown + '&hellip;';
+      if (countdown <= 0) {
+        clearInterval(timer);
+        closeDonationPopup();
+      }
+    }, 1000);
+  }
+  function closeDonationPopup() {
+    var popup = document.getElementById('donation-popup');
+    if (popup) popup.style.display = 'none';
+  }
+  document.getElementById('donation-close').addEventListener('click', closeDonationPopup);
+  // Close on overlay click
+  document.getElementById('donation-popup').addEventListener('click', function(e) {
+    if (e.target === this) closeDonationPopup();
+  });
+  // Show after a short delay
+  window.addEventListener('load', function() {
+    setTimeout(showDonationPopup, 800);
+  });
+})();
+</script>
+
 </body>
 </html>
