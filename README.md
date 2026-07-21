@@ -1,4 +1,4 @@
-# 📡 NA7Q APRSDroid 9M2PJU Mod
+# 📡 NA7Q APRSdroid 9M2PJU Mod
 ### *The Ultimate APRS Companion for Android — 9M2PJU-Mod*
 
 > 🌟 **This is the 9M2PJU-Mod** of [NA7Q's enhanced APRSdroid](https://github.com/na7q/aprsdroid),
@@ -24,9 +24,9 @@
 
 ---
 
-## ✨ **What is NA7Q APRSDroid 9M2PJU Mod?**
+## ✨ **What is NA7Q APRSdroid 9M2PJU Mod?**
 
-NA7Q APRSDroid 9M2PJU Mod is a powerful, extensively enhanced Android client for the
+NA7Q APRSdroid 9M2PJU Mod is a powerful, extensively enhanced Android client for the
 [**APRS (Automatic Packet Reporting System)**](http://aprs.org/) network. It builds on
 NA7Q's enhanced APRSdroid and adds modern Android compatibility, a branded splash screen,
 CI/CD with signed release APKs, and a project landing page.

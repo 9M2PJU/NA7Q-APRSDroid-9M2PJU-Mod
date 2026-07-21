@@ -3,7 +3,7 @@
 <resources>
 <string name="aprs_server">srvr.aprs-is.net</string>
 
-<string name="default_status">APRSDroid 9M2PJU Mod</string>
+<string name="default_status">APRSdroid 9M2PJU Mod</string>
 <string name="default_symbol">/$</string>
 
 <string name="passcode_url">https://aprsdroid.org/passcode/</string>

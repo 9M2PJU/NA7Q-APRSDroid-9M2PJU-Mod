@@ -55,7 +55,7 @@
 <string name="service_once">APRS Diens enkele skoot: %1$s, %2$s</string>
 <string name="service_start">APRS Diens het begin: %1$s, %2$s</string>
 <string name="service_stop">APRS Diens gestop.</string>
-<string name="service_no_location">GPS of Netwerk Lokasie moet eers geaktiveer word voordat APRSDroid behoorlik sal werk!</string>
+<string name="service_no_location">GPS of Netwerk Lokasie moet eers geaktiveer word voordat APRSdroid behoorlik sal werk!</string>
 <string name="service_sm_no_gps">SmartBeaconing™ benodig GPS!</string>
 <!-- service result codes -->
 <string name="post_error">Fout</string>
@@ -263,7 +263,7 @@
 <string name="p_gps_med">Gemiddeld</string>
 <string name="p_gps_low">Laag</string>
 <string name="p_keepscreen">Hou skerm wakker</string>
-<string name="p_keepscreen_summary">Moenie skerm afskakel terwyl APRSDroid in die voorgrond hardloop nie</string>
+<string name="p_keepscreen_summary">Moenie skerm afskakel terwyl APRSdroid in die voorgrond hardloop nie</string>
 
 <!-- messaging -->
 <string name="p__display">Vertoon en Kennisgewings</string>

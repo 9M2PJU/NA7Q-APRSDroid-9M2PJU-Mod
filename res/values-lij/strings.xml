@@ -355,7 +355,7 @@
 
 <!-- Bluetooth TNC settings -->
 <string name="p_bt_client">Modo Utilizzatore (Client)</string>
-<string name="p_bt_client_summary">APRSDroid stabili-sce a te connessiun (Tegnilu Aviertu!)</string>
+<string name="p_bt_client_summary">APRSdroid stabili-sce a te connessiun (Tegnilu Aviertu!)</string>
 <string name="p_bt_tnc_device">Unità TNC Bluetooth</string>
 <string name="p_bt_tnc_device_summary">Piggia u TNC che ti ve dell\'unità attachée</string>
 <string name="p_bt_tnc_device_entry">Piggia a te unità</string>

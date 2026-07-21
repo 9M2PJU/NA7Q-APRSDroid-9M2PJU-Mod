@@ -267,7 +267,7 @@
 <string name="p_gps_med">Médio</string>
 <string name="p_gps_low">Baixo</string>
 <string name="p_keepscreen">Manter ecrâ ligado</string>
-<string name="p_keepscreen_summary">Não desligue o ecrâ quando o APRSDroid está em funcionamento</string>
+<string name="p_keepscreen_summary">Não desligue o ecrâ quando o APRSdroid está em funcionamento</string>
 
 <!-- messaging -->
 <string name="p__display">Mostrar e notificações</string>

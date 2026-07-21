@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- APRSdroid strings.xml - this file contains strings which need to be translated -->
 <resources>
-<string name="app_name">APRSDroid 9M2PJU</string>
+<string name="app_name">APRSdroid 9M2PJU</string>
 <string name="app_prefs">APRSdroid Preferences</string>
 <string name="app_map">APRSdroid Map</string>
 <string name="app_hub">APRSdroid Hub</string>

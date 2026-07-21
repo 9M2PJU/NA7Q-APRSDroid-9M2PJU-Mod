@@ -1,4 +1,4 @@
-// NA7Q APRSDroid 9M2PJU Mod — download page logic
+// NA7Q APRSdroid 9M2PJU Mod — download page logic
 // Fetches release info from the public GitHub API and renders download
 // buttons + live download counters. No backend; the GitHub API exposes
 // download_count per asset for unauthenticated requests (CORS-enabled,
