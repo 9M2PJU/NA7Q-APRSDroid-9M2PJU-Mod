@@ -42,10 +42,12 @@ apply plugin: 'com.github.triplet.play'
 
 ext {
 	build_date = "${new Date().format('yyyy-MM-dd')}"
-	// Use just the latest tag name (e.g. "v2.0.0") instead of the full
+	// Use just the latest version tag (e.g. "v2.0.0") instead of the full
 	// describe output (e.g. "v2.0.0-3-gabc123"). This gives clean version
 	// names for the APK and correct APRS TOCALL computation.
-	def desc = "${grgit.describe()}"
+	// Only match tags starting with "v" so non-version tags (e.g. "maps-v1.0")
+	// don't get picked up by git describe.
+	def desc = "${grgit.describe(match: "v*")}"
 	build_revision = desc.split('-')[0]
 	build_version = "APRSdroid ${build_revision} ${build_date}"
 }
