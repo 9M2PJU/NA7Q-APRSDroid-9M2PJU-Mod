@@ -37,8 +37,9 @@ jobs:
       - name: Set up Android SDK
         run: |
           export ANDROID_SDK_ROOT="$ANDROID_HOME"
-          yes | sdkmanager --licenses >/dev/null 2>&1 || true
-          sdkmanager --install \
+          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDKMANAGER" --licenses >/dev/null 2>&1 || true
+          "$SDKMANAGER" --install \
             "platform-tools" \
             "build-tools;33.0.2" \
             "platforms;android-33"
