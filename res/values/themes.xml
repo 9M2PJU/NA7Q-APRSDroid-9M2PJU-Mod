@@ -51,6 +51,18 @@
         <item name="android:windowLightNavigationBar">@bool/light_nav_bar_icons</item>
         <!-- Don't draw content in the display cutout / under-display camera area -->
         <item name="android:windowLayoutInDisplayCutoutMode">never</item>
+        <!--
+             windowDrawsSystemBarBackgrounds=false: the system applies
+             window insets as padding to the content automatically (pre-
+             edge-to-edge behavior). This is inherited by dialog windows
+             (PreferenceScreen sub-screens), which DON'T get the runtime
+             setDecorFitsSystemWindows(false) override that the activity's
+             own window gets. So dialogs get non-edge-to-edge behavior
+             from the theme, while the activity gets edge-to-edge from
+             the runtime call. This fixes the "Incoming Messages" header
+             bleeding under the status bar on Android 15/16.
+        -->
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
 
         <!-- ===== Dialogs ===== -->
         <item name="alertDialogTheme">@style/ThemeOverlay.AppTheme.Dialog</item>
@@ -97,6 +109,7 @@
         <item name="android:statusBarColor">@color/md_status_bar</item>
         <item name="android:navigationBarColor">@color/md_navigation_bar</item>
         <item name="android:windowLayoutInDisplayCutoutMode">never</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
         <item name="android:windowAnimationStyle">@null</item>
     </style>
 
