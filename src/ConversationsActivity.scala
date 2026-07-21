@@ -28,6 +28,7 @@ class ConversationsActivity extends LoadingListActivity
 
 		registerForContextMenu(getListView())
 		newConversationBtn.setOnClickListener(this);
+		setupBottomNav()
 
 		getListView().setOnCreateContextMenuListener(this);
 

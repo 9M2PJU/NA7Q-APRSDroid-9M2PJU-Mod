@@ -46,6 +46,7 @@ class MapAct extends MapActivity with MapMenuHelper {
 		mapview.setBuiltInZoomControls(true)
 		mapview.getOverlays().add(staoverlay)
 		mapview.setTextScale(getResources().getDisplayMetrics().density)
+		setupBottomNav()
 
 		startLoading()
 	}

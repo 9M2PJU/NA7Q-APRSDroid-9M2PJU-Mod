@@ -19,6 +19,7 @@ import android.content.pm.PackageManager
 import android.provider.Settings
 
 import androidx.core.content.FileProvider
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 object UIHelper
 {
@@ -190,6 +191,45 @@ trait UIHelper extends Activity
 	// store the activity name for next APRSdroid launch
 	def makeLaunchActivity(actname : String) {
 		prefs.prefs.edit().putString("activity", actname).commit()
+	}
+
+	// Set up the bottom navigation bar. Call from onContentViewLoaded()
+	// or onResume(). The current activity is highlighted based on menu_id.
+	def setupBottomNav() {
+		val nav = findViewById(R.id.bottom_nav)
+		if (nav == null) return
+		val bn = nav.asInstanceOf[BottomNavigationView]
+		// Highlight the current tab
+		val currentNavId = menu_id match {
+			case R.id.hub => R.id.nav_hub
+			case R.id.log => R.id.nav_log
+			case R.id.map => R.id.nav_map
+			case R.id.conversations => R.id.nav_messages
+			case _ => R.id.nav_log
+		}
+		bn.setSelectedItemId(currentNavId)
+		bn.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener {
+			override def onNavigationItemSelected(item : MenuItem) : Boolean = {
+				item.getItemId match {
+					case R.id.nav_hub =>
+						startActivity(new Intent(UIHelper.this, classOf[HubActivity])
+							.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT))
+						true
+					case R.id.nav_log =>
+						startActivity(new Intent(UIHelper.this, classOf[LogActivity])
+							.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT))
+						true
+					case R.id.nav_map =>
+						MapModes.startMap(UIHelper.this, prefs, "")
+						true
+					case R.id.nav_messages =>
+						startActivity(new Intent(UIHelper.this, classOf[ConversationsActivity])
+							.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT))
+						true
+					case _ => false
+				}
+			}
+		})
 	}
 
 	// keep screen on all the time if requested

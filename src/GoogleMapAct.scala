@@ -3,12 +3,14 @@ package org.aprsdroid.app
 import java.util
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import com.google.android.gms.maps.GoogleMap.{OnCameraMoveListener, OnInfoWindowClickListener, OnMarkerClickListener}
 import com.google.android.gms.maps.model.{BitmapDescriptor, BitmapDescriptorFactory, LatLng, Marker, MarkerOptions}
 import com.google.android.gms.maps.{CameraUpdateFactory, GoogleMap, MapView, OnMapReadyCallback}
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.maps.android.ui.IconGenerator
 
 import scala.collection.mutable
@@ -31,6 +33,34 @@ class GoogleMapAct extends Activity with MapLoaderBase
         override def onCreate(savedInstanceState: Bundle) {
                 super.onCreate(savedInstanceState)
                 setContentView(R.layout.googlemapview)
+
+                // Set up bottom navigation
+                val nav = findViewById(R.id.bottom_nav)
+                if (nav != null) {
+                        val bn = nav.asInstanceOf[BottomNavigationView]
+                        bn.setSelectedItemId(R.id.nav_map)
+                        bn.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener {
+                                override def onNavigationItemSelected(item: android.view.MenuItem): Boolean = {
+                                        item.getItemId match {
+                                                case R.id.nav_hub =>
+                                                        startActivity(new Intent(GoogleMapAct.this, classOf[HubActivity])
+                                                                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT))
+                                                        true
+                                                case R.id.nav_log =>
+                                                        startActivity(new Intent(GoogleMapAct.this, classOf[LogActivity])
+                                                                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT))
+                                                        true
+                                                case R.id.nav_map =>
+                                                        true // already on map
+                                                case R.id.nav_messages =>
+                                                        startActivity(new Intent(GoogleMapAct.this, classOf[ConversationsActivity])
+                                                                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT))
+                                                        true
+                                                case _ => false
+                                        }
+                                }
+                        })
+                }
 
                 mapview.onCreate(savedInstanceState)
                 mapview.getMapAsync(new OnMapReadyCallback {

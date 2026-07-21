@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_hub"
+        android:icon="@drawable/ic_nav_hub"
+        android:title="@string/show_hub" />
+    <item
+        android:id="@+id/nav_log"
+        android:icon="@drawable/ic_nav_log"
+        android:title="@string/show_log" />
+    <item
+        android:id="@+id/nav_map"
+        android:icon="@drawable/ic_nav_map"
+        android:title="@string/show_map" />
+    <item
+        android:id="@+id/nav_messages"
+        android:icon="@drawable/ic_nav_messages"
+        android:title="@string/app_messages" />
+</menu>

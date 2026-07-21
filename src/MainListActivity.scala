@@ -29,6 +29,7 @@ class MainListActivity(actname : String, menuid : Int) extends LoadingListActivi
 		singleBtn.setOnClickListener(this);
 		startstopBtn.setOnClickListener(this);
 		registerForContextMenu(getListView())
+		setupBottomNav()
 	}
 
 	override def onResume() {
