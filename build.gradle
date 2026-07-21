@@ -47,7 +47,14 @@ ext {
 	// names for the APK and correct APRS TOCALL computation.
 	// Only match tags starting with "v" so non-version tags (e.g. "maps-v1.0")
 	// don't get picked up by git describe.
-	def desc = "${grgit.describe(match: "v*")}"
+	def descOut = new ByteArrayOutputStream()
+	exec {
+		executable "git"
+		args "describe", "--tags", "--match", "v*"
+		standardOutput descOut
+		ignoreExitValue true
+	}
+	def desc = descOut.toString().trim() ?: "v2.0.0"
 	build_revision = desc.split('-')[0]
 	build_version = "APRSdroid ${build_revision} ${build_date}"
 }
