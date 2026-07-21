@@ -242,6 +242,17 @@
       <li><strong>Crash fixes</strong> — Android 14+ <code>registerReceiver</code> SecurityException fixed; MessageActivity null ActionBar crash fixed; map screen crash on Material Components theme fixed.</li>
     </ul>
   </div>
+
+  <div class="whatsnew-group">
+    <h3>v2.0.4 — Android 15/16 inset fixes &amp; Clear Log refresh</h3>
+    <ul>
+      <li><strong>Double top padding fixed on Preferences</strong> — PreferenceActivity's internal layout was applying the status bar inset on top of the manual inset listener, causing excessive blank space. Now uses edge-to-edge with <code>consumeSystemWindowInsets()</code> to prevent double-padding.</li>
+      <li><strong>Content no longer bleeds under the status bar</strong> — all activities now have proper system bar inset handling (status bar, navigation bar, display cutout) for Android 15/16 edge-to-edge enforcement.</li>
+      <li><strong>PreferenceScreen dialog sub-screens fixed</strong> — section headers like "Incoming Messages" no longer overlap with the status bar clock. The dialog theme now applies <code>fitsSystemWindows</code> and <code>windowDrawsSystemBarBackgrounds=false</code>.</li>
+      <li><strong>Clear Log refreshes instantly</strong> — after clearing the log from the menu, the ListView now updates immediately without needing to switch tabs and back.</li>
+      <li><strong>Symbol picker inset handling</strong> — the APRS symbol picker now handles edge-to-edge insets properly on Android 15/16.</li>
+    </ul>
+  </div>
 </section>
 
 <section id="features" class="section">

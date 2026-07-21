@@ -81,6 +81,28 @@ The direct upstream is [NA7Q's fork](https://github.com/na7q/aprsdroid).
 - **App name and About dialog unified** across all 52 locale files
 - **Version bumped** to `v2.0.0` (tocall `APDR20`)
 
+### v2.0.4 — Android 15/16 inset fixes & Clear Log refresh
+
+- **Double top padding fixed on Preferences** — PreferenceActivity's
+  internal LinearLayout was applying the status bar inset on top of the
+  manual inset listener, causing excessive blank space. Now uses
+  edge-to-edge with `consumeSystemWindowInsets()` to prevent
+  double-padding.
+- **Content no longer bleeds under the status bar** — all activities now
+  have proper system bar inset handling (status bar, navigation bar,
+  display cutout) for Android 15/16 edge-to-edge enforcement.
+- **PreferenceScreen dialog sub-screens fixed** — section headers like
+  "Incoming Messages" no longer overlap with the status bar clock. The
+  dialog theme now applies `fitsSystemWindows` and
+  `windowDrawsSystemBarBackgrounds=false` to push content below the
+  status bar.
+- **Clear Log refreshes instantly** — after clearing the log from the
+  menu, the ListView now updates immediately without needing to switch
+  tabs and back. The `LocationReceiver2` cursor reload is triggered
+  directly after the `StorageCleaner` async task completes.
+- **Symbol picker inset handling** — the APRS symbol picker
+  (`PrefSymbolAct`) now handles edge-to-edge insets properly.
+
 ### Features inherited from NA7Q's fork
 
 - **Digipeater** — direct or full digipeating
