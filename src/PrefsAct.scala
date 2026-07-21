@@ -17,6 +17,7 @@ import java.util.Date
 import android.provider.{Settings, DocumentsContract, MediaStore}
 
 import org.json.JSONObject
+import androidx.core.view.WindowCompat
 
 class PrefsAct extends PreferenceActivity {
 	lazy val db = StorageDatabase.open(this)
@@ -55,6 +56,7 @@ class PrefsAct extends PreferenceActivity {
 	}
 	override def onCreate(savedInstanceState: Bundle) {
 		super.onCreate(savedInstanceState)
+		WindowCompat.setDecorFitsSystemWindows(getWindow(), true)
 		addPreferencesFromResource(R.xml.preferences)
 
 		// Set up "Grant Storage Permissions" button

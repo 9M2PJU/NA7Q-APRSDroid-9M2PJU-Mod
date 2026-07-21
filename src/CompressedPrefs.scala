@@ -4,6 +4,7 @@ import _root_.android.content.SharedPreferences
 import _root_.android.os.Bundle
 import _root_.android.preference.{PreferenceActivity, PreferenceManager, CheckBoxPreference, ListPreference}
 import _root_.android.util.Log
+import androidx.core.view.WindowCompat
 
 class CompressedPrefs extends PreferenceActivity with SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -16,6 +17,7 @@ class CompressedPrefs extends PreferenceActivity with SharedPreferences.OnShared
 
   override def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)
+		WindowCompat.setDecorFitsSystemWindows(getWindow(), true)
     loadXml()
     getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this)
 

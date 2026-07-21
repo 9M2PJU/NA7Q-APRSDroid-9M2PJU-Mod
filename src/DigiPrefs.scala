@@ -3,6 +3,7 @@ package org.aprsdroid.app
 import _root_.android.content.SharedPreferences
 import _root_.android.os.Bundle
 import _root_.android.preference.{PreferenceActivity, CheckBoxPreference}
+import androidx.core.view.WindowCompat
 
 class DigiPrefs extends PreferenceActivity with SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -15,6 +16,7 @@ class DigiPrefs extends PreferenceActivity with SharedPreferences.OnSharedPrefer
 
   override def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)
+		WindowCompat.setDecorFitsSystemWindows(getWindow(), true)
     loadXml()
     getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this)
 

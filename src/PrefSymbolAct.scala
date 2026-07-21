@@ -8,6 +8,7 @@ import _root_.android.view.{View, ViewGroup}
 import _root_.android.util.TypedValue
 import _root_.android.widget.{AbsListView, AdapterView, BaseAdapter, Button, EditText, ImageView, GridView}
 import _root_.android.widget.AdapterView.OnItemClickListener
+import androidx.core.view.WindowCompat
 
 class PrefSymbolAct extends Activity with TextWatcher with View.OnClickListener {
 	lazy val overlayedit = findViewById(R.id.overlay).asInstanceOf[EditText]
@@ -39,6 +40,7 @@ class PrefSymbolAct extends Activity with TextWatcher with View.OnClickListener 
 
 	override def onCreate(savedInstanceState: Bundle) {
 		super.onCreate(savedInstanceState)
+		WindowCompat.setDecorFitsSystemWindows(getWindow(), true)
 		setContentView(R.layout.prefsymbol)
 		val gv = findViewById(R.id.gridview).asInstanceOf[GridView]
 		gv.setAdapter(new SymbolAdapter(this))

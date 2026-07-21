@@ -14,6 +14,7 @@ import java.util.Scanner
 import org.json._
 
 import scala.collection.JavaConversions._ // for enumeration of config items
+import androidx.core.view.WindowCompat
 
 class ProfileImportActivity extends AppCompatActivity {
 	val TAG = "APRSdroid.ProfileImport"
@@ -22,6 +23,7 @@ class ProfileImportActivity extends AppCompatActivity {
 
 	override def onCreate(savedInstanceState: Bundle) {
 		super.onCreate(savedInstanceState)
+		WindowCompat.setDecorFitsSystemWindows(getWindow(), true)
 		Log.d(TAG, "created: " + getIntent())
 		import_config()
 	}

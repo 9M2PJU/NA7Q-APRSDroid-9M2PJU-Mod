@@ -4,6 +4,7 @@ import _root_.android.content.Intent
 import _root_.android.os.{Bundle, Handler}
 import _root_.android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 
 class APRSdroid extends AppCompatActivity {
 	val SPLASH_DELAY_MS = 2000
@@ -17,6 +18,7 @@ class APRSdroid extends AppCompatActivity {
 
 	override def onCreate(savedInstanceState : Bundle) {
 		super.onCreate(savedInstanceState)
+		WindowCompat.setDecorFitsSystemWindows(getWindow(), true)
 		setContentView(R.layout.splash)
 		val prefs = PreferenceManager.getDefaultSharedPreferences(this)
 

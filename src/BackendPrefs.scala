@@ -8,6 +8,7 @@ import _root_.android.preference.{CheckBoxPreference, Preference, PreferenceActi
 import android.location.LocationManager
 import android.preference.Preference.OnPreferenceClickListener
 import android.widget.Toast
+import androidx.core.view.WindowCompat
 
 class BackendPrefs extends PreferenceActivity
 		with OnSharedPreferenceChangeListener
@@ -58,6 +59,7 @@ class BackendPrefs extends PreferenceActivity
 	}
 	override def onCreate(savedInstanceState: Bundle) {
 		super.onCreate(savedInstanceState)
+		WindowCompat.setDecorFitsSystemWindows(getWindow(), true)
 		loadXml()
 		getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this)
 	}

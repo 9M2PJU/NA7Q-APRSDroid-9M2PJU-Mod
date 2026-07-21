@@ -15,6 +15,7 @@ import _root_.java.security.KeyStore
 import _root_.java.security.cert.X509Certificate
 
 import scala.collection.JavaConversions._ // for enumeration of keystore aliases
+import androidx.core.view.WindowCompat
 
 class KeyfileImportActivity extends AppCompatActivity {
 	val TAG = "APRSdroid.KeyImport"
@@ -27,6 +28,7 @@ class KeyfileImportActivity extends AppCompatActivity {
 
 	override def onCreate(savedInstanceState: Bundle) {
 		super.onCreate(savedInstanceState)
+		WindowCompat.setDecorFitsSystemWindows(getWindow(), true)
 		Log.d(TAG, "created: " + getIntent())
 		query_for_password()
 	}

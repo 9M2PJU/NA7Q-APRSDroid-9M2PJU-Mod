@@ -4,6 +4,7 @@ import _root_.android.os.Bundle
 import _root_.android.preference.{PreferenceActivity, PreferenceManager}
 import _root_.android.content.SharedPreferences
 import _root_.android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import androidx.core.view.WindowCompat
 
 class MessagingPrefs extends PreferenceActivity with OnSharedPreferenceChangeListener {
 
@@ -17,6 +18,7 @@ class MessagingPrefs extends PreferenceActivity with OnSharedPreferenceChangeLis
   // Called when the activity is created
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
+		WindowCompat.setDecorFitsSystemWindows(getWindow(), true)
     loadXml() // Load the XML file containing preferences
     getPreferenceScreen.getSharedPreferences.registerOnSharedPreferenceChangeListener(this) // Register listener for preference changes
   }

@@ -93,6 +93,7 @@ class MapAct extends MapActivity with MapMenuHelper {
 
 	override def onResume() {
 		super.onResume()
+		applySystemBarInsets()
 		// only make it default if not tracking
 		if (isCoordinateChooser)
 			setTitle(R.string.p_source_from_map)

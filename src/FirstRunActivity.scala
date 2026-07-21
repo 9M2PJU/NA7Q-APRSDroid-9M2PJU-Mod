@@ -13,6 +13,7 @@ import androidx.core.app.ActivityCompat
 
 import android.{Manifest => AndroidManifest}
 import scala.collection.mutable.ArrayBuffer
+import androidx.core.view.WindowCompat
 
 object FirstRunActivity {
     val REQUEST_ALL_PERMISSIONS = 9001
@@ -26,6 +27,7 @@ class FirstRunActivity extends AppCompatActivity {
 
     override def onCreate(savedInstanceState : Bundle) {
         super.onCreate(savedInstanceState)
+		WindowCompat.setDecorFitsSystemWindows(getWindow(), true)
         setContentView(R.layout.firstrun_permissions)
 
         findViewById(R.id.btn_grant_permissions).asInstanceOf[View]
