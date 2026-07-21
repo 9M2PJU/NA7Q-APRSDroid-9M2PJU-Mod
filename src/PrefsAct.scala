@@ -129,17 +129,22 @@ class PrefsAct extends PreferenceActivity {
 		applyPrefTopInset()
 		addPreferencesFromResource(R.xml.preferences)
 
-		// Add a global layout listener to re-apply top inset padding
-		// whenever the view hierarchy is relaid out. This catches
+		// Add an OnPreDrawListener to re-apply top inset padding right
+		// before each draw. This is the most reliable way to catch
 		// PreferenceScreen sub-screen navigation where the ListView
-		// content is swapped without calling onContentChanged or
-		// onPreferenceTreeClick.
+		// content is swapped and padding is reset by the layout pass.
+		// OnGlobalLayoutListener fires before the layout pass (so its
+		// padding gets reset), but OnPreDrawListener fires after layout
+		// and right before drawing, so the padding persists.
 		val rootView = getWindow.getDecorView.findViewById(
 			android.R.id.content).asInstanceOf[android.view.View]
 		if (rootView != null) {
-			rootView.getViewTreeObserver.addOnGlobalLayoutListener(
-				new android.view.ViewTreeObserver.OnGlobalLayoutListener {
-					override def onGlobalLayout() : Unit = applyPrefTopInset()
+			rootView.getViewTreeObserver.addOnPreDrawListener(
+				new android.view.ViewTreeObserver.OnPreDrawListener {
+					override def onPreDraw() : Boolean = {
+						applyPrefTopInset()
+						true
+					}
 				})
 		}
 
