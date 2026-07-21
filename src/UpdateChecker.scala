@@ -29,7 +29,7 @@ import org.json.JSONObject
 object UpdateChecker {
     val TAG = "UpdateChecker"
     val REPO_OWNER = "9M2PJU"
-    val REPO_NAME  = "NA7Q-APRSdroid-9M2PJU-Mod"
+    val REPO_NAME  = "APRSdroid-9M2PJU-Mod"
     val API_URL = s"https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/latest"
     val RELEASES_URL = s"https://github.com/$REPO_OWNER/$REPO_NAME/releases/latest"
     val CHECK_INTERVAL_MS = 24 * 60 * 60 * 1000L  // 24 hours

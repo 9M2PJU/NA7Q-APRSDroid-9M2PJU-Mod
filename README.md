@@ -14,11 +14,11 @@
 [![License](https://img.shields.io/badge/License-GPLv2-blue?style=for-the-badge)](https://www.gnu.org/licenses/gpl-2.0.html)
 [![Scala](https://img.shields.io/badge/Built_with-Scala-DC322F?style=for-the-badge&logo=scala&logoColor=white)](https://www.scala-lang.org/)
 [![targetSdk 35](https://img.shields.io/badge/targetSdk-35_(Android_15)-CEB619?style=for-the-badge)](https://developer.android.com/about/versions/15)
-[![Build](https://img.shields.io/github/actions/workflow/status/9M2PJU/NA7Q-APRSdroid-9M2PJU-Mod/build.yml?style=for-the-badge&label=CI)](https://github.com/9M2PJU/NA7Q-APRSdroid-9M2PJU-Mod/actions/workflows/build.yml)
-[![Release](https://img.shields.io/github/v/release/9M2PJU/NA7Q-APRSdroid-9M2PJU-Mod?style=for-the-badge&label=Latest%20Release)](https://github.com/9M2PJU/NA7Q-APRSdroid-9M2PJU-Mod/releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/9M2PJU/NA7Q-APRSdroid-9M2PJU-Mod/total?style=for-the-badge&label=Total%20Downloads)](https://aprsdroid.hamradio.my/)
+[![Build](https://img.shields.io/github/actions/workflow/status/9M2PJU/APRSdroid-9M2PJU-Mod/build.yml?style=for-the-badge&label=CI)](https://github.com/9M2PJU/APRSdroid-9M2PJU-Mod/actions/workflows/build.yml)
+[![Release](https://img.shields.io/github/v/release/9M2PJU/APRSdroid-9M2PJU-Mod?style=for-the-badge&label=Latest%20Release)](https://github.com/9M2PJU/APRSdroid-9M2PJU-Mod/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/9M2PJU/APRSdroid-9M2PJU-Mod/total?style=for-the-badge&label=Total%20Downloads)](https://aprsdroid.hamradio.my/)
 
-**[🌐 Landing Page](https://aprsdroid.hamradio.my/)** • **[⬇️ Download](https://github.com/9M2PJU/NA7Q-APRSdroid-9M2PJU-Mod/releases/latest)** • **[🗺️ Original APRSdroid](https://aprsdroid.org/)** • **[📦 Source](https://github.com/9M2PJU/NA7Q-APRSdroid-9M2PJU-Mod)**
+**[🌐 Landing Page](https://aprsdroid.hamradio.my/)** • **[⬇️ Download](https://github.com/9M2PJU/APRSdroid-9M2PJU-Mod/releases/latest)** • **[🗺️ Original APRSdroid](https://aprsdroid.org/)** • **[📦 Source](https://github.com/9M2PJU/APRSdroid-9M2PJU-Mod)**
 
 </div>
 
@@ -37,7 +37,7 @@ This mod is a comprehensive refresh of NA7Q's enhanced APRSdroid. Below is every
 changed compared to the upstream NA7Q fork.
 
 #### 🏗️ **Repo & branding**
-- 🔖 **Repo renamed** `NA7Q-APRSdroid` → `NA7Q-APRSdroid-9M2PJU-Mod` (clearer identity)
+- 🔖 **Repo renamed** `NA7Q-APRSdroid` → `APRSdroid-9M2PJU-Mod` (clearer identity)
 - 🏷️ **Version bumped** to `v2.0.0` (APRS tocall `APDR20`, displayed as "APRSdroid 2.0.0" in
   IGATE comment strings). Versioning is tag-driven — each release gets a `vX.Y.Z` tag.
 - 🖼️ **New app icon & logo** — replaced all 6 density-specific `icon.png` files
@@ -156,7 +156,7 @@ changed compared to the upstream NA7Q fork.
 > this mod — the signing key differs, so Android will refuse an in-place upgrade.
 
 1. **Download the latest signed release APK** from the
-   [**Releases page**](https://github.com/9M2PJU/NA7Q-APRSdroid-9M2PJU-Mod/releases/latest)
+   [**Releases page**](https://github.com/9M2PJU/APRSdroid-9M2PJU-Mod/releases/latest)
    (or browse all releases + live download counts on the
    [**landing page**](https://aprsdroid.hamradio.my/))
 2. **Install** the APK on your Android device (enable "Install from unknown sources" if prompted)
@@ -235,7 +235,7 @@ This project is licensed under the **GNU General Public License v2.0** — see t
 Contributions are welcome from the amateur radio community! Whether you're fixing bugs,
 adding features, or improving documentation, your help makes APRSdroid better for everyone.
 Please open an issue or pull request at the
-[**9M2PJU-Mod repo**](https://github.com/9M2PJU/NA7Q-APRSdroid-9M2PJU-Mod).
+[**9M2PJU-Mod repo**](https://github.com/9M2PJU/APRSdroid-9M2PJU-Mod).
 
 ---
 

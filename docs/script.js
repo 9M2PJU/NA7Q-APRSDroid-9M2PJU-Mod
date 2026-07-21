@@ -5,7 +5,7 @@
 // 60 req/hour per IP — plenty for a landing page).
 
 const OWNER = "9M2PJU";
-const REPO  = "NA7Q-APRSdroid-9M2PJU-Mod";
+const REPO  = "APRSdroid-9M2PJU-Mod";
 const API   = `https://api.github.com/repos/${OWNER}/${REPO}/releases`;
 
 function fmtSize(bytes) {
