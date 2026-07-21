@@ -37,7 +37,7 @@ which is itself a fork of [Georg Lukas's original APRSdroid](https://aprsdroid.o
 | Project | Author | Description |
 |---|---|---|
 | [APRSdroid](https://aprsdroid.org/) | Georg Lukas (ge0rg) | The original APRS client for Android, since 2010. Scala + Java, GPLv2. |
-| [NA7Q's fork](https://github.com/na7q/aprsdroid) | NA7Q | Enhanced fork with BLE TNC, digipeater, IGate, Mic-E, offline maps. |
+| [NA7Q's fork](https://github.com/na7q/aprsdroid) | NA7Q | Enhanced fork with BLE TNC, digipeater, IGate, Mic-E, offline maps. [Homepage](https://na7q.com/aprsdroid-osm/) |
 | **APRSdroid 9M2PJU Mod** (this repo) | 9M2PJU | Builds on NA7Q's fork with modern Android, Material UI, CI/CD, in-app updates. |
 
 This mod is maintained by **9M2PJU** (Kuala Lumpur, Malaysia) and focuses on
@@ -261,7 +261,7 @@ GPLv2 so that the community can build on his work.
 [NA7Q's fork](https://github.com/na7q/aprsdroid) builds on Georg's original
 work with BLE TNC support, digipeater and IGate functionality, symbol
 overlays, Mic-E improvements, and offline mapping. NA7Q's fork is the direct
-upstream of this mod.
+upstream of this mod. Homepage: <https://na7q.com/aprsdroid-osm/>
 
 ### 9M2PJU — This Mod
 
