@@ -28,17 +28,20 @@ class FirstRunActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.firstrun_permissions)
 
-        findViewById(R.id.btn_grant_permissions).setOnClickListener(new View.OnClickListener {
-            override def onClick(v : View) : Unit = requestAllPermissions()
-        })
+        findViewById(R.id.btn_grant_permissions).asInstanceOf[View]
+            .setOnClickListener(new View.OnClickListener {
+                override def onClick(v : View) : Unit = requestAllPermissions()
+            })
 
-        findViewById(R.id.btn_continue).setOnClickListener(new View.OnClickListener {
-            override def onClick(v : View) : Unit = finishFirstRun()
-        })
+        findViewById(R.id.btn_continue).asInstanceOf[View]
+            .setOnClickListener(new View.OnClickListener {
+                override def onClick(v : View) : Unit = finishFirstRun()
+            })
 
-        findViewById(R.id.btn_grant_storage).setOnClickListener(new View.OnClickListener {
-            override def onClick(v : View) : Unit = requestManageStorage()
-        })
+        findViewById(R.id.btn_grant_storage).asInstanceOf[View]
+            .setOnClickListener(new View.OnClickListener {
+                override def onClick(v : View) : Unit = requestManageStorage()
+            })
     }
 
     // Collect all runtime permissions the app needs, filtered by API level.
