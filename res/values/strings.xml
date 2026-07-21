@@ -446,6 +446,12 @@
 <string name="p_dgp_ring">Ringtone</string>
 <string name="p_dgp_ring_summary">Tone for digipeated packets</string>
 
+<string name="p_tracking">Tracking Start/Stop</string>
+<string name="p_start_ring">Start tracking sound</string>
+<string name="p_start_ring_summary">Tone played when tracking starts</string>
+<string name="p_stop_ring">Stop tracking sound</string>
+<string name="p_stop_ring_summary">Tone played when tracking stops</string>
+
 <string name="got_digipeated">Digipeated by %1$s: %2$s</string>
 <string name="status_linkoff">Error: %s</string>
 <string name="status_linkon">Connected: %s</string>

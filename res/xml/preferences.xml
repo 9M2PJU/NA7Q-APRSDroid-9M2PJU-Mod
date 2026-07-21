@@ -312,6 +312,27 @@
 		android:showSilent="true"
 		/>
     </PreferenceCategory>
+    <!-- tracking start/stop -->
+    <PreferenceCategory
+	android:title="@string/p_tracking">
+
+	<RingtonePreference
+		android:key="start_notify_ringtone"
+		android:title="@string/p_start_ring"
+		android:summary="@string/p_start_ring_summary"
+		android:ringtoneType="notification"
+		android:showDefault="true"
+		android:showSilent="true"
+		/>
+	<RingtonePreference
+		android:key="stop_notify_ringtone"
+		android:title="@string/p_stop_ring"
+		android:summary="@string/p_stop_ring_summary"
+		android:ringtoneType="notification"
+		android:showDefault="true"
+		android:showSilent="true"
+		/>
+    </PreferenceCategory>
     </PreferenceScreen>
     </PreferenceCategory>
 	

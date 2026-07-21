@@ -3,6 +3,9 @@ package org.aprsdroid.app
 import _root_.android.app.Service
 import _root_.android.content.{Context, Intent, IntentFilter}
 import _root_.android.location._
+import _root_.android.media.Ringtone
+import _root_.android.media.RingtoneManager
+import _root_.android.net.Uri
 import _root_.android.os.{Bundle, IBinder, Handler}
 import _root_.android.preference.PreferenceManager
 import _root_.android.util.Log
@@ -201,6 +204,9 @@ class AprsService extends Service {
 		// startup completed, remember state
 		if (!singleShot)
 			prefs.setBoolean("service_running", true)
+
+		// play start tracking sound if configured
+		playNotifySound("start_notify_ringtone")
 	}
 
 	override def onBind(i : Intent) : IBinder = null
@@ -212,16 +218,35 @@ class AprsService extends Service {
 		addPost(StorageDatabase.Post.TYPE_INFO, null, msg)
 	}
 
+	// Play a notification sound from a RingtonePreference key.
+	// If the preference is unset or set to "silent", no sound is played.
+	def playNotifySound(prefKey : String) {
+		try {
+			val sound = prefs.getString(prefKey, null)
+			if (sound != null && sound != "") {
+				val uri = Uri.parse(sound)
+				val ringtone = RingtoneManager.getRingtone(this, uri)
+				if (ringtone != null)
+					ringtone.play()
+			}
+		} catch {
+			case e : Exception => Log.d("AprsService", "playNotifySound failed: " + e)
+		}
+	}
+
 	override def onDestroy() {
 		running = false
 		link_error = 0
 		// catch FC when service is killed from outside
 		if (poster != null) {
 			poster.stop()
-			if (prefs.isIgateEnabled() && (prefs.getBackendName().contains("KISS") || prefs.getBackendName().contains("AFSK"))) {			
+			if (prefs.isIgateEnabled() && (prefs.getBackendName().contains("KISS") || prefs.getBackendName().contains("AFSK"))) {
 				igateService.stop()
 			}
 			showToast(getString(R.string.service_stop))
+
+			// play stop tracking sound if configured
+			playNotifySound("stop_notify_ringtone")
 
 			sendBroadcast(new Intent(SERVICE_STOPPED))
 		}
