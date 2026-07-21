@@ -86,31 +86,22 @@ function renderLatest(release) {
   card.hidden = false;
 }
 
-function renderAllReleases(releases) {
-  const list = document.getElementById("all-releases");
-  list.innerHTML = "";
-  releases.forEach(r => {
-    const item = document.createElement("div");
-    item.className = "release-item";
+function renderMapsRelease(release) {
+  const card = document.getElementById("maps-release");
+  if (!release) { card.hidden = true; return; }
+  document.getElementById("maps-name").textContent = release.name || release.tag_name;
+  document.getElementById("maps-date").textContent = fmtDate(release.published_at);
 
-    const left = document.createElement("div");
-    const name = document.createElement("div");
-    name.className = "ri-name";
-    name.textContent = r.name || r.tag_name;
-    left.appendChild(name);
-    const meta = document.createElement("div");
-    meta.className = "ri-meta";
-    meta.textContent = `${fmtDate(r.published_at)} · ${r.assets.length} asset(s)`;
-    left.appendChild(meta);
-    item.appendChild(left);
+  const assetsEl = document.getElementById("maps-assets");
+  assetsEl.innerHTML = "";
+  if (release.assets.length === 0) {
+    assetsEl.textContent = "No map assets attached to this release.";
+  } else {
+    release.assets.forEach(a => assetsEl.appendChild(renderAsset(a)));
+  }
 
-    const count = document.createElement("span");
-    count.className = "ri-count";
-    count.textContent = "↓ " + fmtNum(releaseDownloadCount(r));
-    item.appendChild(count);
-
-    list.appendChild(item);
-  });
+  document.getElementById("maps-downloads").textContent = fmtNum(releaseDownloadCount(release));
+  card.hidden = false;
 }
 
 function renderError(msg) {
@@ -130,11 +121,19 @@ async function load() {
       return;
     }
 
-    // GitHub returns latest-first; the API endpoint is /releases (not /latest)
-    // so the first entry is the most recent published release.
+    // Find the latest APK release (exclude the maps release by tag)
+    const MAPS_TAG = "maps-v1.0";
+    const apkReleases = releases.filter(r => r.tag_name !== MAPS_TAG && !r.draft && !r.prerelease);
+    const mapsRelease = releases.find(r => r.tag_name === MAPS_TAG);
+
     document.getElementById("download-status").hidden = true;
-    renderLatest(releases[0]);
-    renderAllReleases(releases);
+
+    if (apkReleases.length > 0) {
+      renderLatest(apkReleases[0]);
+    }
+
+    renderMapsRelease(mapsRelease);
+
     document.getElementById("total-downloads").textContent = fmtNum(totalDownloadCount(releases));
   } catch (e) {
     console.error(e);
