@@ -45,6 +45,7 @@ class LogActivity extends MainListActivity("log", R.id.log) {
 
 	override def onResume() {
 		super.onResume()
+		Log.d(TAG, "onResume: registering receiver")
 		UIHelper.safeRegisterReceiver(this, locReceiver, new IntentFilter(AprsService.UPDATE))
 		locReceiver.startTask(null)
 
@@ -75,10 +76,11 @@ class LogActivity extends MainListActivity("log", R.id.log) {
 
 	def load_cursor(i : Intent) = {
 		val c = storage.getPosts("300")
-		c.getCount()
+		Log.d(TAG, "load_cursor: count=" + c.getCount())
 		c
 	}
 	def replace_cursor(c : Cursor) {
+		Log.d(TAG, "replace_cursor: count=" + c.getCount())
 		if (!getListView().hasTextFilter())
 			la.changeCursor(c)
 		onStopLoading()
