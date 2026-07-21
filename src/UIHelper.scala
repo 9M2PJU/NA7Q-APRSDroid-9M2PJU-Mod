@@ -123,6 +123,31 @@ object UIHelper
 								bn.getPaddingRight(),
 								bottomPad)
 						}
+
+						// Find the bottom button bar (StationActivity:
+						// MAP / APRS.FI / QRZ.COM buttons) and apply bottom
+						// padding so the buttons stay above the system nav bar.
+						val bbb = act.findViewById(R.id.bottom_button_bar).asInstanceOf[View]
+						if (bbb != null) {
+							bbb.setPadding(bbb.getPaddingLeft(),
+								bbb.getPaddingTop(),
+								bbb.getPaddingRight(),
+								bottomPad)
+						}
+
+						// Find the message input bar (MessageActivity:
+						// EditText + Send button) and apply bottom padding
+						// so it stays above the system nav bar.
+						val bl = act.findViewById(R.id.buttonlayout).asInstanceOf[View]
+						if (bl != null && bn == null) {
+							// Only apply if there's no BottomNavigationView
+							// below it (main.xml has buttonlayout above the
+							// BottomNavigationView, so it doesn't need this).
+							bl.setPadding(bl.getPaddingLeft(),
+								bl.getPaddingTop(),
+								bl.getPaddingRight(),
+								bottomPad)
+						}
 						insets
 					}
 				})
