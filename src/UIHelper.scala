@@ -176,14 +176,11 @@ object UIHelper
 		// Fallback for PreferenceActivity: the inset listener above may
 		// not be triggered reliably on Android 16 (edge-to-edge enforced).
 		// Directly read the status bar AND navigation bar heights from the
-		// system resources and apply them as top/bottom padding to BOTH the
-		// content view AND the PreferenceActivity's built-in ListView
-		// (android.R.id.list). The ListView padding is needed because when
-		// the user navigates into a PreferenceScreen sub-screen (e.g.
-		// Notifications), the ListView content is swapped but the root
-		// padding alone doesn't push the list items down — the ListView
-		// itself needs padding. Bottom padding ensures the last preference
-		// item is not clipped by the gesture/navigation bar on Android 15/16.
+		// system resources. Apply top padding (status bar) to the root
+		// content view ONLY — the ListView is a child of the content view,
+		// so the root padding already pushes it down. Applying top padding
+		// to both would double it. Apply only bottom padding (nav bar) to
+		// the ListView so the last item is not clipped by the gesture bar.
 		val prefList = act.findViewById(android.R.id.list).asInstanceOf[View]
 		if (prefList != null) {
 			val res = act.getResources()
@@ -194,7 +191,7 @@ object UIHelper
 			if (statusBarHeight > 0) {
 				root.setPadding(root.getPaddingLeft(), statusBarHeight,
 					root.getPaddingRight(), navBarHeight)
-				prefList.setPadding(prefList.getPaddingLeft(), statusBarHeight,
+				prefList.setPadding(prefList.getPaddingLeft(), 0,
 					prefList.getPaddingRight(), navBarHeight)
 			}
 		}

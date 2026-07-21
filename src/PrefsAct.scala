@@ -81,15 +81,16 @@ class PrefsAct extends PreferenceActivity {
 			if (root != null && (root.getPaddingTop != statusBarHeight || root.getPaddingBottom != navBarHeight))
 				root.setPadding(root.getPaddingLeft, statusBarHeight,
 					root.getPaddingRight, navBarHeight)
-			// Apply padding to the ListView. Do NOT use clipToPadding=false
-			// because that allows children to draw in the padding area (under
-			// the status bar). We want the padding to clip so items stay
-			// below the status bar. Bottom padding ensures the last preference
-			// item is not clipped by the gesture/navigation bar on Android 15/16.
+			// Apply ONLY bottom padding to the ListView. The top (status bar)
+			// inset is handled by the root content view's top padding — the
+			// ListView is a child of the content view, so adding top padding
+			// to both would double it. Bottom padding ensures the last
+			// preference item is not clipped by the gesture/navigation bar
+			// on Android 15/16.
 			val lv = findViewById(android.R.id.list).asInstanceOf[android.view.View]
 			if (lv != null) {
-				if (lv.getPaddingTop != statusBarHeight || lv.getPaddingBottom != navBarHeight) {
-					lv.setPadding(lv.getPaddingLeft, statusBarHeight,
+				if (lv.getPaddingBottom != navBarHeight) {
+					lv.setPadding(lv.getPaddingLeft, 0,
 						lv.getPaddingRight, navBarHeight)
 				}
 			}
