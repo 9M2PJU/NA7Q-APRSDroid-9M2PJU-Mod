@@ -410,6 +410,7 @@ footer a { color: var(--text); }
   padding-right: calc(1rem + var(--safe-right));
   box-sizing: border-box;
   overflow-y: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
 .donation-popup {
@@ -497,8 +498,16 @@ footer a { color: var(--text); }
   margin: 0;
 }
 @media (max-width: 480px) {
-  .donation-popup { padding: 1.5rem; }
-  .donation-qr { width: 180px; height: 180px; }
+  .donation-popup { padding: 1.25rem; max-width: 100%; }
+  .donation-qr { width: 160px; height: 160px; }
+  .donation-popup h2 { font-size: 1.1rem; }
+  .donation-sub { font-size: 0.85rem; }
+  .donation-buttons .btn { padding: 0.6rem 0.75rem; font-size: 0.9rem; }
+}
+@media (max-width: 360px) {
+  .donation-popup { padding: 1rem; }
+  .donation-qr { width: 140px; height: 140px; }
+  .donation-qr-caption { font-size: 0.72rem; }
 }
 @media (max-height: 640px) {
   .donation-popup {
