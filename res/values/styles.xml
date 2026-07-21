@@ -107,12 +107,11 @@
         <item name="colorAccent">@color/md_accent</item>
         <item name="android:windowBackground">@drawable/dialog_background</item>
         <item name="android:textColorPrimary">@color/md_on_surface</item>
-        <!-- On Android 15+ (targetSdk 35), dialogs are edge-to-edge by
-             default, causing PreferenceScreen sub-screen content (like
-             "Incoming Messages" section headers) to bleed under the
-             status bar. Setting windowDrawsSystemBarBackgrounds=false
-             makes the system apply insets to the dialog's content
-             automatically, pushing it below the status bar. -->
+        <!-- Backup inset handling for PreferenceScreen dialogs. The
+             primary fix is in PrefsAct.scala: showSubScreenDialog()
+             creates a custom dialog and calls
+             setDecorFitsSystemWindows(true) on its window. These
+             theme attributes are kept as a secondary fallback. -->
         <item name="android:windowDrawsSystemBarBackgrounds">false</item>
         <item name="android:fitsSystemWindows">true</item>
         <item name="buttonBarPositiveButtonStyle">
