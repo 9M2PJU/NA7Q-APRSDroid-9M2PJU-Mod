@@ -21,6 +21,16 @@ class APRSdroid extends AppCompatActivity {
 		if (UsbTnc.checkDeviceHandle(prefs, getIntent.getParcelableExtra("device")) && prefs.getBoolean("service_running", false))
 			startService(AprsService.intent(this, AprsService.SERVICE))
 
+		// First-run permission flow: if the user hasn't been through the
+		// permission setup screen yet, route there instead of Hub/Log/Map.
+		// FirstRunActivity will route back here (via APRSdroid) after the
+		// user taps "Continue", at which point permissions_requested=true
+		// and we proceed to the normal flow below.
+		if (!prefs.getBoolean("permissions_requested", false)) {
+			replaceAct(classOf[FirstRunActivity])
+			return
+		}
+
 		val mapmode = MapModes.defaultMapMode(this, new PrefsWrapper(this))
 		prefs.getString("activity", "log") match {
 		case "hub" => replaceAct(classOf[HubActivity])

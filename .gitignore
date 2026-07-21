@@ -18,3 +18,4 @@ translations/launchpad-*.tar.gz
 wiki/
 AGENTS.md
 .dev/
+release.keystore

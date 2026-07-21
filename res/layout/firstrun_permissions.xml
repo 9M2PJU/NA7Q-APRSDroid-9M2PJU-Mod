@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
+
+        <!-- App icon -->
+        <ImageView
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/icon"
+            android:contentDescription="@string/app_name" />
+
+        <!-- Welcome title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/firstrun_welcome_title"
+            android:textColor="@color/md_text_primary"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <!-- Welcome text -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:text="@string/firstrun_welcome_text"
+            android:textColor="@color/md_text_secondary"
+            android:textSize="14sp"
+            android:lineSpacingMultiplier="1.3" />
+
+        <!-- Permission section header -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="@string/firstrun_perms_header"
+            android:textColor="@color/md_accent"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- Location -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp"
+            android:background="@color/md_surface"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/firstrun_perm_location"
+                android:textColor="@color/md_text_primary"
+                android:textSize="14sp"
+                android:lineSpacingMultiplier="1.3" />
+        </LinearLayout>
+
+        <!-- Notifications -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp"
+            android:background="@color/md_surface"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/firstrun_perm_notifications"
+                android:textColor="@color/md_text_primary"
+                android:textSize="14sp"
+                android:lineSpacingMultiplier="1.3" />
+        </LinearLayout>
+
+        <!-- Bluetooth -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp"
+            android:background="@color/md_surface"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/firstrun_perm_bluetooth"
+                android:textColor="@color/md_text_primary"
+                android:textSize="14sp"
+                android:lineSpacingMultiplier="1.3" />
+        </LinearLayout>
+
+        <!-- Microphone -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp"
+            android:background="@color/md_surface"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/firstrun_perm_microphone"
+                android:textColor="@color/md_text_primary"
+                android:textSize="14sp"
+                android:lineSpacingMultiplier="1.3" />
+        </LinearLayout>
+
+        <!-- Storage -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp"
+            android:background="@color/md_surface"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/firstrun_perm_storage"
+                android:textColor="@color/md_text_primary"
+                android:textSize="14sp"
+                android:lineSpacingMultiplier="1.3" />
+        </LinearLayout>
+
+        <!-- Grant permissions button -->
+        <Button
+            android:id="@+id/btn_grant_permissions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:minHeight="48dp"
+            android:text="@string/firstrun_btn_grant"
+            android:textAllCaps="false"
+            android:textStyle="bold" />
+
+        <!-- Grant storage button (separate, for Android 11+) -->
+        <Button
+            android:id="@+id/btn_grant_storage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:minHeight="48dp"
+            android:text="@string/firstrun_btn_storage"
+            android:textAllCaps="false"
+            android:textStyle="bold" />
+
+        <!-- Continue button -->
+        <Button
+            android:id="@+id/btn_continue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp"
+            android:minHeight="48dp"
+            android:text="@string/firstrun_btn_continue"
+            android:textAllCaps="false"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</ScrollView>

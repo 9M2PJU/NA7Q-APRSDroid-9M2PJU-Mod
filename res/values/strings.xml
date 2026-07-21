@@ -74,6 +74,26 @@
 	To forward your packets, an APRS-IS passcode is required as well.</string>
 <string name="fr_text3">Only needed for APRS over the Internet:</string>
 
+<!-- first-run permission screen -->
+<string name="firstrun_welcome_title">Welcome to APRSdroid</string>
+<string name="firstrun_welcome_text">APRSdroid is an Android app for amateur radio APRS. To get started, please grant the following permissions. You can change these later in Android Settings.</string>
+<string name="firstrun_perms_header">Permissions needed</string>
+<string name="firstrun_perm_location">📍 Location — Needed to broadcast your position to the APRS network and show nearby stations.</string>
+<string name="firstrun_perm_notifications">🔔 Notifications — Needed to show service status and alert you of incoming APRS messages. (Android 13+)</string>
+<string name="firstrun_perm_bluetooth">🔵 Bluetooth — Needed to connect to Bluetooth TNCs and radios. (Android 12+)</string>
+<string name="firstrun_perm_microphone">🎤 Microphone — Needed for AFSK audio decoding when using the phone as a TNC.</string>
+<string name="firstrun_perm_storage">📁 Storage — Needed for offline MBTiles and MapsForge maps. On Android 11+, requires \"All files access\".</string>
+<string name="firstrun_btn_grant">Grant Permissions</string>
+<string name="firstrun_btn_storage">Grant All Files Access</string>
+<string name="firstrun_btn_continue">Continue</string>
+<string name="firstrun_perms_granted">All permissions granted!</string>
+<string name="firstrun_perms_already_granted">Permissions already granted.</string>
+<string name="firstrun_perms_partial">%1$d of %2$d permissions granted. You can grant the rest later in Settings.</string>
+<string name="firstrun_storage_granted">All files access granted!</string>
+<string name="firstrun_storage_denied">All files access not granted. You can enable it later in Settings.</string>
+<string name="firstrun_storage_already_granted">All files access already granted.</string>
+<string name="firstrun_storage_not_needed">All files access is only needed on Android 11+.</string>
+
 <!-- about dialog -->
 <string name="ad_title">About APRSdroid v%s</string>
 <string name="ad_copyright">Copyright © 2009-2021 Georg Lukas (DO1GL)\n
