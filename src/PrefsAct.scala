@@ -116,12 +116,24 @@ class PrefsAct extends PreferenceActivity {
 	// apply insets to the dialog's ListView.
 	override def onWindowFocusChanged(hasFocus : Boolean) {
 		super.onWindowFocusChanged(hasFocus)
-		if (hasFocus)
+		if (hasFocus) {
+			// Activity regained focus (dialog closed). Switch back to
+			// edge-to-edge for the activity's own content and re-apply
+			// the ListView padding.
+			if (Build.VERSION.SDK_INT >= 30 && was_dialog_shown) {
+				getWindow().setDecorFitsSystemWindows(false)
+				android.util.Log.d("PrefsAct", "onWindowFocusChanged: " +
+					"restored DecorFitsSystemWindows(false)")
+				was_dialog_shown = false
+			}
 			applyPrefTopInset()
+		}
 		// When the dialog sub-screen appears, the activity loses focus.
-		// Apply insets to the dialog's ListView.
+		// Set DecorFitsSystemWindows(true) so the dialog's content is
+		// pushed below the status bar.
 		if (pending_dialog_screen && !hasFocus) {
 			pending_dialog_screen = false
+			was_dialog_shown = true
 			applyDialogScreenInsets()
 		}
 	}
@@ -157,6 +169,10 @@ class PrefsAct extends PreferenceActivity {
 	// Flag: a PreferenceScreen dialog sub-screen was just opened and
 	// needs inset padding applied when its window gains focus.
 	@volatile var pending_dialog_screen = false
+	// Flag: a dialog sub-screen was shown and we set
+	// DecorFitsSystemWindows(true) on the activity's window for it.
+	// When the dialog closes (hasFocus=true), we restore false.
+	@volatile var was_dialog_shown = false
 
 	// Apply insets to a PreferenceScreen dialog sub-screen by finding
 	// its ListView through the activity's window list. The dialog has
@@ -164,54 +180,20 @@ class PrefsAct extends PreferenceActivity {
 	// windows to find the dialog's decor view, then find its ListView
 	// and apply top (status bar) + bottom (nav bar) padding.
 	def applyDialogScreenInsets() {
-		val applyInsets = new Runnable {
-			override def run() : Unit = {
-				try {
-					// Use WindowManagerGlobal to get all root views.
-					// Activity.getWindows() is blocked on Android 16
-					// (hidden API restriction). WindowManagerGlobal is
-					// a public class with a getInstance() method, and
-					// getWindowViews() returns all root View objects
-					// currently attached to the window manager.
-					val wmgClass = Class.forName(
-						"android.view.WindowManagerGlobal")
-					val getInstance = wmgClass.getMethod("getInstance")
-					val wmg = getInstance.invoke(null)
-					val getWindowViews = wmgClass.getMethod("getWindowViews")
-					val views = getWindowViews.invoke(wmg)
-						.asInstanceOf[java.util.List[android.view.View]]
-					android.util.Log.d("PrefsAct", "applyDialogScreenInsets: " +
-						views.size() + " root views")
-					val activity_list = findViewById(android.R.id.list)
-						.asInstanceOf[android.view.View]
-					val activity_decor = getWindow.getDecorView
-					val it = views.iterator()
-					while (it.hasNext()) {
-						val root = it.next()
-						if (root != activity_decor) {
-							val dl = root.findViewById(android.R.id.list)
-								.asInstanceOf[android.view.View]
-							if (dl != null && dl != activity_list) {
-								val res = getResources()
-								val resId = res.getIdentifier("status_bar_height", "dimen", "android")
-								val navBarResId = res.getIdentifier("navigation_bar_height", "dimen", "android")
-								val statusBarHeight = if (resId > 0) res.getDimensionPixelSize(resId) else 0
-								val navBarHeight = if (navBarResId > 0) res.getDimensionPixelSize(navBarResId) else 0
-								dl.setPadding(dl.getPaddingLeft(), statusBarHeight,
-									dl.getPaddingRight(), navBarHeight)
-								android.util.Log.d("PrefsAct", "applyDialogScreenInsets: " +
-									"padding " + statusBarHeight + "/" + navBarHeight)
-							}
-						}
-					}
-				} catch {
-					case e : Exception =>
-						android.util.Log.e("PrefsAct", "applyDialogScreenInsets failed", e)
-				}
-			}
+		// Android 16 blocks reflection on hidden APIs (getWindows(),
+		// WindowManagerGlobal.getWindowViews(), PreferenceScreen.mDialog).
+		// The PreferenceScreen dialog creates its own Window which
+		// inherits the activity's DecorFitsSystemWindows setting.
+		// Set it to true BEFORE the dialog is shown so the dialog's
+		// content is pushed below the status bar automatically.
+		// After the dialog closes (onWindowFocusChanged with hasFocus=true),
+		// we switch back to edge-to-edge (false) for the activity's
+		// own content.
+		if (Build.VERSION.SDK_INT >= 30) {
+			getWindow().setDecorFitsSystemWindows(true)
+			android.util.Log.d("PrefsAct", "applyDialogScreenInsets: " +
+				"set DecorFitsSystemWindows(true) for dialog")
 		}
-		new android.os.Handler(getMainLooper).postDelayed(applyInsets, 100)
-		new android.os.Handler(getMainLooper).postDelayed(applyInsets, 300)
 	}
 
 	override def onCreate(savedInstanceState: Bundle) {
