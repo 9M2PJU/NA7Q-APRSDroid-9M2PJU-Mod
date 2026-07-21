@@ -36,9 +36,10 @@ jobs:
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
-        env:
-          SKIP_JDK_VERSION_CHECK: 'true'
         with:
+          # cmdline-tools 16.0 requires JDK 17+; we build with JDK 8
+          # (Scala plugin), so pin to 8.0 which runs on JDK 8.
+          cmdline-tools-version: 9477386
           packages: |
             tools
             platform-tools
