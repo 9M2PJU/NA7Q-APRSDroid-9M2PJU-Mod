@@ -201,6 +201,15 @@ trait UIHelper extends Activity
 		}
 	}
 
+	// Opt out of edge-to-edge on Android 15+ (targetSdk 35) so content
+	// doesn't go under the status / navigation bars. This restores the
+	// pre-API 35 behavior. Called from LoadingListActivity.onResume and
+	// from AppCompatActivity-based activities' onCreate.
+	def applySystemBarInsets() {
+		androidx.core.view.WindowCompat.setDecorFitsSystemWindows(
+			getWindow(), true)
+	}
+
 	// for AFSK, set the right volume controls
 	def setVolumeControls() {
 		if (prefs.getString("backend", AprsBackend.DEFAULT_CONNTYPE) == "afsk") {

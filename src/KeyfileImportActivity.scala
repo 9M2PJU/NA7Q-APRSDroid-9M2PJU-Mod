@@ -1,6 +1,5 @@
 package org.aprsdroid.app
 
-import _root_.android.app.Activity
 import _root_.android.app.AlertDialog
 import _root_.android.content._
 import _root_.android.os.Bundle
@@ -8,6 +7,7 @@ import _root_.android.preference.PreferenceManager
 import _root_.android.text.InputType
 import _root_.android.util.Log
 import _root_.android.widget.{EditText, Toast}
+import androidx.appcompat.app.AppCompatActivity
 
 import _root_.java.io.File
 import _root_.java.io.FileOutputStream
@@ -16,7 +16,7 @@ import _root_.java.security.cert.X509Certificate
 
 import scala.collection.JavaConversions._ // for enumeration of keystore aliases
 
-class KeyfileImportActivity extends Activity {
+class KeyfileImportActivity extends AppCompatActivity {
 	val TAG = "APRSdroid.KeyImport"
 	val KEYSTORE_PASS = "APRS".toCharArray()
 	val KEYSTORE_DIR = "keystore"

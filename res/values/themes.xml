@@ -1,16 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="DefaultTheme"
-	    parent="@android:style/Theme.Holo">
-	<item name="android:textColor">@android:color/white</item>
-    </style>
-    <style name="MapViewTheme"
-           parent="@android:style/Theme.Holo.Light.DarkActionBar">
-	<item name="android:windowActionBarOverlay">true</item>
-	<item name="android:actionBarStyle">@style/Map.ActionBar</item>
+
+    <!-- ============================================================
+         AppTheme — Material 3-inspired design system on top of
+         Material Components 1.9.0 (M2). We can't use the Material3
+         library (requires compileSdk 34+; we're at 33), but we apply
+         M3 design principles: tonal color palette, shape theming,
+         surface elevation, refined typography, and modern component
+         styles.
+
+         Navy primary + amber accent, auto dark/light via DayNight.
+         Works with AppCompatActivity, framework Activity,
+         ListActivity, and PreferenceActivity.
+         ============================================================ -->
+    <style name="AppTheme"
+           parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+
+        <!-- ===== Core colors ===== -->
+        <item name="colorPrimary">@color/md_primary</item>
+        <item name="colorPrimaryDark">@color/md_primary_dark</item>
+        <item name="colorAccent">@color/md_accent</item>
+        <item name="colorOnPrimary">@color/md_on_primary</item>
+        <item name="colorSecondary">@color/md_secondary</item>
+        <item name="colorOnSecondary">@color/md_on_secondary</item>
+        <item name="colorError">@color/md_error</item>
+        <item name="colorOnError">@color/md_on_error</item>
+
+        <!-- ===== Surfaces ===== -->
+        <item name="android:colorBackground">@color/md_background</item>
+        <item name="colorBackground">@color/md_background</item>
+        <item name="android:textColorPrimary">@color/md_text_primary</item>
+        <item name="android:textColorSecondary">@color/md_text_secondary</item>
+        <item name="android:textColorTertiary">@color/md_text_hint</item>
+        <item name="android:textColorHint">@color/md_text_hint</item>
+
+        <!-- ===== Shape theming (M3-style rounded corners) ===== -->
+        <item name="shapeAppearanceSmallComponent">
+            @style/ShapeAppearance.AppTheme.SmallComponent
+        </item>
+        <item name="shapeAppearanceMediumComponent">
+            @style/ShapeAppearance.AppTheme.MediumComponent
+        </item>
+        <item name="shapeAppearanceLargeComponent">
+            @style/ShapeAppearance.AppTheme.LargeComponent
+        </item>
+
+        <!-- ===== Component styles ===== -->
+        <item name="materialButtonStyle">@style/Widget.AppTheme.Button</item>
+        <item name="borderlessButtonStyle">@style/Widget.AppTheme.Button.TextButton</item>
+        <item name="textInputStyle">@style/Widget.AppTheme.TextInputLayout.OutlinedBox</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.AppTheme.BottomSheetDialog</item>
+
+        <!-- ===== Action bar as modern top app bar ===== -->
+        <item name="android:actionBarStyle">@style/Widget.AppTheme.ActionBar</item>
+        <item name="actionBarStyle">@style/Widget.AppTheme.ActionBar</item>
+        <item name="android:actionBarTheme">@style/ThemeOverlay.AppTheme.ActionBar</item>
+        <item name="actionBarTheme">@style/ThemeOverlay.AppTheme.ActionBar</item>
+
+        <!-- ===== System bars ===== -->
+        <item name="android:statusBarColor">@color/md_status_bar</item>
+        <item name="android:navigationBarColor">@color/md_navigation_bar</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">@bool/light_nav_bar_icons</item>
+
+        <!-- ===== Dialogs ===== -->
+        <item name="alertDialogTheme">@style/ThemeOverlay.AppTheme.Dialog</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.AppTheme.Dialog</item>
     </style>
 
-    <style name="Map.ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-	<item name="android:background">#a0000000</item>
+    <!-- ============================================================
+         SplashTheme — launcher splash. No action bar, splash image
+         as windowBackground.
+         ============================================================ -->
+    <style name="SplashTheme"
+           parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="colorPrimary">@color/md_primary</item>
+        <item name="colorPrimaryDark">@color/md_primary_dark</item>
+        <item name="android:statusBarColor">@color/md_status_bar</item>
+        <item name="android:navigationBarColor">@color/md_navigation_bar</item>
     </style>
+
+    <!-- ============================================================
+         MapViewTheme — kept on Holo for MapsForge compatibility.
+         Will be migrated in a later phase.
+         ============================================================ -->
+    <style name="MapViewTheme"
+           parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:actionBarStyle">@style/Map.ActionBar</item>
+    </style>
+
+    <style name="Map.ActionBar"
+           parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">#a0000000</item>
+    </style>
+
 </resources>

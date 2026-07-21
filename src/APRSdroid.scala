@@ -1,11 +1,11 @@
 package org.aprsdroid.app
 
-import _root_.android.app.Activity
 import _root_.android.content.Intent
 import _root_.android.os.Bundle
 import _root_.android.preference.PreferenceManager
+import androidx.appcompat.app.AppCompatActivity
 
-class APRSdroid extends Activity {
+class APRSdroid extends AppCompatActivity {
 	def replaceAct(act : Class[_]) {
 		val i = new Intent(this, act)
 		i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)

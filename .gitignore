@@ -16,3 +16,5 @@ tags
 translations/aprsdroid/
 translations/launchpad-*.tar.gz
 wiki/
+AGENTS.md
+.dev/

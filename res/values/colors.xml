@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Light (day) palette — Material 3-inspired tonal system.
+     Derived from the app icon: navy primary + amber accent.
+     Light surfaces with navy text; amber for primary actions. -->
+<resources>
+
+    <!-- ===== Brand roots (from icon) ===== -->
+    <color name="brand_navy">#1C2F51</color>
+    <color name="brand_navy_dark">#0D182D</color>
+    <color name="brand_steel">#2C4B62</color>
+    <color name="brand_amber">#CEB619</color>
+    <color name="brand_amber_dark">#B89E0F</color>
+    <color name="brand_olive">#699066</color>
+
+    <!-- ===== Primary (navy) ===== -->
+    <color name="md_primary">#1C2F51</color>
+    <color name="md_primary_dark">#0D182D</color>
+    <color name="md_on_primary">#FFFFFF</color>
+    <color name="md_primary_variant">#2C4B62</color>
+    <!-- M3-style container colors -->
+    <color name="md_primary_container">#D4E0F0</color>
+    <color name="md_on_primary_container">#0A1A33</color>
+
+    <!-- ===== Secondary (steel blue) ===== -->
+    <color name="md_secondary">#2C4B62</color>
+    <color name="md_on_secondary">#FFFFFF</color>
+    <color name="md_secondary_container">#C8D6E4</color>
+    <color name="md_on_secondary_container">#0F2230</color>
+
+    <!-- ===== Tertiary (amber) — used as accent ===== -->
+    <color name="md_accent">#B89E0F</color>
+    <color name="md_accent_light">#CEB619</color>
+    <color name="md_on_accent">#1C2F51</color>
+    <color name="md_tertiary_container">#F4E9B8</color>
+    <color name="md_on_tertiary_container">#3A2F00</color>
+
+    <!-- ===== Error ===== -->
+    <color name="md_error">#B04A3A</color>
+    <color name="md_on_error">#FFFFFF</color>
+    <color name="md_error_container">#F4DAD5</color>
+    <color name="md_on_error_container">#410E06</color>
+
+    <!-- ===== Surfaces & backgrounds ===== -->
+    <color name="md_background">#F5F6F8</color>
+    <color name="md_surface">#FFFFFF</color>
+    <color name="md_surface_variant">#E1E4EC</color>
+    <color name="md_on_surface">#1A1C20</color>
+    <color name="md_on_surface_variant">#44474E</color>
+    <color name="md_inverse_surface">#2D3036</color>
+    <color name="md_inverse_on_surface">#F0F1F4</color>
+
+    <!-- ===== Outline ===== -->
+    <color name="md_outline">#74777F</color>
+    <color name="md_outline_variant">#C4C7CF</color>
+
+    <!-- ===== Text (legacy aliases for existing layouts) ===== -->
+    <color name="md_text_primary">#1A1C20</color>
+    <color name="md_text_secondary">#44474E</color>
+    <color name="md_text_hint">#74777F</color>
+
+    <!-- ===== System bars ===== -->
+    <color name="md_status_bar">#0D182D</color>
+    <color name="md_navigation_bar">#FFFFFF</color>
+
+    <!-- ===== Scrim ===== -->
+    <color name="md_scrim">#99000000</color>
+
+</resources>

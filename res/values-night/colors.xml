@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dark (night) palette — Material 3-inspired tonal system.
+     Navy surfaces + amber accent, matching the icon's dark aesthetic.
+     Surface elevation tints: higher elevation = lighter navy. -->
+<resources>
+
+    <!-- ===== Brand roots (same as light) ===== -->
+    <color name="brand_navy">#1C2F51</color>
+    <color name="brand_navy_dark">#0D182D</color>
+    <color name="brand_steel">#2C4B62</color>
+    <color name="brand_amber">#CEB619</color>
+    <color name="brand_amber_dark">#B89E0F</color>
+    <color name="brand_olive">#699066</color>
+
+    <!-- ===== Primary (lighter navy for dark mode contrast) ===== -->
+    <color name="md_primary">#9DB4D6</color>
+    <color name="md_primary_dark">#0D182D</color>
+    <color name="md_on_primary">#0A1A33</color>
+    <color name="md_primary_variant">#2C4B62</color>
+    <color name="md_primary_container">#2C4B62</color>
+    <color name="md_on_primary_container">#D4E0F0</color>
+
+    <!-- ===== Secondary (steel blue, lighter for dark mode) ===== -->
+    <color name="md_secondary">#9CB3C8</color>
+    <color name="md_on_secondary">#0F2230</color>
+    <color name="md_secondary_container">#1E3548</color>
+    <color name="md_on_secondary_container">#C8D6E4</color>
+
+    <!-- ===== Tertiary (amber) ===== -->
+    <color name="md_accent">#CEB619</color>
+    <color name="md_accent_light">#E0C82B</color>
+    <color name="md_on_accent">#0D182D</color>
+    <color name="md_tertiary_container">#5A4D00</color>
+    <color name="md_on_tertiary_container">#F4E9B8</color>
+
+    <!-- ===== Error ===== -->
+    <color name="md_error">#D96A5A</color>
+    <color name="md_on_error">#410E06</color>
+    <color name="md_error_container">#5D1A10</color>
+    <color name="md_on_error_container">#F4DAD5</color>
+
+    <!-- ===== Surfaces & backgrounds (elevation tints) ===== -->
+    <color name="md_background">#0D182D</color>
+    <color name="md_surface">#13203A</color>
+    <color name="md_surface_variant">#1C2F51</color>
+    <color name="md_on_surface">#E0E2E8</color>
+    <color name="md_on_surface_variant">#9DA4B0</color>
+    <color name="md_inverse_surface">#E8EAEF</color>
+    <color name="md_inverse_on_surface">#2D3036</color>
+
+    <!-- ===== Outline ===== -->
+    <color name="md_outline">#64819B</color>
+    <color name="md_outline_variant">#2C4B62</color>
+
+    <!-- ===== Text (legacy aliases) ===== -->
+    <color name="md_text_primary">#E8EAEF</color>
+    <color name="md_text_secondary">#9DA4B0</color>
+    <color name="md_text_hint">#64819B</color>
+
+    <!-- ===== System bars ===== -->
+    <color name="md_status_bar">#08101F</color>
+    <color name="md_navigation_bar">#0D182D</color>
+
+    <!-- ===== Scrim ===== -->
+    <color name="md_scrim">#CC000000</color>
+
+</resources>

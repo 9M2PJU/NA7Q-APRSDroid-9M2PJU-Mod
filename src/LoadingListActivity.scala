@@ -23,6 +23,7 @@ class LoadingListActivity extends ListActivity
 
 	override def onResume() {
 		super.onResume()
+		applySystemBarInsets()
 		setKeepScreenOn()
 		setVolumeControls()
         }

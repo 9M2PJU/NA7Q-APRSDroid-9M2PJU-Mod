@@ -2,6 +2,7 @@ package org.aprsdroid.app
 
 import _root_.android.app.{Notification, NotificationChannel, NotificationManager, PendingIntent, Service}
 import _root_.android.content.{Context, Intent}
+import _root_.android.content.pm.PackageManager
 import _root_.android.net.Uri
 import _root_.android.os.Build
 import _root_.android.os.Vibrator
@@ -116,7 +117,23 @@ class ServiceNotifier {
 	}
 
 	def start(ctx : Service, status : String) = {
-		ctx.startForeground(SERVICE_NOTIFICATION, newNotification(ctx, status))
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+			// On Android 10+ (API 29+), pass an explicit foreground service
+			// type so that Android 14+ (API 34+) per-type permission checks
+			// pass. We always need "location"; add "microphone" when
+			// RECORD_AUDIO is held (AFSK / DigiRig backends) and
+			// "connectedDevice" when BLUETOOTH_CONNECT is held (BT/BLE TNCs).
+			var fgsType = Service.FOREGROUND_SERVICE_TYPE_LOCATION
+			if (ctx.checkSelfPermission(_root_.android.Manifest.permission.RECORD_AUDIO)
+					== PackageManager.PERMISSION_GRANTED)
+				fgsType |= Service.FOREGROUND_SERVICE_TYPE_MICROPHONE
+			if (ctx.checkSelfPermission(_root_.android.Manifest.permission.BLUETOOTH_CONNECT)
+					== PackageManager.PERMISSION_GRANTED)
+				fgsType |= Service.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE
+			ctx.startForeground(SERVICE_NOTIFICATION, newNotification(ctx, status), fgsType)
+		} else {
+			ctx.startForeground(SERVICE_NOTIFICATION, newNotification(ctx, status))
+		}
 	}
 
 	def stop(ctx : Service) = {

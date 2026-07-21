@@ -1,12 +1,12 @@
 package org.aprsdroid.app
 
-import android.app.Activity
 import android.content._
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.text.InputType
 import android.util.Log
 import android.widget.{EditText, Toast}
+import androidx.appcompat.app.AppCompatActivity
 
 import java.io.File
 import java.util.Scanner
@@ -15,7 +15,7 @@ import org.json._
 
 import scala.collection.JavaConversions._ // for enumeration of config items
 
-class ProfileImportActivity extends Activity {
+class ProfileImportActivity extends AppCompatActivity {
 	val TAG = "APRSdroid.ProfileImport"
 
 	lazy val db = StorageDatabase.open(this)

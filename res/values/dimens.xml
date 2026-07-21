@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Shape and spacing dimensions for the Material 3-inspired design system. -->
+<resources>
+
+    <!-- Corner sizes (Material 3 scale) -->
+    <dimen name="shape_corner_extra_small">4dp</dimen>
+    <dimen name="shape_corner_small">8dp</dimen>
+    <dimen name="shape_corner_medium">12dp</dimen>
+    <dimen name="shape_corner_large">16dp</dimen>
+    <dimen name="shape_corner_extra_large">28dp</dimen>
+
+    <!-- Component corner sizes -->
+    <dimen name="corner_button">8dp</dimen>
+    <dimen name="corner_card">12dp</dimen>
+    <dimen name="corner_dialog">16dp</dimen>
+    <dimen name="corner_text_field">8dp</dimen>
+
+    <!-- Spacing scale -->
+    <dimen name="space_xs">4dp</dimen>
+    <dimen name="space_sm">8dp</dimen>
+    <dimen name="space_md">16dp</dimen>
+    <dimen name="space_lg">24dp</dimen>
+    <dimen name="space_xl">32dp</dimen>
+
+    <!-- Elevation -->
+    <dimen name="elevation_none">0dp</dimen>
+    <dimen name="elevation_low">1dp</dimen>
+    <dimen name="elevation_medium">3dp</dimen>
+    <dimen name="elevation_high">6dp</dimen>
+
+    <!-- Action bar / top app bar -->
+    <dimen name="actionbar_height">56dp</dimen>
+    <dimen name="actionbar_elevation">0dp</dimen>
+
+</resources>
