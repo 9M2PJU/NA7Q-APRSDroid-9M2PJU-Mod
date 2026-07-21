@@ -17,6 +17,7 @@ class APRSdroid extends AppCompatActivity {
 
 	override def onCreate(savedInstanceState : Bundle) {
 		super.onCreate(savedInstanceState)
+		setContentView(R.layout.splash)
 		val prefs = PreferenceManager.getDefaultSharedPreferences(this)
 
 		// if this is a USB device, auto-launch the service

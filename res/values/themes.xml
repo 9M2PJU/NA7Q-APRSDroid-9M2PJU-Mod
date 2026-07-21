@@ -56,18 +56,20 @@
     </style>
 
     <!-- ============================================================
-         SplashTheme — launcher splash. No action bar, splash image
-         as windowBackground.
+         SplashTheme — launcher splash. No action bar, black window
+         background. The splash image is shown via an ImageView in
+         splash.xml (setContentView), which uses centerCrop for
+         perfect fit without distortion.
          ============================================================ -->
     <style name="SplashTheme"
            parent="Theme.MaterialComponents.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="android:windowBackground">@android:color/black</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="colorPrimary">@color/md_primary</item>
         <item name="colorPrimaryDark">@color/md_primary_dark</item>
-        <item name="android:statusBarColor">@color/md_status_bar</item>
-        <item name="android:navigationBarColor">@color/md_navigation_bar</item>
+        <item name="android:statusBarColor">@android:color/black</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
     </style>
 
     <!-- ============================================================
