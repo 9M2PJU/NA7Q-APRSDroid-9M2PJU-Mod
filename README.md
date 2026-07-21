@@ -146,6 +146,10 @@ The direct upstream is [NA7Q's fork](https://github.com/na7q/aprsdroid).
   Hub screens. Now uses the app's navy background color so the nav bar
   is consistently dark across all screens. Status bar stays transparent
   for the seamless edge-to-edge look.
+- **Splash screen nav bar fixed** — the splash activity was enabling
+  edge-to-edge mode, which let Android 16 override the black nav bar
+  color with white. Removed the edge-to-edge call so the splash theme's
+  solid black bars are respected.
 
 ### Features inherited from NA7Q's fork
 
