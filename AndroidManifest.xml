@@ -72,15 +72,18 @@
 		android:launchMode="singleTop"
 		android:parentActivityName=".HubActivity"
 		android:configChanges="orientation|keyboardHidden|screenSize"
+		android:exported="true"
 		/>
 	<activity android:name=".HubActivity" android:label="@string/app_hub"
 		android:launchMode="singleTop"
 		android:configChanges="orientation|keyboardHidden|screenSize"
+		android:exported="true"
 		/>
 	<activity android:name=".ConversationsActivity" android:label="@string/app_messages"
 		android:launchMode="singleTop"
 		android:parentActivityName=".HubActivity"
 		android:configChanges="orientation|keyboardHidden|screenSize"
+		android:exported="true"
 		/>
 	<activity android:name=".StationActivity" android:label="@string/app_sta"
 		android:parentActivityName=".HubActivity"
@@ -93,6 +96,7 @@
 		/>
 	<activity android:name=".PrefsAct" android:label="@string/app_prefs"
 		android:parentActivityName=".HubActivity"
+		android:exported="true"
 		/>
 	<activity android:name=".BackendPrefs" android:label="@string/p__connection"
 		android:parentActivityName=".PrefsAct"
