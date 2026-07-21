@@ -121,6 +121,24 @@ The direct upstream is [NA7Q's fork](https://github.com/na7q/aprsdroid).
   showing a dialog. All sub-activities have proper edge-to-edge inset
   handling via `UIHelper.applySystemBarInsets()`.
 
+### v2.0.6 — Full edge-to-edge, no more dialog sub-screens, real-time log
+
+- **Full edge-to-edge with transparent system bars** — status bar and
+  navigation bar are now transparent, so the app's navy background flows
+  seamlessly under the system bars. Content padding ensures text starts
+  below the status bar icons. `clipToPadding=false` enables smooth
+  scrolling through the padding area — modern Android look.
+- **No more dialog sub-screens** — Notifications and Position privacy
+  (the last two dialog sub-screens) are now separate full-screen
+  activities (`NotificationPrefs`, `PrivacyPrefs`), launched via
+  `<intent>` tags exactly like Connection Preferences, Location Settings,
+  etc. All sub-screens now have a consistent look and feel: full-screen,
+  edge-to-edge, smooth scrolling. No more reflection hacks or custom
+  dialogs.
+- **Log tab updates in real-time** — the Show Log tab now refreshes
+  every 2 seconds while active, so new log entries appear immediately
+  when tracking starts. No need to switch tabs and back anymore.
+
 ### Features inherited from NA7Q's fork
 
 - **Digipeater** — direct or full digipeating
