@@ -335,7 +335,6 @@
 </string-array>
 
   Georg Lukas https://launchpad.net/~ge0rg
-  Marlon Nalla https://launchpad.net/~clusterdavao</string>
 
 <!-- Bluetooth TNC settings -->
 <string name="p_bt_client">Client Mode</string>

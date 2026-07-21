@@ -336,7 +336,6 @@
 	<item>select</item>
 </string-array>
 
-  Cédric VALMARY (Tot en òc) https://launchpad.net/~cvalmary</string>
 
 <!-- Bluetooth TNC settings -->
 <string name="p_bt_client">Client Mode</string>

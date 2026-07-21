@@ -336,7 +336,6 @@ Drücken Sie den \"Menü\"-Knopf, um eine Positionsmeldung abzusetzen oder das T
 
   Dennis Baudys https://launchpad.net/~thecondordb
   Georg Lukas https://launchpad.net/~ge0rg
-  Tobias Bannert https://launchpad.net/~toba</string>
 
 <!-- Bluetooth TNC settings -->
 <string name="p_bt_client">Client-Modus</string>

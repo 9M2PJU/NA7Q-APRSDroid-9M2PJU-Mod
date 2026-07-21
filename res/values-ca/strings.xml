@@ -337,7 +337,6 @@
 </string-array>
 
   Georg Lukas https://launchpad.net/~ge0rg
-  Paco-EB5TC https://launchpad.net/~paco-eb5tc</string>
 
 <!-- Bluetooth TNC settings -->
 <string name="p_bt_client">Client Mode</string>

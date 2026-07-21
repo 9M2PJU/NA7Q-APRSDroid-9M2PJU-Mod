@@ -333,7 +333,6 @@
 </string-array>
 
   Georg Lukas https://launchpad.net/~ge0rg
-  bg2xvp https://launchpad.net/~louisxcn</string>
 
 <!-- Bluetooth TNC settings -->
 <string name="p_bt_client">终端模式</string>

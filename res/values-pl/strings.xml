@@ -343,7 +343,6 @@
   Piotr Gąska https://launchpad.net/~pejotr
   Piotr SQ8VPS https://launchpad.net/~sq8vps
   Przemek SQ7LQU https://launchpad.net/~sq7lqu
-  andy https://launchpad.net/~info-funk24</string>
 
 <!-- Bluetooth TNC settings -->
 <string name="p_bt_client">Tryb Client</string>

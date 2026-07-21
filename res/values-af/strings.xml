@@ -333,7 +333,6 @@
 </string-array>
 
   Georg Lukas https://launchpad.net/~ge0rg
-  Robin Pringle https://launchpad.net/~pringlerobin</string>
 
 <!-- Bluetooth TNC settings -->
 <string name="p_bt_client">Kliënt Wyse</string>

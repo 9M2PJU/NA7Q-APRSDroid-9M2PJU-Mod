@@ -334,7 +334,6 @@
 
   Arve Eriksson https://launchpad.net/~031299870-telia
   Georg Lukas https://launchpad.net/~ge0rg
-  Mikael Karlsson https://launchpad.net/~mr-lima</string>
 
 <!-- Bluetooth TNC settings -->
 <string name="p_bt_client">Client Mode</string>

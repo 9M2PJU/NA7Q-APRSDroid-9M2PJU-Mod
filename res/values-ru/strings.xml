@@ -341,7 +341,6 @@
   RN3DLL https://launchpad.net/~rn3dll
   Sergey N. Belinsky https://launchpad.net/~sergeybe
   Sergey Shilov https://launchpad.net/~sss-s-s-s
-  UT2UU https://launchpad.net/~andr-x</string>
 
 <!-- Bluetooth TNC settings -->
 <string name="p_bt_client">Режим клиента</string>

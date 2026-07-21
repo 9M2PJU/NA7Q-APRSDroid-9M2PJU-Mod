@@ -333,7 +333,6 @@
 </string-array>
 
   Georg Lukas https://launchpad.net/~ge0rg
-  robbage https://launchpad.net/~robbage</string>
 
 <!-- Bluetooth TNC settings -->
 <string name="p_bt_client">Client Mode</string>

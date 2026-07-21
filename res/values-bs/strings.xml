@@ -336,7 +336,6 @@
 	<item>select</item>
 </string-array>
 
-  Almin Islamović https://launchpad.net/~almin-islamovic</string>
 
 <!-- Bluetooth TNC settings -->
 <string name="p_bt_client">Client Mode</string>

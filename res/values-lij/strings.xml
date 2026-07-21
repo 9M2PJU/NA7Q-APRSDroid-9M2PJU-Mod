@@ -333,7 +333,6 @@
 </string-array>
 
   Georg Lukas https://launchpad.net/~ge0rg
-  SILVIO BARLETTA https://launchpad.net/~ik1bqd</string>
 
 <!-- Bluetooth TNC settings -->
 <string name="p_bt_client">Modo Utilizzatore (Client)</string>

@@ -336,7 +336,6 @@
 	<item>select</item>
 </string-array>
 
-  slavino https://launchpad.net/~slavomir-hustaty</string>
 
 <!-- Bluetooth TNC settings -->
 <string name="p_bt_client">Client Mode</string>

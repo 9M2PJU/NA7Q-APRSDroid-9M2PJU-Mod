@@ -336,7 +336,6 @@
 	<item>select</item>
 </string-array>
 
-  Anthony Guechoum https://launchpad.net/~a-guechoum</string>
 
 <!-- Bluetooth TNC settings -->
 <string name="p_bt_client">Client Mode</string>

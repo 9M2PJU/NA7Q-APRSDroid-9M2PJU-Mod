@@ -334,7 +334,6 @@
 </string-array>
 
   Georg Lukas https://launchpad.net/~ge0rg
-  Michal SQ2MO https://launchpad.net/~sq2mo</string>
 
 <!-- Bluetooth TNC settings -->
 <string name="p_bt_client">Режим клієнта</string>

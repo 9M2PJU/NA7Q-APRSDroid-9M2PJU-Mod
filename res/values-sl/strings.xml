@@ -334,7 +334,6 @@
 
   Georg Lukas https://launchpad.net/~ge0rg
   Joško Horvat https://launchpad.net/~joze-horvat
-  Matic Gradišer https://launchpad.net/~0micky</string>
 
 <!-- Bluetooth TNC settings -->
 <string name="p_bt_client">Client Mode</string>
