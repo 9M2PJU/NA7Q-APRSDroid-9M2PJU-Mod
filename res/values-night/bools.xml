@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Dark mode: dark nav bar → light icons (true). -->
-<resources>
-    <bool name="light_nav_bar_icons">true</bool>
-</resources>

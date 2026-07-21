@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Boolean resources for DayNight-aware system bar icon styling. -->
+<!-- Boolean resources for system bar icon styling. Dark-only theme. -->
 <resources>
-    <!-- Light mode: white nav bar → dark icons (false).
-         Dark mode override in values-night/bools.xml. -->
-    <bool name="light_nav_bar_icons">false</bool>
+    <!-- Dark nav bar → light icons (true). -->
+    <bool name="light_nav_bar_icons">true</bool>
 </resources>

@@ -99,8 +99,8 @@
   <div class="whatsnew-group">
     <h3>UI modernization (Phase 1 — theme &amp; chrome)</h3>
     <ul>
-      <li><strong>Material Design DayNight theme</strong> — migrated from <code>Theme.Holo</code> (2011) to <code>Theme.MaterialComponents.DayNight.DarkActionBar</code>. The app now <strong>auto-switches between dark and light modes</strong> following the system setting.</li>
-      <li><strong>Brand palette</strong> derived from the app icon — dark mode: navy surfaces <code>#0D182D</code>/<code>#1C2F51</code>, amber accent <code>#CEB619</code>, cool grey text; light mode: white surfaces, navy primary, amber accent.</li>
+      <li><strong>Material Design dark theme</strong> — migrated from <code>Theme.Holo</code> (2011) to <code>Theme.MaterialComponents.DarkActionBar</code>. The app uses a <strong>dark-only</strong> theme with navy surfaces and amber accent, matching the app icon.</li>
+      <li><strong>Brand palette</strong> derived from the app icon — navy surfaces <code>#0D182D</code>/<code>#13203A</code>/<code>#1C2F51</code> (elevation tints), amber accent <code>#CEB619</code>, cool grey text.</li>
       <li><strong>New dependencies:</strong> <code>androidx.appcompat:appcompat:1.6.1</code> + <code>com.google.android.material:material:1.9.0</code>.</li>
       <li><strong>Material buttons</strong> with amber background and navy text, applied via <code>materialButtonStyle</code>.</li>
       <li><strong>Activity migrations:</strong> <code>APRSdroid</code>, <code>ProfileImportActivity</code>, <code>KeyfileImportActivity</code> → <code>AppCompatActivity</code>.</li>
@@ -211,7 +211,7 @@ git submodule update --init --recursive
       <li><strong>New app icon and logo</strong> across all density buckets.</li>
       <li><strong>Branded splash screen</strong> — 153 KB WebP, theme-based, shown on cold start.</li>
       <li><strong>Modern Android support</strong> — <code>targetSdk 35</code>, foreground service types for Android 14+, Bluetooth permissions for Android 12+, storage permissions for Android 11+, <code>POST_NOTIFICATIONS</code> for Android 13+, edge-to-edge opt-out for Android 15+.</li>
-      <li><strong>Material 3-inspired UI design system</strong> — <code>Theme.MaterialComponents.DayNight</code> with tonal navy/amber palette, shape theming, refined typography, modern component styles (buttons, text fields, dialogs, cards, bottom sheets), auto dark/light.</li>
+      <li><strong>Material 3-inspired UI design system</strong> — <code>Theme.MaterialComponents.DarkActionBar</code> with tonal navy/amber palette, shape theming, refined typography, modern component styles (buttons, text fields, dialogs, cards, bottom sheets), dark-only.</li>
       <li><strong>GitHub Actions CI/CD</strong> — signed release APK builds, automatic GitHub Releases on <code>v*</code> tags.</li>
       <li><strong>GitHub Pages landing page</strong> at <a href="https://aprsdroid.hamradio.my/">aprsdroid.hamradio.my</a> with live download counters.</li>
       <li><strong>Version bumped</strong> to <code>v1.8</code> (tocall <code>APDR18</code>).</li>

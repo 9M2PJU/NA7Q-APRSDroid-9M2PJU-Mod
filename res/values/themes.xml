@@ -9,12 +9,12 @@
          surface elevation, refined typography, and modern component
          styles.
 
-         Navy primary + amber accent, auto dark/light via DayNight.
+         Navy primary + amber accent. Dark-only (no light theme).
          Works with AppCompatActivity, framework Activity,
          ListActivity, and PreferenceActivity.
          ============================================================ -->
     <style name="AppTheme"
-           parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+           parent="Theme.MaterialComponents.DarkActionBar">
 
         <!-- ===== Core colors ===== -->
         <item name="colorPrimary">@color/md_primary</item>
@@ -47,7 +47,7 @@
         <!-- ===== System bars ===== -->
         <item name="android:statusBarColor">@color/md_status_bar</item>
         <item name="android:navigationBarColor">@color/md_navigation_bar</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar">@bool/light_nav_bar_icons</item>
 
         <!-- ===== Dialogs ===== -->
@@ -60,7 +60,7 @@
          as windowBackground.
          ============================================================ -->
     <style name="SplashTheme"
-           parent="Theme.MaterialComponents.DayNight.NoActionBar">
+           parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_background</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>

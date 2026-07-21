@@ -72,14 +72,14 @@ changed compared to the upstream NA7Q fork.
   `LoadingListActivity.onResume`.
 
 #### 🎨 **UI modernization (Phase 1 — theme & chrome)**
-- 🌗 **Material Design DayNight theme** — migrated from `Theme.Holo` (2011) to
-  `Theme.MaterialComponents.DayNight.DarkActionBar`. The app now **auto-switches between
-  dark and light modes** following the system setting.
+- 🌙 **Material Design dark theme** — migrated from `Theme.Holo` (2011) to
+  `Theme.MaterialComponents.DarkActionBar`. The app uses a **dark-only** theme with
+  navy surfaces and amber accent, matching the app icon.
 - 🎨 **Brand palette** derived from the app icon:
-  - **Dark mode (night):** navy surfaces `#0D182D`/`#1C2F51`, amber accent `#CEB619`, cool
-    grey text `#ADB2BF`/`#E8EAEF` — matches the icon's aesthetic.
-  - **Light mode (day):** white/light surfaces, navy primary `#1C2F51`, amber accent
-    `#B89E0F`, navy text.
+  - Navy surfaces `#0D182D`/`#13203A`/`#1C2F51` (elevation tints)
+  - Amber accent `#CEB619`
+  - Cool grey text `#9DA4B0`/`#E8EAEF`
+  - Lighter navy primary `#9DB4D6` for dark-mode contrast
 - 🧩 **New dependencies:** `androidx.appcompat:appcompat:1.6.1` +
   `com.google.android.material:material:1.9.0`.
 - 🪟 **Status bar** now colored to match the navy primary (`colorPrimaryDark`).
@@ -128,7 +128,7 @@ changed compared to the upstream NA7Q fork.
 - 🗺️ **Interactive Station Map** — Visualize nearby amateur radio stations with offline mapping
 - 💬 **APRS Messaging** — Send and receive messages through the network
 - 🔄 **Network Integration** — Full compatibility with APRS infrastructure
-- 🎨 **Material Design UI** — DayNight theme with navy/amber branding, auto dark/light
+- 🎨 **Material Design UI** — dark-only theme with navy/amber branding
 
 ### 🚀 **Enhanced Features (inherited from NA7Q, not in official APRSdroid)**
 
@@ -333,7 +333,7 @@ Please open an issue or pull request at the
   - 🎨 New app icon and logo across all density buckets
   - 🖼️ Branded splash screen (153 KB WebP, theme-based)
   - 📱 Modern Android support — `targetSdk 35`, foreground service types for Android 14+, Bluetooth permissions for Android 12+, storage permissions for Android 11+, `POST_NOTIFICATIONS` for Android 13+, edge-to-edge opt-out for Android 15+
-  - 🎨 Material 3-inspired UI design system — `Theme.MaterialComponents.DayNight` with tonal navy/amber palette, shape theming, refined typography, modern component styles (buttons, text fields, dialogs, cards, bottom sheets), auto dark/light
+  - 🎨 Material 3-inspired UI design system — `Theme.MaterialComponents.DarkActionBar` with tonal navy/amber palette, shape theming, refined typography, modern component styles (buttons, text fields, dialogs, cards, bottom sheets), dark-only
   - 🤖 GitHub Actions CI/CD — signed release APK builds, automatic GitHub Releases on `v*` tags
   - 🌐 GitHub Pages landing page at <https://aprsdroid.hamradio.my/> with live download counters
   - 🏷️ Version bumped to `v1.8` (tocall `APDR18`)
