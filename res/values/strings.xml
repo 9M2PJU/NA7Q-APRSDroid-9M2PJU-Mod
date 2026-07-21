@@ -112,7 +112,7 @@
 <!-- about dialog -->
 <string name="ad_title">About APRSdroid 9M2PJU Mod %s</string>
 <string name="ad_copyright">APRSdroid 9M2PJU Mod\n
-	Copyright © 2024-2026 9M2PJU (Kuala Lumpur, Malaysia)\n
+	Copyright © 2026 9M2PJU\n
 	https://aprsdroid.hamradio.my
 	\n\n
 	Based on NA7Q\'s fork of APRSdroid by Georg Lukas (DO1GL)\n
