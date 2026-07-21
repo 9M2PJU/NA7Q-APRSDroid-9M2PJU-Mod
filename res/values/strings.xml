@@ -143,7 +143,7 @@
 <string name="ad_thanks_0">Bob Bruninga, WB4APR (1947–2022): Creator of APRS</string>
 <string name="ad_thanks_1">Georg Lukas, DO1GL: Original APRSdroid author</string>
 <string name="ad_thanks_2">Mike, NA7Q: BLE TNC, digipeater, IGate, MBTiles mapping, https://na7q.com/aprsdroid-osm/</string>
-<string name="ad_thanks_3">9M2PJU: 9M2PJU Mod — Material UI, bottom nav, in-app updates</string>
+<string name="ad_thanks_3">9M2PJU: 9M2PJU Mod, Material UI, bottom nav, in-app updates, https://hamradio.my</string>
 <string name="ad_thanks_4">Michael, DO3BOX: idea</string>
 <string name="ad_thanks_5">Dirk, DB5OY: motivation and support</string>
 <string name="ad_thanks_6">Bastian, DB1BM: AFSK implementation</string>
