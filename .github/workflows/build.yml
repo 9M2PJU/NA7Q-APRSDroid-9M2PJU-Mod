@@ -143,7 +143,7 @@ jobs:
           mkdir -p artifacts
           apk=$(find build/outputs/apk/release -name '*.apk' ! -name '*-unsigned.apk' | head -1)
           tag="${GITHUB_REF_NAME:-untagged}"
-          out="artifacts/NA7Q-APRSdroid-${tag}-9M2PJU.apk"
+          out="artifacts/APRSdroid-9M2PJU-Mod-${tag}.apk"
           cp "$apk" "$out"
           ls -la artifacts/
 
@@ -151,7 +151,7 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: apk-release
-          path: artifacts/NA7Q-APRSdroid-*-9M2PJU.apk
+          path: artifacts/APRSdroid-9M2PJU-Mod-*.apk
           if-no-files-found: error
 
       - name: Upload lint reports
