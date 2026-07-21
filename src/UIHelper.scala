@@ -172,7 +172,6 @@ object UIHelper
 						root.getPaddingRight(), root.getPaddingBottom())
 					prefList.setPadding(prefList.getPaddingLeft(), statusBarHeight,
 						prefList.getPaddingRight(), prefList.getPaddingBottom())
-					prefList.asInstanceOf[android.view.ViewGroup].setClipToPadding(false)
 				}
 			}
 		}
