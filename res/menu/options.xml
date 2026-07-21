@@ -32,6 +32,10 @@
 		android:title="@string/check_updates"
 		android:alphabeticShortcut="u"
 		android:icon="@android:drawable/ic_menu_upload" />
+	<item android:id="@+id/report_bug"
+		android:title="@string/report_bug"
+		android:alphabeticShortcut="b"
+		android:icon="@android:drawable/ic_menu_send" />
 </group>
 </menu>
 

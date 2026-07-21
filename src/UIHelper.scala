@@ -362,6 +362,24 @@ trait UIHelper extends Activity
 			.create.show
 	}
 
+	def reportBug() {
+		val pi = getPackageManager().getPackageInfo(this.getPackageName(), 0)
+		val version = pi.versionName
+		val androidVersion = android.os.Build.VERSION.RELEASE
+		val device = android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL
+		val body = getString(R.string.report_bug_body, version, androidVersion, device)
+		val intent = new Intent(Intent.ACTION_SENDTO)
+			.setData(android.net.Uri.parse("mailto:9m2pju@hamradio.my"))
+			.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.report_bug_subject))
+			.putExtra(Intent.EXTRA_TEXT, body)
+		try {
+			startActivity(Intent.createChooser(intent, getString(R.string.report_bug)))
+		} catch {
+			case _ : android.content.ActivityNotFoundException =>
+				Toast.makeText(this, R.string.no_email_app, Toast.LENGTH_LONG).show()
+		}
+	}
+
 	def ageDialog() {
 		val minutes = getResources().getStringArray(R.array.age_minutes)
 		val selected = minutes.indexOf(prefs.getString("show_age", "30"))
@@ -433,6 +451,9 @@ trait UIHelper extends Activity
 			true
 		case R.id.check_updates =>
 			UpdateChecker.forceCheckForUpdates(this)
+			true
+		case R.id.report_bug =>
+			reportBug()
 			true
 		case R.id.age =>
 			ageDialog()

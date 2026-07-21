@@ -113,6 +113,10 @@
 <string name="check_updates">Check for updates</string>
 <string name="up_to_date">You are running the latest version (%s).</string>
 <string name="update_check_failed">Could not check for updates. Check your internet connection.</string>
+<string name="report_bug">Report a bug</string>
+<string name="report_bug_subject">APRSdroid 9M2PJU Mod bug report</string>
+<string name="report_bug_body">Please describe the bug:\n\n\nApp version: %1$s\nAndroid: %2$s\nDevice: %3$s\n</string>
+<string name="no_email_app">No email app found. Please email 9m2pju@hamradio.my directly.</string>
 
 <!-- about dialog -->
 <string name="ad_title">About APRSdroid 9M2PJU Mod %s</string>
