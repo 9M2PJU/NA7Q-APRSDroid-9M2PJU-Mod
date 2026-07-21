@@ -61,8 +61,8 @@ class PrefsAct extends PreferenceActivity {
 	// UIHelper.applyPrefActivityInsets. It is re-applied after sub-screen
 	// navigation (onContentChanged, onWindowFocusChanged, onPreDraw)
 	// because the ListView content is swapped and padding may be reset.
-	// Uses the default clipToPadding=true so items are clipped at the
-	// padding boundary and do NOT scroll under the status bar.
+	// Uses clipToPadding=false so items scroll smoothly through the
+	// padding area under the transparent status bar — modern edge-to-edge.
 	def applyPrefTopInset() {
 		val res = getResources()
 		val resId = res.getIdentifier("status_bar_height", "dimen", "android")
@@ -71,6 +71,10 @@ class PrefsAct extends PreferenceActivity {
 		val navBarHeight = if (navBarResId > 0) res.getDimensionPixelSize(navBarResId) else 0
 		val lv = findViewById(android.R.id.list).asInstanceOf[android.view.View]
 		if (lv != null) {
+			// clipToPadding=false for smooth edge-to-edge scrolling —
+			// items scroll through the padding area under the status bar.
+			if (lv.isInstanceOf[android.view.ViewGroup])
+				lv.asInstanceOf[android.view.ViewGroup].setClipToPadding(false)
 			if (lv.getPaddingTop != statusBarHeight || lv.getPaddingBottom != navBarHeight) {
 				lv.setPadding(lv.getPaddingLeft, statusBarHeight,
 					lv.getPaddingRight, navBarHeight)
@@ -155,11 +159,11 @@ class PrefsAct extends PreferenceActivity {
 		}
 	}
 
-	// Show a PreferenceScreen sub-screen as a dialog with proper inset
-	// handling. We use getRootAdapter() to get the screen's preferences,
-	// create our own AlertDialog with a ListView, and set
-	// setDecorFitsSystemWindows(true) on the dialog's window so the
-	// system applies status bar insets as padding.
+	// Show a PreferenceScreen sub-screen as a dialog with full
+	// edge-to-edge display. The dialog's window is edge-to-edge
+	// (setDecorFitsSystemWindows(false)) so the app's navy background
+	// flows under the transparent status bar. Top padding is applied
+	// to the ListView so text starts below the status bar icons.
 	def showSubScreenDialog(screen : android.preference.PreferenceScreen) {
 		val adapter = screen.getRootAdapter()
 		if (adapter == null) throw new RuntimeException("getRootAdapter() returned null")
@@ -170,6 +174,9 @@ class PrefsAct extends PreferenceActivity {
 
 		val listView = new android.widget.ListView(this)
 		listView.setAdapter(adapter)
+		// clipToPadding=false so items scroll smoothly through the
+		// padding area (under the status bar) — modern edge-to-edge look.
+		listView.setClipToPadding(false)
 		listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener {
 			override def onItemClick(parent : android.widget.AdapterView[_], view : android.view.View,
 					position : Int, id : Long) {
@@ -194,11 +201,24 @@ class PrefsAct extends PreferenceActivity {
 
 		builder.setView(listView)
 		val dialog = builder.create()
-		// Set DecorFitsSystemWindows(true) BEFORE show() so the window
-		// is configured as non-edge-to-edge before content is laid out.
+		// Edge-to-edge: the dialog's background flows under the
+		// transparent status bar. We apply padding to the ListView
+		// so text starts below the status bar icons.
 		androidx.core.view.WindowCompat.setDecorFitsSystemWindows(
-			dialog.getWindow(), true)
+			dialog.getWindow(), false)
 		dialog.show()
+
+		// Apply top padding for status bar + bottom padding for nav bar.
+		// Use WindowInsets on API 30+ for accurate values, fall back to
+		// resource dimensions on older APIs.
+		val res = getResources()
+		val resId = res.getIdentifier("status_bar_height", "dimen", "android")
+		val navBarResId = res.getIdentifier("navigation_bar_height", "dimen", "android")
+		val statusBarHeight = if (resId > 0) res.getDimensionPixelSize(resId) else 0
+		val navBarHeight = if (navBarResId > 0) res.getDimensionPixelSize(navBarResId) else 0
+		if (statusBarHeight > 0 || navBarHeight > 0) {
+			listView.setPadding(0, statusBarHeight, 0, navBarHeight)
+		}
 
 		// Preference.performClick() calls BOTH PreferenceScreen.onClick()
 		// (which creates the old broken edge-to-edge dialog) AND
@@ -223,15 +243,6 @@ class PrefsAct extends PreferenceActivity {
 				}
 			}
 		}, 50)
-
-		// Fallback: apply top padding for status bar in case
-		// setDecorFitsSystemWindows doesn't fully work on some ROMs.
-		val res = getResources()
-		val resId = res.getIdentifier("status_bar_height", "dimen", "android")
-		val statusBarHeight = if (resId > 0) res.getDimensionPixelSize(resId) else 0
-		if (statusBarHeight > 0) {
-			listView.setPadding(0, statusBarHeight, 0, 0)
-		}
 	}
 
 	override def onCreate(savedInstanceState: Bundle) {

@@ -209,10 +209,10 @@ object UIHelper
 		}
 
 		val prefList = act.findViewById(android.R.id.list).asInstanceOf[View]
-		// Note: do NOT set clipToPadding(false). The default clipToPadding=true
-		// ensures items are clipped at the padding boundary and do NOT scroll
-		// under the status bar. clipToPadding=false would let section headers
-		// (like "Incoming Messages") overlap with the status bar clock.
+		// clipToPadding=false for smooth edge-to-edge scrolling — items
+		// scroll through the padding area under the transparent status bar.
+		if (prefList != null && prefList.isInstanceOf[android.view.ViewGroup])
+			prefList.asInstanceOf[android.view.ViewGroup].setClipToPadding(false)
 
 		val content = act.getWindow().getDecorView().findViewById(
 			android.R.id.content).asInstanceOf[View]
@@ -256,12 +256,13 @@ object UIHelper
 	}
 
 	// Resource-based fallback: apply top (status bar) and bottom (nav bar)
-	// padding to the PreferenceActivity's ListView. Uses the default
-	// clipToPadding=true so items are clipped at the padding boundary
-	// and do NOT scroll under the status bar.
+	// padding to the PreferenceActivity's ListView. clipToPadding=false
+	// for smooth edge-to-edge scrolling.
 	def applyPrefListPadding(act : android.app.Activity) {
 		val prefList = act.findViewById(android.R.id.list).asInstanceOf[View]
 		if (prefList != null) {
+			if (prefList.isInstanceOf[android.view.ViewGroup])
+				prefList.asInstanceOf[android.view.ViewGroup].setClipToPadding(false)
 			val res = act.getResources()
 			val resId = res.getIdentifier("status_bar_height", "dimen", "android")
 			val navBarResId = res.getIdentifier("navigation_bar_height", "dimen", "android")

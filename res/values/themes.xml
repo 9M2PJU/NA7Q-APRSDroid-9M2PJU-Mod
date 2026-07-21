@@ -44,13 +44,18 @@
         <item name="android:actionBarTheme">@style/ThemeOverlay.AppTheme.ActionBar</item>
         <item name="actionBarTheme">@style/ThemeOverlay.AppTheme.ActionBar</item>
 
-        <!-- ===== System bars ===== -->
-        <item name="android:statusBarColor">@color/md_status_bar</item>
-        <item name="android:navigationBarColor">@color/md_navigation_bar</item>
+        <!-- ===== System bars — transparent for full edge-to-edge ===== -->
+        <!-- Status and nav bars are transparent so the app's navy
+             background flows seamlessly under the system bars.
+             Content padding is applied at runtime via WindowInsets
+             to keep text below the status bar icons. -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar">@bool/light_nav_bar_icons</item>
-        <!-- Don't draw content in the display cutout / under-display camera area -->
-        <item name="android:windowLayoutInDisplayCutoutMode">never</item>
+        <!-- Allow content to draw in the display cutout area for true
+             edge-to-edge on devices with notches/under-display cameras -->
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
 
         <!-- ===== Dialogs ===== -->
         <item name="alertDialogTheme">@style/ThemeOverlay.AppTheme.Dialog</item>
@@ -94,9 +99,9 @@
         <item name="colorAccent">@color/md_accent</item>
         <item name="android:colorBackground">@color/md_background</item>
         <item name="android:windowBackground">@color/md_background</item>
-        <item name="android:statusBarColor">@color/md_status_bar</item>
-        <item name="android:navigationBarColor">@color/md_navigation_bar</item>
-        <item name="android:windowLayoutInDisplayCutoutMode">never</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
         <item name="android:windowAnimationStyle">@null</item>
     </style>
 
