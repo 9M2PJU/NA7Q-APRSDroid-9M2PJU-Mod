@@ -1,6 +1,6 @@
 package org.aprsdroid.app
 
-import _root_.android.app.ListActivity
+import _root_.android.app.{AlertDialog, ListActivity}
 import _root_.android.content._
 import _root_.android.database.Cursor
 import _root_.android.net.Uri
@@ -153,9 +153,22 @@ class MessageActivity extends StationHelper(R.string.app_messages)
 		sendMessageBroadcast(targetcall, msg)
 		// notify UI about new message
 		sendBroadcast(AprsService.MSG_PRIV_INTENT)
-		// if not connected, notify user about postponed message
+		// if not connected, ask the user to start tracking
 		if (!AprsService.running)
-			Toast.makeText(this, R.string.msg_stored_offline, Toast.LENGTH_SHORT).show()
+			showStartTrackingDialog()
+	}
+
+	def showStartTrackingDialog() {
+		new AlertDialog.Builder(this)
+			.setTitle(R.string.msg_not_tracking_title)
+			.setMessage(R.string.msg_not_tracking_body)
+			.setPositiveButton(R.string.startlog, new DialogInterface.OnClickListener() {
+				override def onClick(d : DialogInterface, which : Int) {
+					startAprsService(START_SERVICE)
+				}
+			})
+			.setNegativeButton(android.R.string.cancel, null)
+			.show()
 	}
 
 	// button actions

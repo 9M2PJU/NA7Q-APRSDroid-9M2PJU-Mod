@@ -45,6 +45,8 @@
 <string name="msg_message_text">Message text</string>
 <string name="msg_empty_list">There are no stored conversations.</string>
 <string name="msg_stored_offline">The message will be sent as soon as you start tracking.</string>
+<string name="msg_not_tracking_title">Tracking is not started</string>
+<string name="msg_not_tracking_body">Your message has been saved, but APRSdroid is not connected. Start tracking now to send it?</string>
 <!-- Message activity -->
 <string name="msg_from">Message from %s</string>
 <string name="msg_to">Message to %s</string>
