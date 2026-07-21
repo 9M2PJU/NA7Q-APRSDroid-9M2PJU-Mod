@@ -122,124 +122,62 @@ class PrefsAct extends PreferenceActivity {
 			applyPrefTopInset()
 	}
 
-	// Intercept clicks on PreferenceScreen items (sub-screens like
-	// Notifications). Instead of letting PreferenceScreen show its own
-	// dialog (which creates a window we can't control on Android 16),
-	// we create our own AlertDialog and call setDecorFitsSystemWindows
-	// (true) on its window. This makes the system apply status bar
-	// insets as padding, pushing content below the status bar.
-	// Only intercept screens that have nested preferences (real sub-
-	// screens). Screens with <intent> tags (Connection Preferences →
-	// BackendPrefs, etc.) fall through to super, which launches the
-	// separate activity.
+	// Let the system create the PreferenceScreen dialog (edge-to-edge
+	// with transparent status bar), then apply top padding to the
+	// dialog's ListView so text starts below the status bar icons.
+	// We access the system-created dialog via PreferenceScreen.getDialog()
+	// reflection (which works — only field/method reflection on hidden
+	// APIs is blocked on Android 16, but getDialog() is accessible).
+	// This is much simpler than creating our own dialog: no custom
+	// AlertDialog, no performClick() reflection, no old-dialog dismissal.
 	override def onPreferenceTreeClick(preferenceScreen : android.preference.PreferenceScreen,
 			preference : android.preference.Preference) : Boolean = {
-		android.util.Log.d("PrefsAct", "onPreferenceTreeClick: " + preference)
+		val result = super.onPreferenceTreeClick(preferenceScreen, preference)
+		// After the system creates the dialog, apply padding to its
+		// ListView so content starts below the status bar.
 		if (preference.isInstanceOf[android.preference.PreferenceScreen]) {
 			val screen = preference.asInstanceOf[android.preference.PreferenceScreen]
 			val adapter = screen.getRootAdapter()
-			// Only show our custom dialog if the screen has nested
-			// preferences (count > 0). Screens with <intent> tags have
-			// no children — they should fall through to super to launch
-			// the target activity.
+			// Only apply padding for real sub-screens (with nested
+			// preferences). Screens with <intent> tags launch activities.
 			if (adapter != null && adapter.getCount() > 0) {
-				try {
-					showSubScreenDialog(screen)
-					true
-				} catch {
-					case e : Exception =>
-						android.util.Log.e("PrefsAct", "showSubScreenDialog failed, falling back", e)
-						super.onPreferenceTreeClick(preferenceScreen, preference)
-				}
-			} else {
-				super.onPreferenceTreeClick(preferenceScreen, preference)
+				applyDialogInsetPadding(screen)
 			}
-		} else {
-			super.onPreferenceTreeClick(preferenceScreen, preference)
 		}
+		result
 	}
 
-	// Show a PreferenceScreen sub-screen as a dialog with full
-	// edge-to-edge display. The dialog's window is edge-to-edge
-	// (setDecorFitsSystemWindows(false)) so the app's navy background
-	// flows under the transparent status bar. Top padding is applied
-	// to the ListView so text starts below the status bar icons.
-	def showSubScreenDialog(screen : android.preference.PreferenceScreen) {
-		val adapter = screen.getRootAdapter()
-		if (adapter == null) throw new RuntimeException("getRootAdapter() returned null")
-
-		val title = screen.getTitle()
-		val builder = new AlertDialog.Builder(this)
-		if (title != null) builder.setTitle(title)
-
-		val listView = new android.widget.ListView(this)
-		listView.setAdapter(adapter)
-		// clipToPadding=false so items scroll smoothly through the
-		// padding area (under the status bar) — modern edge-to-edge look.
-		listView.setClipToPadding(false)
-		listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener {
-			override def onItemClick(parent : android.widget.AdapterView[_], view : android.view.View,
-					position : Int, id : Long) {
-				val item = adapter.getItem(position).asInstanceOf[android.preference.Preference]
-				if (item != null) {
-					if (item.isInstanceOf[android.preference.PreferenceScreen])
-						showSubScreenDialog(item.asInstanceOf[android.preference.PreferenceScreen])
-					else {
-						// performClick() is public in the Android runtime
-						// but not in the compilation stubs — use reflection.
-						try {
-							val m = classOf[android.preference.Preference].getMethod("performClick")
-							m.invoke(item)
-						} catch {
-							case e : Exception =>
-								android.util.Log.e("PrefsAct", "performClick via reflection failed", e)
-						}
-					}
-				}
-			}
-		})
-
-		builder.setView(listView)
-		val dialog = builder.create()
-		// Edge-to-edge: the dialog's background flows under the
-		// transparent status bar. We apply padding to the ListView
-		// so text starts below the status bar icons.
-		androidx.core.view.WindowCompat.setDecorFitsSystemWindows(
-			dialog.getWindow(), false)
-		dialog.show()
-
-		// Apply top padding for status bar + bottom padding for nav bar.
-		// Use WindowInsets on API 30+ for accurate values, fall back to
-		// resource dimensions on older APIs.
-		val res = getResources()
-		val resId = res.getIdentifier("status_bar_height", "dimen", "android")
-		val navBarResId = res.getIdentifier("navigation_bar_height", "dimen", "android")
-		val statusBarHeight = if (resId > 0) res.getDimensionPixelSize(resId) else 0
-		val navBarHeight = if (navBarResId > 0) res.getDimensionPixelSize(navBarResId) else 0
-		if (statusBarHeight > 0 || navBarHeight > 0) {
-			listView.setPadding(0, statusBarHeight, 0, navBarHeight)
-		}
-
-		// Preference.performClick() calls BOTH PreferenceScreen.onClick()
-		// (which creates the old broken edge-to-edge dialog) AND
-		// onPreferenceTreeClick() (which calls showSubScreenDialog).
-		// So the old dialog is created BEFORE our dialog, and ours shows
-		// on top. When the user presses back, our dialog dismisses and
-		// the old broken one is revealed underneath. Fix: dismiss the
-		// old dialog via getDialog() reflection after showing ours.
+	// Apply top (status bar) and bottom (nav bar) padding to the
+	// PreferenceScreen dialog's ListView. Uses getDialog() reflection
+	// to access the system-created dialog, finds its ListView, and
+	// sets padding with clipToPadding=false for smooth edge-to-edge
+	// scrolling.
+	def applyDialogInsetPadding(screen : android.preference.PreferenceScreen) {
 		new android.os.Handler(getMainLooper).postDelayed(new Runnable {
 			override def run() : Unit = {
 				try {
 					val m = classOf[android.preference.PreferenceScreen]
 						.getMethod("getDialog")
-					val oldDialog = m.invoke(screen).asInstanceOf[android.app.Dialog]
-					if (oldDialog != null && oldDialog.isShowing) {
-						oldDialog.dismiss()
-						android.util.Log.d("PrefsAct", "Dismissed old PreferenceScreen dialog")
+					val dialog = m.invoke(screen).asInstanceOf[android.app.Dialog]
+					if (dialog != null && dialog.isShowing) {
+						val lv = dialog.findViewById(android.R.id.list)
+							.asInstanceOf[android.widget.ListView]
+						if (lv != null) {
+							val res = getResources()
+							val resId = res.getIdentifier("status_bar_height", "dimen", "android")
+							val navBarResId = res.getIdentifier("navigation_bar_height", "dimen", "android")
+							val statusBarHeight = if (resId > 0) res.getDimensionPixelSize(resId) else 0
+							val navBarHeight = if (navBarResId > 0) res.getDimensionPixelSize(navBarResId) else 0
+							lv.setClipToPadding(false)
+							lv.setPadding(0, statusBarHeight, 0, navBarHeight)
+							android.util.Log.d("PrefsAct",
+								"Applied dialog inset padding: top=%d bottom=%d"
+									.format(statusBarHeight, navBarHeight))
+						}
 					}
 				} catch {
 					case e : Exception =>
-						android.util.Log.e("PrefsAct", "Could not dismiss old dialog", e)
+						android.util.Log.e("PrefsAct", "applyDialogInsetPadding failed", e)
 				}
 			}
 		}, 50)
