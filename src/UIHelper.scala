@@ -116,7 +116,7 @@ object UIHelper
 						// Find the BottomNavigationView and apply bottom
 						// padding so its icons stay above the system nav bar
 						// while its background fills the full area.
-						val bn = act.findViewById(R.id.bottom_nav)
+						val bn = act.findViewById(R.id.bottom_nav).asInstanceOf[View]
 						if (bn != null) {
 							bn.setPadding(bn.getPaddingLeft(),
 								bn.getPaddingTop(),
