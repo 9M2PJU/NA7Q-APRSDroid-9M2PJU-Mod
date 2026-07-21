@@ -81,10 +81,6 @@ class PrefsAct extends PreferenceActivity {
 	}
 
 	// Schedule applyPrefTopInset to run after the current event loop.
-	// This is needed because when a PreferenceScreen sub-screen is opened,
-	// the ListView content is swapped asynchronously — the new ListView
-	// isn't available immediately. Posting to the Handler ensures we
-	// apply padding after the new list is created.
 	def postApplyPrefTopInset() {
 		new android.os.Handler(getMainLooper).post(new Runnable {
 			override def run() : Unit = applyPrefTopInset()
@@ -96,21 +92,15 @@ class PrefsAct extends PreferenceActivity {
 	override def onContentChanged() {
 		super.onContentChanged()
 		applyPrefTopInset()
-		// Also post to apply after the new ListView is laid out
 		postApplyPrefTopInset()
 	}
 
 	// Intercept clicks on PreferenceScreen items (sub-screens like
 	// Notifications, Connection Preferences, etc.) to re-apply the
 	// top inset padding after the new screen content is loaded.
-	// onContentChanged is not always called for sub-screen navigation
-	// in PreferenceActivity, so we need to post the padding update
-	// manually after the click is processed.
 	override def onPreferenceTreeClick(preferenceScreen : android.preference.PreferenceScreen,
 			preference : android.preference.Preference) : Boolean = {
 		val result = super.onPreferenceTreeClick(preferenceScreen, preference)
-		// Post multiple times to ensure padding is applied after the
-		// new ListView is created and laid out
 		postApplyPrefTopInset()
 		new android.os.Handler(getMainLooper).postDelayed(new Runnable {
 			override def run() : Unit = applyPrefTopInset()
@@ -126,6 +116,20 @@ class PrefsAct extends PreferenceActivity {
 		UIHelper.applySystemBarInsets(this)
 		applyPrefTopInset()
 		addPreferencesFromResource(R.xml.preferences)
+
+		// Add a global layout listener to re-apply top inset padding
+		// whenever the view hierarchy is relaid out. This catches
+		// PreferenceScreen sub-screen navigation where the ListView
+		// content is swapped without calling onContentChanged or
+		// onPreferenceTreeClick.
+		val rootView = getWindow.getDecorView.findViewById(
+			android.R.id.content).asInstanceOf[android.view.View]
+		if (rootView != null) {
+			rootView.getViewTreeObserver.addOnGlobalLayoutListener(
+				new android.view.ViewTreeObserver.OnGlobalLayoutListener {
+					override def onGlobalLayout() : Unit = applyPrefTopInset()
+				})
+		}
 
 		// Set up "Grant Storage Permissions" button
 		val allFilesAccessPref = findPreference("all_files_access")
