@@ -119,23 +119,36 @@ class PrefsAct extends PreferenceActivity {
 	}
 
 	// Intercept clicks on PreferenceScreen items (sub-screens like
-	// Notifications, Connection Preferences, etc.). Instead of letting
-	// PreferenceScreen show its own dialog (which creates a window we
-	// can't control on Android 16), we create our own AlertDialog and
-	// call setDecorFitsSystemWindows(true) on its window. This makes the
-	// system apply insets as padding, pushing content below the status
-	// bar. Falls back to super if anything goes wrong.
+	// Notifications). Instead of letting PreferenceScreen show its own
+	// dialog (which creates a window we can't control on Android 16),
+	// we create our own AlertDialog and call setDecorFitsSystemWindows
+	// (true) on its window. This makes the system apply status bar
+	// insets as padding, pushing content below the status bar.
+	// Only intercept screens that have nested preferences (real sub-
+	// screens). Screens with <intent> tags (Connection Preferences →
+	// BackendPrefs, etc.) fall through to super, which launches the
+	// separate activity.
 	override def onPreferenceTreeClick(preferenceScreen : android.preference.PreferenceScreen,
 			preference : android.preference.Preference) : Boolean = {
 		android.util.Log.d("PrefsAct", "onPreferenceTreeClick: " + preference)
 		if (preference.isInstanceOf[android.preference.PreferenceScreen]) {
-			try {
-				showSubScreenDialog(preference.asInstanceOf[android.preference.PreferenceScreen])
-				true
-			} catch {
-				case e : Exception =>
-					android.util.Log.e("PrefsAct", "showSubScreenDialog failed, falling back", e)
-					super.onPreferenceTreeClick(preferenceScreen, preference)
+			val screen = preference.asInstanceOf[android.preference.PreferenceScreen]
+			val adapter = screen.getRootAdapter()
+			// Only show our custom dialog if the screen has nested
+			// preferences (count > 0). Screens with <intent> tags have
+			// no children — they should fall through to super to launch
+			// the target activity.
+			if (adapter != null && adapter.getCount() > 0) {
+				try {
+					showSubScreenDialog(screen)
+					true
+				} catch {
+					case e : Exception =>
+						android.util.Log.e("PrefsAct", "showSubScreenDialog failed, falling back", e)
+						super.onPreferenceTreeClick(preferenceScreen, preference)
+				}
+			} else {
+				super.onPreferenceTreeClick(preferenceScreen, preference)
 			}
 		} else {
 			super.onPreferenceTreeClick(preferenceScreen, preference)
