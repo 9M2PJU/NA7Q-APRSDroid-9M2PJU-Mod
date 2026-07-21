@@ -160,8 +160,10 @@ dependencies {
 	implementation 'com.google.maps.android:android-maps-utils:0.5'
 	implementation 'androidx.core:core:1.6.0'
 	// Material Design / AppCompat — modern UI (Phase 1)
+	// material 1.8+ uses <macro> resource tags requiring AGP 7.0+;
+	// we're on AGP 3.5.1 (Scala plugin), so pin to 1.7.0.
 	implementation 'androidx.appcompat:appcompat:1.6.1'
-	implementation 'com.google.android.material:material:1.9.0'
+	implementation 'com.google.android.material:material:1.7.0'
 
 
 	implementation 'com.squareup.okio:okio:2.1.0'
