@@ -96,10 +96,15 @@
 
 <!-- in-app update check -->
 <string name="update_available_title">Update available</string>
-<string name="update_available_text">A new version of APRSdroid is available!\n\nInstalled: %1$s\nLatest: %2$s\n\nWould you like to download it?</string>
+<string name="update_available_text">A new version of APRSdroid is available!\n\nInstalled: %1$s\nLatest: %2$s\n\nWould you like to download and install it?</string>
 <string name="update_download">Download</string>
 <string name="update_later">Later</string>
 <string name="update_skip">Skip this version</string>
+<string name="update_downloading_title">Downloading update</string>
+<string name="update_downloading_message">Downloading APRSdroid %1$s…</string>
+<string name="update_download_failed">Download failed. Opening browser instead.</string>
+<string name="update_download_cancelled">Download cancelled.</string>
+<string name="update_install_failed">Could not launch installer. Opening browser instead.</string>
 
 <!-- about dialog -->
 <string name="ad_title">About APRSdroid v%s</string>

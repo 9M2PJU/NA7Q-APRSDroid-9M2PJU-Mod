@@ -2,6 +2,7 @@ package org.aprsdroid.app
 
 import _root_.android.app.Activity
 import _root_.android.app.AlertDialog
+import _root_.android.app.ProgressDialog
 import _root_.android.content.{Context, DialogInterface, Intent}
 import _root_.android.content.pm.PackageManager
 import _root_.android.net.Uri
@@ -9,15 +10,18 @@ import _root_.android.preference.PreferenceManager
 import _root_.android.util.Log
 import _root_.android.widget.Toast
 
-import java.io.{BufferedReader, InputStreamReader}
+import androidx.core.content.FileProvider
+
+import java.io.{BufferedReader, File, FileOutputStream, InputStreamReader}
 import java.net.{HttpURLConnection, URL}
 
 import org.json.JSONObject
 
 /**
  * Checks GitHub Releases API for a newer version than the installed one.
- * If a newer version is found, shows a dialog with a "Download" button
- * that opens the browser to the release page.
+ * If a newer version is found, shows a dialog. When the user taps
+ * "Download", the APK is downloaded to the app's cache directory and
+ * Android's package installer is triggered automatically.
  *
  * The check runs at most once per day per app instance, controlled by
  * the "last_update_check" SharedPreferences timestamp.
@@ -29,6 +33,9 @@ object UpdateChecker {
     val API_URL = s"https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/latest"
     val RELEASES_URL = s"https://github.com/$REPO_OWNER/$REPO_NAME/releases/latest"
     val CHECK_INTERVAL_MS = 24 * 60 * 60 * 1000L  // 24 hours
+
+    // Result of fetching release info from GitHub API
+    case class ReleaseInfo(tag : String, apkUrl : String, apkName : String)
 
     def getInstalledVersionName(ctx : Context) : String = {
         try {
@@ -69,28 +76,22 @@ object UpdateChecker {
         false
     }
 
-    /**
-     * Check if enough time has passed since the last update check.
-     */
     def shouldCheck(ctx : Context) : Boolean = {
         val prefs = PreferenceManager.getDefaultSharedPreferences(ctx)
         val last = prefs.getLong("last_update_check", 0)
         System.currentTimeMillis() - last > CHECK_INTERVAL_MS
     }
 
-    /**
-     * Record that we just performed an update check.
-     */
     def markChecked(ctx : Context) : Unit = {
         val prefs = PreferenceManager.getDefaultSharedPreferences(ctx)
         prefs.edit().putLong("last_update_check", System.currentTimeMillis()).commit()
     }
 
     /**
-     * Fetch the latest release tag from GitHub API.
-     * Returns the tag name (e.g. "v1.4.7") or null on error.
+     * Fetch the latest release info from GitHub API.
+     * Returns the tag name and APK download URL, or null on error.
      */
-    def fetchLatestReleaseTag() : String = {
+    def fetchLatestRelease() : ReleaseInfo = {
         val url = new URL(API_URL)
         val conn = url.openConnection().asInstanceOf[HttpURLConnection]
         try {
@@ -111,7 +112,28 @@ object UpdateChecker {
             }
             reader.close()
             val json = new JSONObject(sb.toString())
-            json.optString("tag_name", null)
+            val tag = json.optString("tag_name", null)
+            if (tag == null) return null
+
+            // Look for an .apk asset in the release
+            val assets = json.optJSONArray("assets")
+            if (assets != null) {
+                for (i <- 0 until assets.length()) {
+                    val asset = assets.optJSONObject(i)
+                    if (asset != null) {
+                        val name = asset.optString("name", "")
+                        if (name.endsWith(".apk")) {
+                            val downloadUrl = asset.optString("browser_download_url", null)
+                            if (downloadUrl != null) {
+                                return ReleaseInfo(tag, downloadUrl, name)
+                            }
+                        }
+                    }
+                }
+            }
+
+            // No APK asset found — fall back to the releases page URL
+            ReleaseInfo(tag, RELEASES_URL, null)
         } catch {
             case e : Exception =>
                 Log.e(TAG, "Failed to fetch latest release: " + e.getMessage)
@@ -124,27 +146,148 @@ object UpdateChecker {
     /**
      * Show the "update available" dialog.
      */
-    def showUpdateDialog(act : Activity, localVersion : String, remoteTag : String) : Unit = {
+    def showUpdateDialog(act : Activity, localVersion : String, info : ReleaseInfo) : Unit = {
         val message = act.getString(R.string.update_available_text,
-            localVersion, remoteTag)
+            localVersion, info.tag)
         new AlertDialog.Builder(act)
             .setTitle(R.string.update_available_title)
             .setMessage(message)
             .setIcon(android.R.drawable.ic_dialog_info)
             .setPositiveButton(R.string.update_download, new DialogInterface.OnClickListener {
                 override def onClick(d : DialogInterface, which : Int) : Unit = {
-                    UrlOpener.open(act, RELEASES_URL)
+                    if (info.apkName != null) {
+                        // We have a direct APK download URL — download and install
+                        downloadAndInstall(act, info)
+                    } else {
+                        // No APK asset — fall back to opening browser
+                        UrlOpener.open(act, RELEASES_URL)
+                    }
                 }
             })
             .setNeutralButton(R.string.update_later, null)
             .setNegativeButton(R.string.update_skip, new DialogInterface.OnClickListener {
                 override def onClick(d : DialogInterface, which : Int) : Unit = {
-                    // Skip this version — record the remote tag as "seen"
                     val prefs = PreferenceManager.getDefaultSharedPreferences(act)
-                    prefs.edit().putString("skipped_version", remoteTag).commit()
+                    prefs.edit().putString("skipped_version", info.tag).commit()
                 }
             })
             .create().show()
+    }
+
+    /**
+     * Download the APK to the cache directory and trigger the installer.
+     * Shows a progress dialog during download.
+     */
+    def downloadAndInstall(act : Activity, info : ReleaseInfo) : Unit = {
+        val progress = new ProgressDialog(act)
+        progress.setTitle(act.getString(R.string.update_downloading_title))
+        progress.setMessage(act.getString(R.string.update_downloading_message, info.tag))
+        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
+        progress.setCancelable(true)
+        progress.setMax(100)
+        progress.setProgress(0)
+        progress.show()
+
+        new MyAsyncTask[Integer, File]() {
+            override def doInBackground1(params : Array[String]) : File = {
+                try {
+                    val url = new URL(info.apkUrl)
+                    val conn = url.openConnection().asInstanceOf[HttpURLConnection]
+                    conn.setRequestMethod("GET")
+                    conn.setRequestProperty("User-Agent", "APRSdroid-9M2PJU-Mod")
+                    conn.setConnectTimeout(30000)
+                    conn.setReadTimeout(60000)
+                    conn.connect()
+
+                    if (conn.getResponseCode != 200) {
+                        Log.e(TAG, "Download failed: HTTP " + conn.getResponseCode)
+                        return null
+                    }
+
+                    val totalSize = conn.getContentLength
+                    val updatesDir = new File(act.getCacheDir, "updates")
+                    updatesDir.mkdirs()
+                    val apkFile = new File(updatesDir, info.apkName)
+
+                    val input = conn.getInputStream
+                    val output = new FileOutputStream(apkFile)
+                    val buffer = new Array[Byte](8192)
+                    var bytesRead = 0
+                    var totalRead = 0
+
+                    while ({ bytesRead = input.read(buffer); bytesRead != -1 }) {
+                        if (isCancelled) {
+                            input.close()
+                            output.close()
+                            conn.disconnect()
+                            apkFile.delete()
+                            return null
+                        }
+                        output.write(buffer, 0, bytesRead)
+                        totalRead += bytesRead
+                        if (totalSize > 0) {
+                            val pct = (totalRead * 100 / totalSize).toInt
+                            publishProgress(new Integer(pct))
+                        }
+                    }
+                    output.close()
+                    input.close()
+                    conn.disconnect()
+                    Log.i(TAG, "Downloaded APK: " + apkFile.getAbsolutePath +
+                        " (" + apkFile.length + " bytes)")
+                    apkFile
+                } catch {
+                    case e : Exception =>
+                        Log.e(TAG, "Download failed: " + e.getMessage)
+                        null
+                }
+            }
+
+            override def onProgressUpdate(values : Array[Integer]) : Unit = {
+                if (values != null && values.length > 0) {
+                    progress.setProgress(values(0).intValue)
+                }
+            }
+
+            override def onPostExecute(apkFile : File) : Unit = {
+                progress.dismiss()
+                if (apkFile == null || !apkFile.exists()) {
+                    Toast.makeText(act, R.string.update_download_failed,
+                        Toast.LENGTH_LONG).show()
+                    // Fall back to opening the browser
+                    UrlOpener.open(act, RELEASES_URL)
+                    return
+                }
+                promptInstall(act, apkFile)
+            }
+
+            override def onCancelled() : Unit = {
+                progress.dismiss()
+                Toast.makeText(act, R.string.update_download_cancelled,
+                    Toast.LENGTH_SHORT).show()
+            }
+        }.execute()
+    }
+
+    /**
+     * Trigger Android's package installer with the downloaded APK.
+     */
+    def promptInstall(act : Activity, apkFile : File) : Unit = {
+        val uri = FileProvider.getUriForFile(act, "org.aprsdroid.fileprovider", apkFile)
+        val intent = new Intent(Intent.ACTION_VIEW)
+        intent.setDataAndType(uri, "application/vnd.android.package-archive")
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        try {
+            act.startActivity(intent)
+        } catch {
+            case e : Exception =>
+                Log.e(TAG, "Failed to launch installer: " + e.getMessage)
+                Toast.makeText(act, R.string.update_install_failed,
+                    Toast.LENGTH_LONG).show()
+                // Fall back to opening the browser
+                UrlOpener.open(act, RELEASES_URL)
+        }
     }
 
     /**
@@ -158,23 +301,23 @@ object UpdateChecker {
 
         markChecked(act)  // record check time regardless of result
 
-        new MyAsyncTask[Void, String]() {
-            override def doInBackground1(params : Array[String]) : String = {
-                fetchLatestReleaseTag()
+        new MyAsyncTask[Void, ReleaseInfo]() {
+            override def doInBackground1(params : Array[String]) : ReleaseInfo = {
+                fetchLatestRelease()
             }
-            override def onPostExecute(remoteTag : String) : Unit = {
-                if (remoteTag == null) return
+            override def onPostExecute(info : ReleaseInfo) : Unit = {
+                if (info == null) return
 
                 // User skipped this version previously?
                 val prefs = PreferenceManager.getDefaultSharedPreferences(act)
                 val skipped = prefs.getString("skipped_version", null)
-                if (skipped != null && skipped == remoteTag) return
+                if (skipped != null && skipped == info.tag) return
 
-                if (isNewerVersion(localVersion, remoteTag)) {
-                    Log.i(TAG, s"Update available: $localVersion -> $remoteTag")
-                    showUpdateDialog(act, localVersion, remoteTag)
+                if (isNewerVersion(localVersion, info.tag)) {
+                    Log.i(TAG, s"Update available: $localVersion -> ${info.tag}")
+                    showUpdateDialog(act, localVersion, info)
                 } else {
-                    Log.d(TAG, s"Up to date: $localVersion (latest: $remoteTag)")
+                    Log.d(TAG, s"Up to date: $localVersion (latest: ${info.tag})")
                 }
             }
         }.execute()

@@ -1,3 +1,4 @@
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
    <external-path name="APRSdroid" path="Documents/APRSdroid" />
+   <cache-path name="apk_updates" path="updates" />
 </paths>
