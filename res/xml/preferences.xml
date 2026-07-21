@@ -60,6 +60,24 @@
 		android:defaultValue="false" />
 
 	<Preference
+		android:key="tilepath"
+		android:title="@string/p_mbtiles_file_picker_title"
+		android:summary="@string/p_mbtiles_file_picker_summary"
+		android:defaultValue=""
+		android:selectable="true" />
+
+	<Preference
+		android:key="all_files_access"
+		android:title="@string/p_all_files_access_title"
+		android:summary="@string/p_all_files_access_summary" />
+
+	<CheckBoxPreference
+		android:key="hardware_acceleration"
+		android:title="@string/p_hwacceleration_title"
+		android:summary="@string/p_hwacceleration_summary"
+		android:defaultValue="true" />
+
+	<Preference
 		android:key="mapfile"
 		android:title="@string/p_mapfile_choose"
 		android:summary="@string/p_mapfile_summary" />

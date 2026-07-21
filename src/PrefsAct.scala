@@ -1,17 +1,18 @@
 package org.aprsdroid.app
 
-import _root_.android.content.Intent
+import _root_.android.content.{Context, Intent, SharedPreferences}
 import _root_.android.net.Uri
+import _root_.android.content.ContentUris
 import _root_.android.os.{Build, Bundle, Environment}
 import _root_.android.preference.Preference
 import _root_.android.preference.Preference.OnPreferenceClickListener
-import _root_.android.preference.PreferenceActivity
-import _root_.android.preference.PreferenceManager
+import _root_.android.preference.{PreferenceActivity, PreferenceManager}
 import _root_.android.view.{Menu, MenuItem}
 import _root_.android.widget.Toast
 import java.text.SimpleDateFormat
 import java.io.{File, PrintWriter}
 import java.util.Date
+import android.provider.{Settings, DocumentsContract, MediaStore}
 
 import org.json.JSONObject
 
@@ -43,6 +44,7 @@ class PrefsAct extends PreferenceActivity {
 		findPreference(pref_name).setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			def onPreferenceClick(preference : Preference) = {
 				val get_file = new Intent(Intent.ACTION_OPEN_DOCUMENT).setType("*/*")
+					.addCategory(Intent.CATEGORY_OPENABLE)
 				startActivityForResult(Intent.createChooser(get_file,
 					getString(titleId)), reqCode)
 				true
@@ -52,7 +54,20 @@ class PrefsAct extends PreferenceActivity {
 	override def onCreate(savedInstanceState: Bundle) {
 		super.onCreate(savedInstanceState)
 		addPreferencesFromResource(R.xml.preferences)
-		fileChooserPreference("mapfile", 123456, R.string.p_mapfile_choose)
+
+		// Set up "Grant Storage Permissions" button
+		val allFilesAccessPref = findPreference("all_files_access")
+		if (allFilesAccessPref != null) {
+			allFilesAccessPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+				def onPreferenceClick(preference : Preference) = {
+					openAllFilesAccessSettings()
+					true
+				}
+			})
+		}
+		// File pickers
+		fileChooserPreference("tilepath", 123456, R.string.p_mbtiles_file_picker_title)
+		fileChooserPreference("mapfile", 123460, R.string.p_mapfile_choose)
 		fileChooserPreference("themefile", 123457, R.string.p_themefile_choose)
 	}
 	override def onResume() {
@@ -60,11 +75,32 @@ class PrefsAct extends PreferenceActivity {
 		findPreference("p_connsetup").setSummary(prefs.getBackendName())
 		findPreference("p_location").setSummary(prefs.getLocationSourceName())
 		findPreference("p_symbol").setSummary(getString(R.string.p_symbol_summary) + ": " + prefs.getString("symbol", "/$"))
-		// Show current map/theme file paths, or default hint
+		// Show current tilepath in summary
+		val tilepath = prefs.prefs.getString("tilepath", null)
+		if (tilepath != null && tilepath.nonEmpty) {
+			findPreference("tilepath").setSummary(tilepath)
+		}
+		// Show current map/theme file paths
 		val mapfile = prefs.getString("mapfile", android.os.Environment.getExternalStorageDirectory() + "/aprsdroid.map")
 		findPreference("mapfile").setSummary(mapfile)
 		val themefile = prefs.getString("themefile", android.os.Environment.getExternalStorageDirectory() + "/aprsdroid.xml")
 		findPreference("themefile").setSummary(themefile)
+	}
+
+	def openAllFilesAccessSettings() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+			val intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+			intent.setData(Uri.parse("package:" + getPackageName()))
+			startActivity(intent)
+		} else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+			val intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+			intent.setData(Uri.parse("package:" + getPackageName()))
+			startActivity(intent)
+		} else {
+			val intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+			intent.setData(Uri.parse("package:" + getPackageName()))
+			startActivity(intent)
+		}
 	}
 
 	def resolveContentUri(uri : Uri) = {
@@ -117,6 +153,26 @@ class PrefsAct extends PreferenceActivity {
 	override def onActivityResult(reqCode : Int, resultCode : Int, data : Intent) {
 		android.util.Log.d("PrefsAct", "onActResult: request=" + reqCode + " result=" + resultCode + " " + data)
 		if (resultCode == android.app.Activity.RESULT_OK && reqCode == 123456) {
+			// tilepath picker — resolve URI to real path and save
+			val takeFlags = data.getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+			getContentResolver.takePersistableUriPermission(data.getData(), takeFlags)
+			val resolvedPath = data.getData().getScheme match {
+				case "file" => data.getData().getPath
+				case "content" => resolveContentUri(data.getData())
+				case _ => null
+			}
+			if (resolvedPath != null) {
+				PreferenceManager.getDefaultSharedPreferences(this)
+					.edit().putString("tilepath", resolvedPath).commit()
+				Toast.makeText(this, getString(R.string.selected_file, new File(resolvedPath).getName()), Toast.LENGTH_SHORT).show()
+			} else {
+				Toast.makeText(this, R.string.mapfile_error, Toast.LENGTH_SHORT).show()
+			}
+			finish()
+			startActivity(getIntent())
+		} else
+		if (resultCode == android.app.Activity.RESULT_OK && reqCode == 123460) {
+			// mapfile picker (MapsForge .map)
 			parseFilePickerResult(data, "mapfile", R.string.mapfile_error)
 		} else
 		if (resultCode == android.app.Activity.RESULT_OK && reqCode == 123457) {

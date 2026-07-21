@@ -164,7 +164,14 @@
 
 <string name="p_offlinemap">OSM Maps</string>
 <string name="p_offlinemap_entry">Enable offline mapping</string>
-<string name="p_offlinemap_summary">Uses locally hosted tile server</string>
+<string name="p_offlinemap_summary">Uses local maps files</string>
+<string name="p_mbtiles_file_picker_title">Select MapsforgeV3 or .mbtiles map</string>
+<string name="p_mbtiles_file_picker_summary">No file selected</string>
+<string name="p_all_files_access_title">Grant Storage Permissions</string>
+<string name="p_all_files_access_summary">Tap to manage permissions for all files access.</string>
+<string name="p_hwacceleration_title">Enable Hardware Acceleration</string>
+<string name="p_hwacceleration_summary">Toggle hardware acceleration for the map view</string>
+<string name="selected_file">Selected: %s</string>
 
 <string name="p_dedupe">Dedupe Timeout</string>
 <string name="p_dedupe_entry">Timeout in seconds</string>
