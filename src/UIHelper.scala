@@ -245,7 +245,7 @@ trait UIHelper extends Activity
 	def showOptionsMenuPopup(anchor : View) {
 		// Find the actual Menu item view inside the BottomNavigationView so
 		// the popup appears above it (right side) instead of the left edge.
-		val menu_view = anchor.asInstanceOf[android.view.ViewGroup]
+		val menu_view : View = anchor.asInstanceOf[android.view.ViewGroup]
 			.findViewById(R.id.nav_menu)
 		val popup_anchor = if (menu_view != null) menu_view else anchor
 		val popup = new PopupMenu(this, popup_anchor)
