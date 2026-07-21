@@ -164,7 +164,12 @@ class PrefsAct extends PreferenceActivity {
 						val lv = dialog.findViewById(android.R.id.list)
 							.asInstanceOf[android.widget.ListView]
 						if (lv != null) {
-							lv.setClipToPadding(false)
+							// clipToPadding=true (default) so items are clipped
+							// at the padding boundary and can't scroll under
+							// the status bar. The dialog's background still
+							// flows under the transparent status bar (edge-to-
+							// edge), but text stays below the status bar icons.
+							lv.setClipToPadding(true)
 							// Set an insets listener on the dialog's decorView
 							// so padding is applied during layout and survives
 							// any internal re-layout by the AlertDialog.
@@ -186,6 +191,7 @@ class PrefsAct extends PreferenceActivity {
 											bottomPad = insets.getSystemWindowInsetBottom()
 										}
 										lv.setPadding(0, topPad, 0, bottomPad)
+										lv.setSelection(0)
 										android.util.Log.d("PrefsAct",
 											"Dialog inset listener: top=%d bottom=%d"
 												.format(topPad, bottomPad))
@@ -199,6 +205,7 @@ class PrefsAct extends PreferenceActivity {
 							val statusBarHeight = if (resId > 0) res.getDimensionPixelSize(resId) else 0
 							val navBarHeight = if (navBarResId > 0) res.getDimensionPixelSize(navBarResId) else 0
 							lv.setPadding(0, statusBarHeight, 0, navBarHeight)
+							lv.setSelection(0)
 							// Request a new insets dispatch to trigger the listener
 							decor.requestApplyInsets()
 						}
