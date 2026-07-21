@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Full-screen splash background used by SplashTheme on the launcher
      activity (APRSdroid). Shows the splash image immediately on app
-     launch while the launcher routes to Hub/Log/Map. -->
+     launch while the launcher routes to Hub/Log/Map.
+     Uses center_crop to fill the screen without distortion — excess
+     edges are cropped instead of stretched. -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@android:color/black" />
     <item>
         <bitmap
             android:src="@drawable/splash"
-            android:gravity="fill" />
+            android:gravity="center_crop" />
     </item>
 </layer-list>
