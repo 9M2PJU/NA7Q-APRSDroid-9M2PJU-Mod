@@ -65,16 +65,13 @@ class PrefsAct extends PreferenceActivity {
 		val res = getResources()
 		val resId = res.getIdentifier("status_bar_height", "dimen", "android")
 		val statusBarHeight = if (resId > 0) res.getDimensionPixelSize(resId) else 0
-		android.util.Log.d("PrefsAct", "applyPrefTopInset: statusBarHeight=" + statusBarHeight)
 		if (statusBarHeight > 0) {
 			val root = getWindow.getDecorView.findViewById(
 				android.R.id.content).asInstanceOf[android.view.View]
-			android.util.Log.d("PrefsAct", "applyPrefTopInset: root=" + root)
 			if (root != null)
 				root.setPadding(root.getPaddingLeft, statusBarHeight,
 					root.getPaddingRight, root.getPaddingBottom)
 			val lv = findViewById(android.R.id.list).asInstanceOf[android.view.View]
-			android.util.Log.d("PrefsAct", "applyPrefTopInset: lv=" + lv)
 			if (lv != null) {
 				lv.setPadding(lv.getPaddingLeft, statusBarHeight,
 					lv.getPaddingRight, lv.getPaddingBottom)
@@ -83,12 +80,45 @@ class PrefsAct extends PreferenceActivity {
 		}
 	}
 
+	// Schedule applyPrefTopInset to run after the current event loop.
+	// This is needed because when a PreferenceScreen sub-screen is opened,
+	// the ListView content is swapped asynchronously — the new ListView
+	// isn't available immediately. Posting to the Handler ensures we
+	// apply padding after the new list is created.
+	def postApplyPrefTopInset() {
+		new android.os.Handler(getMainLooper).post(new Runnable {
+			override def run() : Unit = applyPrefTopInset()
+		})
+	}
+
 	// Called when the preference list content changes (e.g. when navigating
 	// into a PreferenceScreen sub-screen). Re-apply the top inset padding.
 	override def onContentChanged() {
-		android.util.Log.d("PrefsAct", "onContentChanged")
 		super.onContentChanged()
 		applyPrefTopInset()
+		// Also post to apply after the new ListView is laid out
+		postApplyPrefTopInset()
+	}
+
+	// Intercept clicks on PreferenceScreen items (sub-screens like
+	// Notifications, Connection Preferences, etc.) to re-apply the
+	// top inset padding after the new screen content is loaded.
+	// onContentChanged is not always called for sub-screen navigation
+	// in PreferenceActivity, so we need to post the padding update
+	// manually after the click is processed.
+	override def onPreferenceTreeClick(preferenceScreen : android.preference.PreferenceScreen,
+			preference : android.preference.Preference) : Boolean = {
+		val result = super.onPreferenceTreeClick(preferenceScreen, preference)
+		// Post multiple times to ensure padding is applied after the
+		// new ListView is created and laid out
+		postApplyPrefTopInset()
+		new android.os.Handler(getMainLooper).postDelayed(new Runnable {
+			override def run() : Unit = applyPrefTopInset()
+		}, 100)
+		new android.os.Handler(getMainLooper).postDelayed(new Runnable {
+			override def run() : Unit = applyPrefTopInset()
+		}, 300)
+		result
 	}
 
 	override def onCreate(savedInstanceState: Bundle) {
