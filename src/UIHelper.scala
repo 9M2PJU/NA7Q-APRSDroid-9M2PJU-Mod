@@ -159,7 +159,7 @@ object UIHelper
 		// preference headers and list items are not drawn under the status
 		// bar. The OnApplyWindowInsetsListener above will refine this if it
 		// fires (e.g. on rotation or multi-window changes).
-		if (act.isInstanceOf[android.preference.PreferenceActivity]) {
+		if (act.isInstanceOf[_root_.android.preference.PreferenceActivity]) {
 			val res = act.getResources()
 			val resId = res.getIdentifier("status_bar_height", "dimen", "android")
 			if (resId > 0) {
