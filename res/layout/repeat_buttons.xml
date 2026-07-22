@@ -18,7 +18,7 @@ android:background="#222" >
 		android:layout_gravity="center_vertical"
 		android:layout_weight="1"
 		android:text="@string/p__repeat"
-		android:textColor="#ff9800"
+		android:textColor="#8bc34a"
 		android:textSize="12sp"
 		android:paddingLeft="6dp" />
 	</LinearLayout>
