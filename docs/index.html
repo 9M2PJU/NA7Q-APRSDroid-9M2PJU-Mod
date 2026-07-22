@@ -26,13 +26,12 @@
   </a>
   <button class="topnav-toggle" id="topnav-toggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
   <div class="topnav-links" id="topnav-links">
+    <a href="#screenshots">Screenshots</a>
+    <a href="#features">Features</a>
     <a href="#download">Download</a>
     <a href="#setup">Setup</a>
-    <a href="#features">Features</a>
-    <a href="#enhanced">Enhanced</a>
     <a href="#maps">Maps</a>
     <a href="#lora">LoRa</a>
-    <a href="#screenshots">Screenshots</a>
     <a href="#about">About</a>
     <a href="#download" class="topnav-cta">Get the app ↓</a>
   </div>
@@ -48,6 +47,137 @@
 </header>
 
 <main>
+
+<section id="screenshots" class="section">
+  <h2>Screenshots</h2>
+  <p class="section-sub">
+    A look at the app in action on a real device.
+  </p>
+
+  <div class="screenshots-grid">
+    <figure>
+      <img src="assets/screenshots/screenshot-log.png" alt="Log screen" loading="lazy">
+      <figcaption>Log — packet log</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/screenshots/screenshot-hub.png" alt="Hub screen" loading="lazy">
+      <figcaption>Hub — nearby stations</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/screenshots/screenshot-map.png" alt="Map screen" loading="lazy">
+      <figcaption>Map — offline map view</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/screenshots/screenshot-messages.png" alt="Messages screen" loading="lazy">
+      <figcaption>Messages — conversations</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/screenshots/screenshot-prefs.png" alt="Preferences screen" loading="lazy">
+      <figcaption>Preferences — settings</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/splash-user.jpg" alt="Splash screen" loading="lazy">
+      <figcaption>Splash — branded startup</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="features" class="section alt">
+  <h2>Features</h2>
+  <p class="section-sub">
+    Everything you need for APRS on Android — position reporting, messaging,
+    offline maps, digipeating, IGating, and more.
+  </p>
+
+  <div class="features-grid">
+    <div class="feature">
+      <h3>Real-time position reporting</h3>
+      <p>GPS, fixed, periodic, or SmartBeaconing™. Share your location on the APRS network.</p>
+    </div>
+    <div class="feature">
+      <h3>Offline maps</h3>
+      <p>MBTiles + MapsForge V3. No Google Maps dependency — full OSM compatibility, works without a data connection.</p>
+    </div>
+    <div class="feature">
+      <h3>APRS messaging</h3>
+      <p>Send and receive messages through the network. Per-station conversation threads.</p>
+    </div>
+    <div class="feature">
+      <h3>Digipeater &amp; I-gate</h3>
+      <p>Full 2-way Internet Gateway. Direct or full digipeating. Flexible packet routing (RF + APRS-IS, or RF-only while IGating).</p>
+    </div>
+    <div class="feature">
+      <h3>Radio control</h3>
+      <p>Support for Vero, BTech, Radioddity, and other radios. DigiRig interface support.</p>
+    </div>
+    <div class="feature">
+      <h3>Bluetooth TNC</h3>
+      <p>Classic Bluetooth and stable BLE support. KISS, TNC-2, Kenwood, and AFSK protocols.</p>
+    </div>
+    <div class="feature">
+      <h3>Mic-E compression</h3>
+      <p>Efficient position encoding with Mic-E, including EMERGENCY status support.</p>
+    </div>
+    <div class="feature">
+      <h3>Enhanced station viewer</h3>
+      <p>Hub log sortable by distance or newest. Speed, course, and altitude information.</p>
+    </div>
+  </div>
+
+  <h3 class="features-subheading">Enhanced features (inherited from NA7Q's fork)</h3>
+  <p class="section-sub">
+    These features come from
+    <a href="https://github.com/na7q/aprsdroid" target="_blank" rel="noopener">NA7Q's enhanced APRSdroid fork</a>
+    (<a href="https://na7q.com/aprsdroid-osm/" target="_blank" rel="noopener">homepage</a>)
+    and are not found in the official APRSdroid.
+  </p>
+
+  <div class="whatsnew-grid">
+  <div class="whatsnew-group">
+    <h3>RF &amp; networking</h3>
+    <ul>
+      <li><strong>Digipeater</strong> — direct or full digipeating capabilities.</li>
+      <li><strong>2-Way IGating</strong> — full Internet Gateway functionality.</li>
+      <li><strong>Flexible packet routing</strong> — send packets via RF and APRS-IS, or RF only while IGating.</li>
+      <li><strong>Radio control</strong> — support for Vero, BTech, Radioddity, and other radios.</li>
+      <li><strong>DigiRig support</strong> — seamless integration with DigiRig interfaces.</li>
+      <li><strong>Bluetooth Low Energy</strong> — stable BLE support.</li>
+    </ul>
+  </div>
+
+  <div class="whatsnew-group">
+    <h3>Advanced offline mapping</h3>
+    <ul>
+      <li><strong>Offline maps with MBTiles</strong> — complete offline operation capability.</li>
+      <li><strong>MapsForge V3 support</strong> — enhanced offline mapping with MapsForge.</li>
+      <li><strong>OpenStreetMap integration</strong> — full OSM compatibility for mapping.</li>
+      <li><strong>Google Maps not supported</strong> — the mod uses OSM maps (MBTiles + MapsForge V3) for offline mapping, privacy, and zero dependencies.</li>
+    </ul>
+  </div>
+
+  <div class="whatsnew-group">
+    <h3>Data &amp; compression</h3>
+    <ul>
+      <li><strong>Mic-E compression</strong> — efficient position encoding.</li>
+      <li><strong>Mic-E emergency status</strong> — including EMERGENCY status support.</li>
+      <li><strong>Standard compression</strong> — multiple compression formats supported.</li>
+    </ul>
+  </div>
+
+  <div class="whatsnew-group">
+    <h3>User experience enhancements</h3>
+    <ul>
+      <li><strong>Unit options</strong> — choose between Metric or Imperial units.</li>
+      <li><strong>Hardware control</strong> — option to disable hardware acceleration.</li>
+      <li><strong>Enhanced station viewer</strong> — added speed and course information.</li>
+      <li><strong>Advanced messaging tweaks</strong> — features for power users.</li>
+      <li><strong>Message ID control</strong> — option to disable Message ID.</li>
+      <li><strong>Smart Hub log</strong> — sort by distance or newest stations.</li>
+      <li><strong>Under-the-hood improvements</strong> — numerous performance and stability enhancements.</li>
+    </ul>
+  </div>
+  </div>
+</section>
 
 <section id="download" class="section">
   <h2>Download</h2>
@@ -88,14 +218,19 @@
   </p>
 </section>
 
-<section id="setup" class="section">
-  <h2>Setup &amp; offline maps</h2>
+<section id="setup" class="section alt">
+  <h2>Setup</h2>
+  <p class="section-sub">
+    Three steps to get on the air. For offline map files, see the
+    <a href="#maps">Offline maps</a> section.
+  </p>
 
+  <div class="whatsnew-grid">
   <div class="whatsnew-group">
     <h3>1. Install APRSdroid</h3>
     <ol>
       <li>Uninstall any previous <strong>official</strong> version of APRSdroid (different signing key).</li>
-      <li>Download the latest signed release APK from the <a href="#download">Download section</a> above.</li>
+      <li>Download the latest signed release APK from the <a href="#download">Download section</a>.</li>
       <li>Install the APK on your Android device (enable <em>Install from unknown sources</em> if prompted).</li>
     </ol>
   </div>
@@ -119,6 +254,33 @@
       <li>Select offline maps and enable offline mode from the preferences in the <strong>OSM Maps</strong> section.</li>
       <li>If offline mode is not enabled, the online OSM maps server will be used.</li>
     </ol>
+    <p>
+      See <a href="#maps">Offline maps</a> for where to download map files and
+      tools for creating your own.
+    </p>
+  </div>
+  </div>
+</section>
+
+<section id="maps" class="section">
+  <h2>Offline maps</h2>
+  <p class="section-sub">
+    APRSdroid uses OSM-based offline maps (MBTiles or MapsForge V3).
+    Download a ready-made map below or create your own with the tools listed.
+  </p>
+
+  <div id="maps-release" class="release-card" hidden>
+    <div class="release-head">
+      <h3 id="maps-name">Offline map</h3>
+      <span id="maps-date" class="release-date"></span>
+    </div>
+    <div id="maps-assets" class="assets"></div>
+    <div class="release-meta">
+      <div class="counter">
+        <span id="maps-downloads" class="counter-num">0</span>
+        <span class="counter-label">downloads</span>
+      </div>
+    </div>
   </div>
 
   <div class="whatsnew-group">
@@ -176,130 +338,7 @@
   </div>
 </section>
 
-<section id="features" class="section">
-  <h2>Features</h2>
-  <div class="features-grid">
-    <div class="feature">
-      <h3>Real-time position reporting</h3>
-      <p>GPS, fixed, periodic, or SmartBeaconing™. Share your location on the APRS network.</p>
-    </div>
-    <div class="feature">
-      <h3>Offline maps</h3>
-      <p>MBTiles + MapsForge V3. No Google Maps dependency — full OSM compatibility, works without a data connection.</p>
-    </div>
-    <div class="feature">
-      <h3>APRS messaging</h3>
-      <p>Send and receive messages through the network. Per-station conversation threads.</p>
-    </div>
-    <div class="feature">
-      <h3>Digipeater &amp; I-gate</h3>
-      <p>Full 2-way Internet Gateway. Direct or full digipeating. Flexible packet routing (RF + APRS-IS, or RF-only while IGating).</p>
-    </div>
-    <div class="feature">
-      <h3>Radio control</h3>
-      <p>Support for Vero, BTech, Radioddity, and other radios. DigiRig interface support.</p>
-    </div>
-    <div class="feature">
-      <h3>Bluetooth TNC</h3>
-      <p>Classic Bluetooth and stable BLE support. KISS, TNC-2, Kenwood, and AFSK protocols.</p>
-    </div>
-    <div class="feature">
-      <h3>Mic-E compression</h3>
-      <p>Efficient position encoding with Mic-E, including EMERGENCY status support.</p>
-    </div>
-    <div class="feature">
-      <h3>Enhanced station viewer</h3>
-      <p>Hub log sortable by distance or newest. Speed, course, and altitude information.</p>
-    </div>
-  </div>
-</section>
-
-<section id="enhanced" class="section alt">
-  <h2>Enhanced features</h2>
-  <p>
-    Inherited from <a href="https://github.com/na7q/aprsdroid" target="_blank" rel="noopener">NA7Q's enhanced APRSdroid fork</a>
-    (<a href="https://na7q.com/aprsdroid-osm/" target="_blank" rel="noopener">homepage</a>)
-    — not found in the official APRSdroid.
-  </p>
-
-  <div class="whatsnew-grid">
-  <div class="whatsnew-group">
-    <h3>RF &amp; networking</h3>
-    <ul>
-      <li><strong>Digipeater</strong> — direct or full digipeating capabilities.</li>
-      <li><strong>2-Way IGating</strong> — full Internet Gateway functionality.</li>
-      <li><strong>Flexible packet routing</strong> — send packets via RF and APRS-IS, or RF only while IGating.</li>
-      <li><strong>Radio control</strong> — support for Vero, BTech, Radioddity, and other radios.</li>
-      <li><strong>DigiRig support</strong> — seamless integration with DigiRig interfaces.</li>
-      <li><strong>Bluetooth Low Energy</strong> — stable BLE support.</li>
-    </ul>
-  </div>
-
-  <div class="whatsnew-group">
-    <h3>Advanced offline mapping</h3>
-    <ul>
-      <li><strong>Offline maps with MBTiles</strong> — complete offline operation capability.</li>
-      <li><strong>MapsForge V3 support</strong> — enhanced offline mapping with MapsForge.</li>
-      <li><strong>OpenStreetMap integration</strong> — full OSM compatibility for mapping.</li>
-      <li><strong>Google Maps not supported</strong> — the mod uses OSM maps (MBTiles + MapsForge V3) for offline mapping, privacy, and zero dependencies.</li>
-    </ul>
-  </div>
-
-  <div class="whatsnew-group">
-    <h3>Data &amp; compression</h3>
-    <ul>
-      <li><strong>Mic-E compression</strong> — efficient position encoding.</li>
-      <li><strong>Mic-E emergency status</strong> — including EMERGENCY status support.</li>
-      <li><strong>Standard compression</strong> — multiple compression formats supported.</li>
-    </ul>
-  </div>
-
-  <div class="whatsnew-group">
-    <h3>User experience enhancements</h3>
-    <ul>
-      <li><strong>Unit options</strong> — choose between Metric or Imperial units.</li>
-      <li><strong>Hardware control</strong> — option to disable hardware acceleration.</li>
-      <li><strong>Enhanced station viewer</strong> — added speed and course information.</li>
-      <li><strong>Advanced messaging tweaks</strong> — features for power users.</li>
-      <li><strong>Message ID control</strong> — option to disable Message ID.</li>
-      <li><strong>Smart Hub log</strong> — sort by distance or newest stations.</li>
-      <li><strong>Under-the-hood improvements</strong> — numerous performance and stability enhancements.</li>
-    </ul>
-  </div>
-  </div>
-</section>
-
-<section id="maps" class="section">
-  <h2>Offline maps</h2>
-
-  <div id="maps-release" class="release-card" hidden>
-    <div class="release-head">
-      <h3 id="maps-name">Offline map</h3>
-      <span id="maps-date" class="release-date"></span>
-    </div>
-    <div id="maps-assets" class="assets"></div>
-    <div class="release-meta">
-      <div class="counter">
-        <span id="maps-downloads" class="counter-num">0</span>
-        <span class="counter-label">downloads</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="whatsnew-group">
-    <h3>Where to get maps</h3>
-    <p>NA7Q provides several tools for downloading offline maps:</p>
-    <ul>
-      <li><a href="https://na7q.com/wp-content/uploads/2024/12/map.mbtiles" target="_blank" rel="noopener">World Map</a> — ready-to-use starter world map (zoom 6)</li>
-      <li><a href="https://downloads.aprs.wiki/APRSdroid/gui7-concurrency.exe" target="_blank" rel="noopener">OSM Map Maker</a> (Windows) — GUI tool for downloading OSM maps</li>
-      <li><a href="https://na7q.com/wp-content/uploads/2025/01/gui7-concurrency.py" target="_blank" rel="noopener">Python Map Maker</a> (cross-platform) — Python script version</li>
-      <li><a href="https://na7q.com/wp-content/uploads/2025/02/mapmaker-0.2.exe" target="_blank" rel="noopener">Multi-Map Maker</a> (Windows) — Google, OSM, USGS, Canada Topo, and more</li>
-      <li><a href="https://extract.bbbike.org/" target="_blank" rel="noopener">BBBike MapsForge</a> (web) — custom MapsForge OSM maps online</li>
-    </ul>
-  </div>
-</section>
-
-<section id="lora" class="section">
+<section id="lora" class="section alt">
   <h2>Connecting a LoRa APRS tracker via Bluetooth (BLE KISS TNC)</h2>
 
   <p>
@@ -362,40 +401,6 @@
       <li><strong>Incoming:</strong> The tracker receives LoRa APRS packets and forwards them to APRSdroid via BLE. APRSdroid decodes and displays them.</li>
     </ul>
   </div>
-  </div>
-</section>
-
-<section id="screenshots" class="section">
-  <h2>Screenshots</h2>
-  <p class="section-sub">
-    A look at the app in action on a real device.
-  </p>
-
-  <div class="screenshots-grid">
-    <figure>
-      <img src="assets/screenshots/screenshot-log.png" alt="Log screen" loading="lazy">
-      <figcaption>Log — packet log</figcaption>
-    </figure>
-    <figure>
-      <img src="assets/screenshots/screenshot-hub.png" alt="Hub screen" loading="lazy">
-      <figcaption>Hub — nearby stations</figcaption>
-    </figure>
-    <figure>
-      <img src="assets/screenshots/screenshot-map.png" alt="Map screen" loading="lazy">
-      <figcaption>Map — offline map view</figcaption>
-    </figure>
-    <figure>
-      <img src="assets/screenshots/screenshot-messages.png" alt="Messages screen" loading="lazy">
-      <figcaption>Messages — conversations</figcaption>
-    </figure>
-    <figure>
-      <img src="assets/screenshots/screenshot-prefs.png" alt="Preferences screen" loading="lazy">
-      <figcaption>Preferences — settings</figcaption>
-    </figure>
-    <figure>
-      <img src="assets/splash-user.jpg" alt="Splash screen" loading="lazy">
-      <figcaption>Splash — branded startup</figcaption>
-    </figure>
   </div>
 </section>
 

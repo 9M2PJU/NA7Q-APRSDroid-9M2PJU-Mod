@@ -295,6 +295,13 @@ h2 { font-size: clamp(1.4rem, 3vw, 2rem); margin-top: 0; }
 }
 .feature h3 { font-size: 1.05rem; margin: 0 0 0.5rem; color: var(--accent); }
 .feature p { margin: 0; font-size: 0.92rem; }
+.features-subheading {
+  font-size: 1.2rem;
+  margin: 2rem 0 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--surface-2);
+  color: var(--text-bright);
+}
 
 /* ---------- What's new / info groups ---------- */
 .whatsnew-group {
