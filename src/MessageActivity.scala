@@ -34,14 +34,8 @@ class MessageActivity extends StationHelper(R.string.app_messages)
 	var winlinkBtnRead : Button = null
 	var winlinkBtnReply : Button = null
 	var winlinkBtnCompose : Button = null
-	var winlinkBtnPlayback : Button = null
-	var winlinkBtnSms : Button = null
-	var winlinkBtnSetAlias : Button = null
-	var winlinkBtnListAliases : Button = null
 	var winlinkBtnForward : Button = null
 	var winlinkBtnKill : Button = null
-	var winlinkBtnGateway : Button = null
-	var winlinkBtnInfo : Button = null
 
 	// WTSAPP UI elements (only inflated when talking to WTSAPP)
 	var wtsappButtons : View = null
@@ -99,14 +93,8 @@ class MessageActivity extends StationHelper(R.string.app_messages)
 		winlinkBtnRead = winlinkButtons.findViewById(R.id.winlink_btn_read).asInstanceOf[Button]
 		winlinkBtnReply = winlinkButtons.findViewById(R.id.winlink_btn_reply).asInstanceOf[Button]
 		winlinkBtnCompose = winlinkButtons.findViewById(R.id.winlink_btn_compose).asInstanceOf[Button]
-		winlinkBtnPlayback = winlinkButtons.findViewById(R.id.winlink_btn_playback).asInstanceOf[Button]
-		winlinkBtnSms = winlinkButtons.findViewById(R.id.winlink_btn_sms).asInstanceOf[Button]
-		winlinkBtnSetAlias = winlinkButtons.findViewById(R.id.winlink_btn_set_alias).asInstanceOf[Button]
-		winlinkBtnListAliases = winlinkButtons.findViewById(R.id.winlink_btn_list_aliases).asInstanceOf[Button]
 		winlinkBtnForward = winlinkButtons.findViewById(R.id.winlink_btn_forward).asInstanceOf[Button]
 		winlinkBtnKill = winlinkButtons.findViewById(R.id.winlink_btn_kill).asInstanceOf[Button]
-		winlinkBtnGateway = winlinkButtons.findViewById(R.id.winlink_btn_gateway).asInstanceOf[Button]
-		winlinkBtnInfo = winlinkButtons.findViewById(R.id.winlink_btn_info).asInstanceOf[Button]
 
 		winlinkBtnLogin.setOnClickListener(new OnClickListener { override def onClick(v : View) = onWinlinkLogin() })
 		winlinkBtnLogout.setOnClickListener(new OnClickListener { override def onClick(v : View) = onWinlinkLogout() })
@@ -115,14 +103,8 @@ class MessageActivity extends StationHelper(R.string.app_messages)
 		winlinkBtnRead.setOnClickListener(new OnClickListener { override def onClick(v : View) = onWinlinkRead() })
 		winlinkBtnReply.setOnClickListener(new OnClickListener { override def onClick(v : View) = onWinlinkReply() })
 		winlinkBtnCompose.setOnClickListener(new OnClickListener { override def onClick(v : View) = onWinlinkCompose() })
-		winlinkBtnPlayback.setOnClickListener(new OnClickListener { override def onClick(v : View) = onWinlinkPlayback() })
-		winlinkBtnSms.setOnClickListener(new OnClickListener { override def onClick(v : View) = onWinlinkSms() })
-		winlinkBtnSetAlias.setOnClickListener(new OnClickListener { override def onClick(v : View) = onWinlinkSetAlias() })
-		winlinkBtnListAliases.setOnClickListener(new OnClickListener { override def onClick(v : View) = onWinlinkListAliases() })
 		winlinkBtnForward.setOnClickListener(new OnClickListener { override def onClick(v : View) = onWinlinkForward() })
 		winlinkBtnKill.setOnClickListener(new OnClickListener { override def onClick(v : View) = onWinlinkKill() })
-		winlinkBtnGateway.setOnClickListener(new OnClickListener { override def onClick(v : View) = onWinlinkGateway() })
-		winlinkBtnInfo.setOnClickListener(new OnClickListener { override def onClick(v : View) = onWinlinkInfo() })
 
 		// Insert the Winlink buttons at the top of the message activity
 		val root = findViewById(R.id.message_act).asInstanceOf[LinearLayout]
@@ -157,14 +139,8 @@ class MessageActivity extends StationHelper(R.string.app_messages)
 		winlinkBtnRead.setEnabled(logged_in)
 		winlinkBtnReply.setEnabled(logged_in)
 		winlinkBtnCompose.setEnabled(logged_in)
-		winlinkBtnPlayback.setEnabled(logged_in)
-		winlinkBtnSms.setEnabled(logged_in)
-		winlinkBtnSetAlias.setEnabled(logged_in)
-		winlinkBtnListAliases.setEnabled(logged_in)
 		winlinkBtnForward.setEnabled(logged_in)
 		winlinkBtnKill.setEnabled(logged_in)
-		winlinkBtnGateway.setEnabled(logged_in)
-		winlinkBtnInfo.setEnabled(logged_in)
 	}
 
 	def getWinlinkService : Option[WinlinkService] = {
@@ -234,10 +210,6 @@ class MessageActivity extends StationHelper(R.string.app_messages)
 		})
 	}
 
-	def onWinlinkPlayback() {
-		requireWinlinkService { ws => ws.playback() }
-	}
-
 	def onWinlinkCompose() {
 		val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE)
 				.asInstanceOf[LayoutInflater]
@@ -266,54 +238,6 @@ class MessageActivity extends StationHelper(R.string.app_messages)
 			})
 			.setNegativeButton(android.R.string.cancel, null)
 			.show()
-	}
-
-	def onWinlinkSms() {
-		val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE)
-				.asInstanceOf[LayoutInflater]
-		val view = inflater.inflate(R.layout.winlink_sms, null, false)
-		val toField = view.findViewById(R.id.winlink_sms_to_field).asInstanceOf[EditText]
-		val msgField = view.findViewById(R.id.winlink_sms_message_field).asInstanceOf[EditText]
-
-		new AlertDialog.Builder(this)
-			.setTitle(R.string.winlink_sms)
-			.setView(view)
-			.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-				override def onClick(d : DialogInterface, which : Int) {
-					val to = toField.getText().toString.trim
-					val msg = msgField.getText().toString.trim
-					if (to.isEmpty || msg.isEmpty) return
-					requireWinlinkService { ws => ws.sendSMS(to, msg) }
-				}
-			})
-			.setNegativeButton(android.R.string.cancel, null)
-			.show()
-	}
-
-	def onWinlinkSetAlias() {
-		val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE)
-				.asInstanceOf[LayoutInflater]
-		val view = inflater.inflate(R.layout.winlink_alias, null, false)
-		val nameField = view.findViewById(R.id.winlink_alias_name_field).asInstanceOf[EditText]
-		val emailField = view.findViewById(R.id.winlink_alias_email_field).asInstanceOf[EditText]
-
-		new AlertDialog.Builder(this)
-			.setTitle(R.string.winlink_set_alias)
-			.setView(view)
-			.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-				override def onClick(d : DialogInterface, which : Int) {
-					val alias = nameField.getText().toString.trim
-					if (alias.isEmpty) return
-					val email = emailField.getText().toString.trim
-					requireWinlinkService { ws => ws.setAlias(alias, email) }
-				}
-			})
-			.setNegativeButton(android.R.string.cancel, null)
-			.show()
-	}
-
-	def onWinlinkListAliases() {
-		requireWinlinkService { ws => ws.listAliases() }
 	}
 
 	def onWinlinkForward() {
@@ -345,30 +269,6 @@ class MessageActivity extends StationHelper(R.string.app_messages)
 		showMsgNumberDialog(R.string.winlink_kill, (num) => {
 			requireWinlinkService { ws => ws.killMessage(num) }
 		})
-	}
-
-	def onWinlinkGateway() {
-		val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE)
-				.asInstanceOf[LayoutInflater]
-		val view = inflater.inflate(R.layout.winlink_gateway, null, false)
-		val countField = view.findViewById(R.id.winlink_gateway_count_field).asInstanceOf[EditText]
-
-		new AlertDialog.Builder(this)
-			.setTitle(R.string.winlink_gateway)
-			.setView(view)
-			.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-				override def onClick(d : DialogInterface, which : Int) {
-					val countStr = countField.getText().toString.trim
-					val count = if (countStr.isEmpty) 1 else try { countStr.toInt } catch { case _ : Throwable => 1 }
-					requireWinlinkService { ws => ws.gatewayInfo(count) }
-				}
-			})
-			.setNegativeButton(android.R.string.cancel, null)
-			.show()
-	}
-
-	def onWinlinkInfo() {
-		requireWinlinkService { ws => ws.info() }
 	}
 
 	// Reusable dialog for commands that take a message number (R#, Y#, K#)
