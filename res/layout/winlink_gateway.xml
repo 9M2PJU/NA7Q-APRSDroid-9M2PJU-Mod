@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dialog for G# command: G# (number of nearby RMS gateways) -->
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:padding="10dp">
+
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="@string/winlink_gateway_count"
+android:textStyle="bold" />
+
+<EditText android:id="@+id/winlink_gateway_count_field"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:hint="@string/winlink_gateway_count_hint"
+android:singleLine="true"
+android:inputType="number"
+android:maxLength="2" />
+
+</LinearLayout>

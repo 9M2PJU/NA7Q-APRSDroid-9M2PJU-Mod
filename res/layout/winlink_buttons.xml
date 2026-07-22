@@ -1,54 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Winlink action buttons — shown above the message list when the
-  conversation is with WLNK-1. Inflated and inserted dynamically by
-  MessageActivity when targetcall is WLNK-1.
+  Winlink APRSLink action buttons — shown above the message list when
+  the conversation is with WLNK-1. Horizontal scrollable strip with all
+  APRSLink commands. Buttons that need parameters open dialogs; others
+  send the command directly.
+
+  Commands (per https://winlink.org/APRSLink):
+    Session:  Login, Logout
+    Messages: List, Read#, Reply#, Compose(SP), Playback, Forward#, Kill#
+    Short:    SMS
+    Aliases:  Set Alias(A), List Aliases(AL)
+    Info:     Help(H/?), Info(I), Gateway(G#)
 -->
 <LinearLayout
 xmlns:android="http://schemas.android.com/apk/res/android"
 android:id="@+id/winlink_buttons"
 android:layout_width="fill_parent"
 android:layout_height="wrap_content"
-android:orientation="horizontal"
-android:padding="4dp"
+android:orientation="vertical"
 android:background="#222" >
 
-<TextView android:id="@+id/winlink_status"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_gravity="center_vertical"
-android:layout_weight="1"
-android:text="@string/winlink_status_logged_out"
-android:textColor="#ccc"
-android:textSize="12sp"
-android:paddingLeft="6dp" />
+	<!-- Status row -->
+	<LinearLayout
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:orientation="horizontal"
+	android:padding="4dp" >
 
-<Button android:id="@+id/winlink_btn_login"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="@string/winlink_login"
-android:textSize="12sp"
-android:minWidth="48dp" />
+		<TextView android:id="@+id/winlink_status"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_vertical"
+		android:layout_weight="1"
+		android:text="@string/winlink_status_logged_out"
+		android:textColor="#ccc"
+		android:textSize="12sp"
+		android:paddingLeft="6dp" />
 
-<Button android:id="@+id/winlink_btn_list"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="@string/winlink_list"
-android:textSize="12sp"
-android:minWidth="48dp" />
+		<Button android:id="@+id/winlink_btn_login"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/winlink_login"
+		android:textSize="12sp"
+		android:minWidth="48dp" />
 
-<Button android:id="@+id/winlink_btn_compose"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="@string/winlink_compose"
-android:textSize="12sp"
-android:minWidth="48dp" />
+		<Button android:id="@+id/winlink_btn_logout"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/winlink_logout"
+		android:textSize="12sp"
+		android:minWidth="48dp" />
+	</LinearLayout>
 
-<Button android:id="@+id/winlink_btn_logout"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="@string/winlink_logout"
-android:textSize="12sp"
-android:minWidth="48dp" />
+	<!-- Scrollable command buttons -->
+	<HorizontalScrollView
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:scrollbars="none" >
 
+		<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:padding="4dp" >
+
+			<Button android:id="@+id/winlink_btn_help"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/winlink_help"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+			<Button android:id="@+id/winlink_btn_list"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/winlink_list"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+			<Button android:id="@+id/winlink_btn_read"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/winlink_read"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+			<Button android:id="@+id/winlink_btn_reply"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/winlink_reply"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+			<Button android:id="@+id/winlink_btn_compose"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/winlink_compose"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+			<Button android:id="@+id/winlink_btn_playback"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/winlink_playback"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+			<Button android:id="@+id/winlink_btn_sms"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/winlink_sms"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+			<Button android:id="@+id/winlink_btn_set_alias"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/winlink_set_alias"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+			<Button android:id="@+id/winlink_btn_list_aliases"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/winlink_list_aliases"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+			<Button android:id="@+id/winlink_btn_forward"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/winlink_forward"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+			<Button android:id="@+id/winlink_btn_kill"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/winlink_kill"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+			<Button android:id="@+id/winlink_btn_gateway"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/winlink_gateway"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+			<Button android:id="@+id/winlink_btn_info"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/winlink_info"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+		</LinearLayout>
+	</HorizontalScrollView>
 </LinearLayout>

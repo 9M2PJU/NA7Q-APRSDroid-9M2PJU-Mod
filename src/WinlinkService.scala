@@ -181,6 +181,75 @@ class WinlinkService(s : AprsService) {
 	}
 
 	/**
+	 * Request help (H or ? command).
+	 */
+	def help() {
+		if (state != STATE_LOGGED_IN) return
+		sendToWlnk("H")
+	}
+
+	/**
+	 * Playback message lines being written (P command).
+	 */
+	def playback() {
+		if (state != STATE_LOGGED_IN) return
+		sendToWlnk("P")
+	}
+
+	/**
+	 * Send a short one-line message (SMS command).
+	 * Format: SMS [email/callsign/alias] [message]
+	 */
+	def sendSMS(to : String, message : String) {
+		if (state != STATE_LOGGED_IN) return
+		sendToWlnk("SMS %s %s".format(to, message))
+	}
+
+	/**
+	 * Create or update an alias (A command).
+	 * Format: A [alias]=[email]
+	 * If email is empty, deletes the alias.
+	 */
+	def setAlias(alias : String, email : String) {
+		if (state != STATE_LOGGED_IN) return
+		sendToWlnk("A %s=%s".format(alias, email))
+	}
+
+	/**
+	 * List all aliases (AL command).
+	 */
+	def listAliases() {
+		if (state != STATE_LOGGED_IN) return
+		sendToWlnk("AL")
+	}
+
+	/**
+	 * Forward a message to another address (F# command).
+	 * Format: F# [email/callsign]
+	 */
+	def forwardMessage(num : Int, to : String) {
+		if (state != STATE_LOGGED_IN) return
+		sendToWlnk("F%d %s".format(num, to))
+	}
+
+	/**
+	 * Request nearby RMS packet gateways (G# command).
+	 * count is the number of gateways to return (default 1).
+	 */
+	def gatewayInfo(count : Int) {
+		if (state != STATE_LOGGED_IN) return
+		sendToWlnk("G%d".format(count))
+	}
+
+	/**
+	 * Request APRSLink information (I command).
+	 */
+	def info() {
+		if (state != STATE_LOGGED_IN) return
+		sendToWlnk("I")
+	}
+
+	/**
 	 * Compose and send a Winlink email.
 	 * Splits the body into ≤67-char lines, sends SP line first, then body
 	 * lines, then /EX.

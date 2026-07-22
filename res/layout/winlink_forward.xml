@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dialog for F# command: F# [email/callsign] -->
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:padding="10dp">
+
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="@string/winlink_msg_number"
+android:textStyle="bold" />
+
+<EditText android:id="@+id/winlink_forward_number_field"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:hint="@string/winlink_msg_number_hint"
+android:singleLine="true"
+android:inputType="number"
+android:maxLength="1" />
+
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="8dp"
+android:text="@string/winlink_forward_to"
+android:textStyle="bold" />
+
+<EditText android:id="@+id/winlink_forward_to_field"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:hint="@string/winlink_forward_to_hint"
+android:singleLine="true"
+android:inputType="textEmailAddress" />
+
+</LinearLayout>
