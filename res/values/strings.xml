@@ -769,7 +769,7 @@
 <string name="bot_no_satname">Enter a satellite name.</string>
 
 <!-- APRSMY -->
-<string name="p__aprsmy">APRSMY</string>
+<string name="p__aprsmy">APRSMY Net</string>
 <string name="aprsmy_check">Check</string>
 <string name="aprsmy_help">Help</string>
 <string name="aprsmy_status">Status</string>
