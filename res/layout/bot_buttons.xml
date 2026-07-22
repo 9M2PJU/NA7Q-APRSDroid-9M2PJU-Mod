@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  9M2PJU-4 APRS Bot buttons — shown above the message list when the
+  conversation is with 9M2PJU-4. Horizontally scrollable strip.
+  Stateless — just sends APRS messages with the command text.
+-->
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/bot_buttons"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:background="#1a2332" >
+
+	<!-- Title row -->
+	<LinearLayout
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:orientation="horizontal"
+	android:padding="4dp" >
+
+		<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_vertical"
+		android:layout_weight="1"
+		android:text="@string/p__bot"
+		android:textColor="#64b5f6"
+		android:textSize="12sp"
+		android:paddingLeft="6dp" />
+	</LinearLayout>
+
+	<!-- Scrollable command buttons -->
+	<HorizontalScrollView
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:scrollbars="none" >
+
+		<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:padding="4dp" >
+
+			<Button android:id="@+id/bot_btn_help"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/bot_help"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+			<Button android:id="@+id/bot_btn_today"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/bot_today"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+			<Button android:id="@+id/bot_btn_posmsg"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/bot_posmsg"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+			<Button android:id="@+id/bot_btn_whereis"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/bot_whereis"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+			<Button android:id="@+id/bot_btn_whereami"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/bot_whereami"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+			<Button android:id="@+id/bot_btn_riseset"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/bot_riseset"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+			<Button android:id="@+id/bot_btn_satpass"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/bot_satpass"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+			<Button android:id="@+id/bot_btn_sota"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/bot_sota"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+			<Button android:id="@+id/bot_btn_pota"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/bot_pota"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+			<Button android:id="@+id/bot_btn_police"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/bot_police"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+			<Button android:id="@+id/bot_btn_hospital"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/bot_hospital"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+			<Button android:id="@+id/bot_btn_fire_station"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/bot_fire_station"
+			android:textSize="11sp"
+			android:minWidth="40dp" />
+
+		</LinearLayout>
+	</HorizontalScrollView>
+</LinearLayout>

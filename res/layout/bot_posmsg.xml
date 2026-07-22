@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dialog for posmsg command: posmsg [email] [optional message] -->
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:padding="10dp">
+
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="@string/bot_posmsg_email"
+android:textStyle="bold" />
+
+<EditText android:id="@+id/bot_posmsg_email_field"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:hint="@string/bot_posmsg_email_hint"
+android:singleLine="true"
+android:inputType="textEmailAddress" />
+
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="8dp"
+android:text="@string/bot_posmsg_message"
+android:textStyle="bold" />
+
+<EditText android:id="@+id/bot_posmsg_message_field"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:hint="@string/bot_posmsg_message_hint"
+android:singleLine="true"
+android:maxLength="67"
+android:inputType="textShortMessage|textCapSentences" />
+
+</LinearLayout>

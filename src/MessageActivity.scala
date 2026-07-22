@@ -43,6 +43,21 @@ class MessageActivity extends StationHelper(R.string.app_messages)
 	var wtsappBtnSetAlias : Button = null
 	var wtsappBtnRemoveAlias : Button = null
 
+	// 9M2PJU-4 APRS Bot UI elements
+	var botButtons : View = null
+	var botBtnHelp : Button = null
+	var botBtnToday : Button = null
+	var botBtnPosmsg : Button = null
+	var botBtnWhereis : Button = null
+	var botBtnWhereami : Button = null
+	var botBtnRiseset : Button = null
+	var botBtnSatpass : Button = null
+	var botBtnSota : Button = null
+	var botBtnPota : Button = null
+	var botBtnPolice : Button = null
+	var botBtnHospital : Button = null
+	var botBtnFireStation : Button = null
+
 	// Broadcast receiver for live Winlink status updates
 	var winlinkStatusReceiver : BroadcastReceiver = null
 
@@ -51,6 +66,9 @@ class MessageActivity extends StationHelper(R.string.app_messages)
 
 	def isWtsappConversation = targetcall != null &&
 		targetcall.equalsIgnoreCase("WTSAPP")
+
+	def isBotConversation = targetcall != null &&
+		targetcall.equalsIgnoreCase("9M2PJU-4")
 
 	override def onCreate(savedInstanceState: Bundle) {
 		super.onCreate(savedInstanceState)
@@ -72,6 +90,10 @@ class MessageActivity extends StationHelper(R.string.app_messages)
 		// Inflate WTSAPP buttons if this is a WTSAPP conversation
 		if (isWtsappConversation) {
 			setupWtsappUI()
+		}
+		// Inflate APRS Bot buttons if this is a 9M2PJU-4 conversation
+		if (isBotConversation) {
+			setupBotUI()
 		}
 
 		val message = getIntent().getStringExtra("message")
@@ -419,6 +441,130 @@ class MessageActivity extends StationHelper(R.string.app_messages)
 					val formatted = "#RM %s".format(alias)
 					sendMessage(formatted)
 					Toast.makeText(MessageActivity.this, R.string.wtsapp_alias_removed, Toast.LENGTH_SHORT).show()
+				}
+			})
+			.setNegativeButton(android.R.string.cancel, null)
+			.show()
+	}
+
+	// ===== 9M2PJU-4 APRS Bot =====
+
+	def setupBotUI() {
+		val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE)
+				.asInstanceOf[LayoutInflater]
+		botButtons = inflater.inflate(R.layout.bot_buttons, null, false)
+		botBtnHelp = botButtons.findViewById(R.id.bot_btn_help).asInstanceOf[Button]
+		botBtnToday = botButtons.findViewById(R.id.bot_btn_today).asInstanceOf[Button]
+		botBtnPosmsg = botButtons.findViewById(R.id.bot_btn_posmsg).asInstanceOf[Button]
+		botBtnWhereis = botButtons.findViewById(R.id.bot_btn_whereis).asInstanceOf[Button]
+		botBtnWhereami = botButtons.findViewById(R.id.bot_btn_whereami).asInstanceOf[Button]
+		botBtnRiseset = botButtons.findViewById(R.id.bot_btn_riseset).asInstanceOf[Button]
+		botBtnSatpass = botButtons.findViewById(R.id.bot_btn_satpass).asInstanceOf[Button]
+		botBtnSota = botButtons.findViewById(R.id.bot_btn_sota).asInstanceOf[Button]
+		botBtnPota = botButtons.findViewById(R.id.bot_btn_pota).asInstanceOf[Button]
+		botBtnPolice = botButtons.findViewById(R.id.bot_btn_police).asInstanceOf[Button]
+		botBtnHospital = botButtons.findViewById(R.id.bot_btn_hospital).asInstanceOf[Button]
+		botBtnFireStation = botButtons.findViewById(R.id.bot_btn_fire_station).asInstanceOf[Button]
+
+		botBtnHelp.setOnClickListener(new OnClickListener { override def onClick(v : View) = onBotCommand("help") })
+		botBtnToday.setOnClickListener(new OnClickListener { override def onClick(v : View) = onBotCommand("today") })
+		botBtnPosmsg.setOnClickListener(new OnClickListener { override def onClick(v : View) = onBotPosmsg() })
+		botBtnWhereis.setOnClickListener(new OnClickListener { override def onClick(v : View) = onBotWhereis() })
+		botBtnWhereami.setOnClickListener(new OnClickListener { override def onClick(v : View) = onBotCommand("whereami") })
+		botBtnRiseset.setOnClickListener(new OnClickListener { override def onClick(v : View) = onBotCommand("riseset") })
+		botBtnSatpass.setOnClickListener(new OnClickListener { override def onClick(v : View) = onBotSatpass() })
+		botBtnSota.setOnClickListener(new OnClickListener { override def onClick(v : View) = onBotCommand("sota") })
+		botBtnPota.setOnClickListener(new OnClickListener { override def onClick(v : View) = onBotCommand("pota") })
+		botBtnPolice.setOnClickListener(new OnClickListener { override def onClick(v : View) = onBotCommand("police") })
+		botBtnHospital.setOnClickListener(new OnClickListener { override def onClick(v : View) = onBotCommand("hospital") })
+		botBtnFireStation.setOnClickListener(new OnClickListener { override def onClick(v : View) = onBotCommand("fire_station") })
+
+		val root = findViewById(R.id.message_act).asInstanceOf[LinearLayout]
+		root.addView(botButtons, 0)
+	}
+
+	// Send a simple no-argument command to the bot
+	def onBotCommand(command : String) {
+		if (!AprsService.running) {
+			showStartTrackingDialog()
+			return
+		}
+		sendMessage(command)
+		Toast.makeText(this, R.string.bot_sent, Toast.LENGTH_SHORT).show()
+	}
+
+	// posmsg [email] [optional message]
+	def onBotPosmsg() {
+		if (!AprsService.running) { showStartTrackingDialog(); return }
+		val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE).asInstanceOf[LayoutInflater]
+		val view = inflater.inflate(R.layout.bot_posmsg, null, false)
+		val emailField = view.findViewById(R.id.bot_posmsg_email_field).asInstanceOf[EditText]
+		val msgField = view.findViewById(R.id.bot_posmsg_message_field).asInstanceOf[EditText]
+
+		new AlertDialog.Builder(this)
+			.setTitle(R.string.bot_posmsg)
+			.setView(view)
+			.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				override def onClick(d : DialogInterface, which : Int) {
+					val email = emailField.getText().toString.trim
+					if (email.isEmpty) {
+						Toast.makeText(MessageActivity.this, R.string.bot_no_email, Toast.LENGTH_SHORT).show()
+						return
+					}
+					val msg = msgField.getText().toString.trim
+					val cmd = if (msg.isEmpty) "posmsg %s".format(email) else "posmsg %s %s".format(email, msg)
+					sendMessage(cmd)
+					Toast.makeText(MessageActivity.this, R.string.bot_sent, Toast.LENGTH_SHORT).show()
+				}
+			})
+			.setNegativeButton(android.R.string.cancel, null)
+			.show()
+	}
+
+	// whereis [callsign]
+	def onBotWhereis() {
+		if (!AprsService.running) { showStartTrackingDialog(); return }
+		val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE).asInstanceOf[LayoutInflater]
+		val view = inflater.inflate(R.layout.bot_whereis, null, false)
+		val callField = view.findViewById(R.id.bot_whereis_callsign_field).asInstanceOf[EditText]
+
+		new AlertDialog.Builder(this)
+			.setTitle(R.string.bot_whereis)
+			.setView(view)
+			.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				override def onClick(d : DialogInterface, which : Int) {
+					val call = callField.getText().toString.trim
+					if (call.isEmpty) {
+						Toast.makeText(MessageActivity.this, R.string.bot_no_callsign, Toast.LENGTH_SHORT).show()
+						return
+					}
+					sendMessage("whereis %s".format(call))
+					Toast.makeText(MessageActivity.this, R.string.bot_sent, Toast.LENGTH_SHORT).show()
+				}
+			})
+			.setNegativeButton(android.R.string.cancel, null)
+			.show()
+	}
+
+	// satpass [name]
+	def onBotSatpass() {
+		if (!AprsService.running) { showStartTrackingDialog(); return }
+		val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE).asInstanceOf[LayoutInflater]
+		val view = inflater.inflate(R.layout.bot_satpass, null, false)
+		val nameField = view.findViewById(R.id.bot_satpass_name_field).asInstanceOf[EditText]
+
+		new AlertDialog.Builder(this)
+			.setTitle(R.string.bot_satpass)
+			.setView(view)
+			.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				override def onClick(d : DialogInterface, which : Int) {
+					val name = nameField.getText().toString.trim
+					if (name.isEmpty) {
+						Toast.makeText(MessageActivity.this, R.string.bot_no_satname, Toast.LENGTH_SHORT).show()
+						return
+					}
+					sendMessage("satpass %s".format(name))
+					Toast.makeText(MessageActivity.this, R.string.bot_sent, Toast.LENGTH_SHORT).show()
 				}
 			})
 			.setNegativeButton(android.R.string.cancel, null)

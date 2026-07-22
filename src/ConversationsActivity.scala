@@ -23,6 +23,7 @@ class ConversationsActivity extends LoadingListActivity
 	lazy val newConversationBtn = findViewById(R.id.new_conversation).asInstanceOf[Button]
 	lazy val winlinkConversationBtn = findViewById(R.id.winlink_conversation).asInstanceOf[Button]
 	lazy val wtsappConversationBtn = findViewById(R.id.wtsapp_conversation).asInstanceOf[Button]
+	lazy val botConversationBtn = findViewById(R.id.bot_conversation).asInstanceOf[Button]
 
 	override def onCreate(savedInstanceState: Bundle) {
 		super.onCreate(savedInstanceState)
@@ -32,6 +33,7 @@ class ConversationsActivity extends LoadingListActivity
 		newConversationBtn.setOnClickListener(this);
 		winlinkConversationBtn.setOnClickListener(this);
 		wtsappConversationBtn.setOnClickListener(this);
+		botConversationBtn.setOnClickListener(this);
 		setupBottomNav()
 
 		getListView().setOnCreateContextMenuListener(this);
@@ -61,6 +63,8 @@ class ConversationsActivity extends LoadingListActivity
 			openMessaging("WLNK-1")
 		case R.id.wtsapp_conversation =>
 			openMessaging("WTSAPP")
+		case R.id.bot_conversation =>
+			openMessaging("9M2PJU-4")
 		}
 	}
 

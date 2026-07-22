@@ -741,4 +741,31 @@
 <string name="wtsapp_no_alias">Enter an alias name.</string>
 <string name="wtsapp_no_phone">Enter a phone number.</string>
 
+<!-- 9M2PJU-4 APRS Bot -->
+<string name="p__bot">APRS Bot</string>
+<string name="bot_help">Help</string>
+<string name="bot_today">Today</string>
+<string name="bot_posmsg">PosMsg</string>
+<string name="bot_whereis">WhereIs</string>
+<string name="bot_whereami">WhereAmI</string>
+<string name="bot_riseset">RiseSet</string>
+<string name="bot_satpass">SatPass</string>
+<string name="bot_sota">SOTA</string>
+<string name="bot_pota">POTA</string>
+<string name="bot_police">Police</string>
+<string name="bot_hospital">Hospital</string>
+<string name="bot_fire_station">Fire Stn</string>
+<string name="bot_posmsg_email">Email address for position report</string>
+<string name="bot_posmsg_email_hint">someone@email.com</string>
+<string name="bot_posmsg_message">Optional message (one line)</string>
+<string name="bot_posmsg_message_hint">I am at this location</string>
+<string name="bot_whereis_callsign">Callsign to locate</string>
+<string name="bot_whereis_callsign_hint">9M2PJU-8</string>
+<string name="bot_satpass_name">Satellite name</string>
+<string name="bot_satpass_name_hint">iss</string>
+<string name="bot_sent">Command sent to APRS Bot.</string>
+<string name="bot_no_email">Enter an email address.</string>
+<string name="bot_no_callsign">Enter a callsign.</string>
+<string name="bot_no_satname">Enter a satellite name.</string>
+
 </resources>
