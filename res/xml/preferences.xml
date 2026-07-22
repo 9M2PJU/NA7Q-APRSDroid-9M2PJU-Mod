@@ -140,6 +140,21 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+	android:title="@string/p__winlink">
+
+        <PreferenceScreen
+		android:key="p_winlink"
+		android:title="@string/p_winlink"
+		android:summary="@string/p_winlink_summary">
+
+            <intent android:action="android.intent.action.MAIN"
+                    android:targetPackage="org.aprsdroid.app"
+                    android:targetClass="org.aprsdroid.app.WinlinkPrefs" />
+
+        </PreferenceScreen>
+    </PreferenceCategory>
+
+    <PreferenceCategory
 	android:title="@string/p__position">
 	
 	<PreferenceScreen

@@ -63,6 +63,7 @@ object AprsService {
 
 	var running = false
 	var link_error = 0
+	var serviceInstance : AprsService = null
 
 	implicit def block2runnable[F](f: => F) = new Runnable() { def run() { f } }
 }
@@ -86,6 +87,7 @@ class AprsService extends Service {
 	lazy val msgNotifier = msgService.createMessageNotifier()
 	lazy val digipeaterService = new DigipeaterService(prefs, TAG, sendDigipeatedPacket)
 	lazy val igateService = new IgateService(this, prefs)
+	lazy val winlinkService = new WinlinkService(this)
 
 	var poster : AprsBackend = null
 
@@ -99,6 +101,7 @@ class AprsService extends Service {
 
 	override def onStartCommand(i : Intent, flags : Int, startId : Int) : Int = {
 		Log.d(TAG, "onStartCommand: " + i + ", " + flags + ", " + startId);
+		serviceInstance = this
 		handleStart(i)
 		Service.START_REDELIVER_INTENT
 	}
@@ -197,6 +200,12 @@ class AprsService extends Service {
 
 		msgService.sendPendingMessages()
 
+		// Auto-login to Winlink if enabled and password is set
+		if (prefs.isWinlinkAutoLogin() && prefs.getWinlinkPassword().nonEmpty) {
+			Log.i(TAG, "auto-login to Winlink enabled, initiating")
+			winlinkService.login()
+		}
+
 		sendBroadcast(new Intent(SERVICE_STARTED)
 			.putExtra(API_VERSION, API_VERSION_CODE)
 			.putExtra(CALLSIGN, callssid))
@@ -237,6 +246,7 @@ class AprsService extends Service {
 	override def onDestroy() {
 		running = false
 		link_error = 0
+		serviceInstance = null
 		// catch FC when service is killed from outside
 		if (poster != null) {
 			poster.stop()
@@ -251,6 +261,7 @@ class AprsService extends Service {
 			sendBroadcast(new Intent(SERVICE_STOPPED))
 		}
 		msgService.stop()
+		winlinkService.reset()
 		locSource.stop()
 		scala.util.control.Exception.ignoring(classOf[IllegalArgumentException]) {
 			unregisterReceiver(msgNotifier)

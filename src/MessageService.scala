@@ -41,6 +41,18 @@ class MessageService(s : AprsService) {
 	def handleMessage(ts : Long, ap : APRSPacket, msg : MessagePacket, LastUsedDigi : String) {
 		val callssid = s.prefs.getCallSsid()
 		
+		// Route Winlink APRSLink messages to WinlinkService
+		if (ap.getSourceCall().equalsIgnoreCase(WinlinkService.WLNK_CALL) ||
+		    ap.getSourceCall().equalsIgnoreCase("WLNK")) {
+			s.winlinkService.handleIncoming(msg.getMessageBody())
+			// Still send an ACK so WLNK-1 doesn't retransmit
+			if (msg.getMessageNumber() != "" && (!LastUsedDigi.split(",").contains(s.prefs.getCallSsid() + "*")  && !ap.getDigiString().split(",").contains(s.prefs.getCallSsid() + "*"))) {
+				val ack = s.newPacket(new MessagePacket(ap.getSourceCall(), "ack", msg.getMessageNumber()))
+				s.sendPacket(ack)
+			}
+			return
+		}
+
 		// Retrieve the ACK duplicate time setting from preferences (default is 0 seconds)
 		val lastAckDupeTime = s.prefs.getStringInt("p.ackdupe", 0) * 1000 // Convert seconds to milliseconds
 

@@ -138,7 +138,13 @@
 		android:label="@string/p__messaging"
 		android:parentActivityName=".PrefsAct"
 		android:launchMode="singleTop"
-		android:configChanges="orientation|keyboardHidden|screenSize" />		
+		android:configChanges="orientation|keyboardHidden|screenSize" />
+
+	<activity android:name=".WinlinkPrefs"
+		android:label="@string/p__winlink"
+		android:parentActivityName=".PrefsAct"
+		android:launchMode="singleTop"
+		android:configChanges="orientation|keyboardHidden|screenSize" />
 		
 	<activity android:name=".GoogleMapAct" android:label="@string/app_map"
 		android:launchMode="singleTop"

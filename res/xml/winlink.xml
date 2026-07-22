@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <de.duenndns.EditTextPreferenceWithValue
+            android:key="winlink_password"
+            android:inputType="textPassword"
+            android:title="@string/p_winlink_password"
+            android:summary="@string/p_winlink_password_summary"
+            android:dialogTitle="@string/p_winlink_password_entry" />
+
+    <CheckBoxPreference
+            android:key="winlink_autologin"
+            android:title="@string/p_winlink_autologin"
+            android:summary="@string/p_winlink_autologin_summary"
+            android:defaultValue="false" />
+
+</PreferenceScreen>

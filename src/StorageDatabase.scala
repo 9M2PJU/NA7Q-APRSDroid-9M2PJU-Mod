@@ -15,7 +15,7 @@ import _root_.scala.math.{cos, Pi}
 
 object StorageDatabase {
 	val TAG = "APRSdroid.Storage"
-	val DB_VERSION = 4
+	val DB_VERSION = 5
 	val DB_NAME = "storage.db"
 
 	val TSS_COL = "DATETIME(TS/1000, 'unixepoch', 'localtime') as TSS"
@@ -132,14 +132,15 @@ object StorageDatabase {
 		val MSGID = "msgid"		// message id (up to 5 alphanumeric symbols)
 		val TYPE = "type"		// incoming / out-new / out-acked
 		val TEXT = "text"		// message text
+		val SUBJECT = "subject"		// Winlink subject line (nullable)
 		lazy val TABLE_CREATE = """CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT,
 			%s LONG, %s INT,
 			%s TEXT, %s TEXT,
-			%s INTEGER, %s TEXT)"""
+			%s INTEGER, %s TEXT, %s TEXT)"""
 			.format(TABLE, _ID, TS, RETRYCNT,
 				CALL, MSGID,
-				TYPE, TEXT)
-		lazy val COLUMNS = Array(_ID, TS, TSS_COL, RETRYCNT, CALL, MSGID, TYPE, TEXT)
+				TYPE, TEXT, SUBJECT)
+		lazy val COLUMNS = Array(_ID, TS, TSS_COL, RETRYCNT, CALL, MSGID, TYPE, TEXT, SUBJECT)
 		val COLUMN_TS		= 1
 		val COLUMN_TTS		= 2
 		val COLUMN_RETRYCNT	= 3
@@ -147,6 +148,7 @@ object StorageDatabase {
 		val COLUMN_MSGID	= 5
 		val COLUMN_TYPE		= 6
 		val COLUMN_TEXT		= 7
+		val COLUMN_SUBJECT	= 8
 
 
 		val TYPE_INCOMING	= 1
@@ -154,6 +156,10 @@ object StorageDatabase {
 		val TYPE_OUT_ACKED	= 3
 		val TYPE_OUT_REJECTED	= 4
 		val TYPE_OUT_ABORTED	= 5
+		// Winlink-specific types
+		val TYPE_WINLINK_IN	= 6	// incoming Winlink message (from WLNK-1)
+		val TYPE_WINLINK_OUT	= 7	// outgoing Winlink command (to WLNK-1)
+		val TYPE_WINLINK_OUT_SENT = 8	// outgoing Winlink message acknowledged/sent
 
 	}
 
@@ -215,6 +221,10 @@ class StorageDatabase(context : Context) extends
 		if (to <= 4) {
 			Array(Position.TABLE, Station.TABLE).map(tab => db.execSQL(TABLE_INDEX.format(tab, "ts", "ts")))
 			Array("call", "type").map(col => db.execSQL(TABLE_INDEX.format(Message.TABLE, col, col)))
+		}
+		if (from <= 4 && to >= 5) {
+			// Add subject column for Winlink messages
+			db.execSQL("ALTER TABLE messages ADD COLUMN subject TEXT")
 		}
 	}
 
@@ -430,6 +440,20 @@ class StorageDatabase(context : Context) extends
 			"call = ?", Array(call),
 			null, null,
 			null, null)
+	}
+
+	def addWinlinkMessage(call : String, text : String, msgType : Int, subject : String) {
+		import Message._
+		val cv = new ContentValues()
+		cv.put(TS, System.currentTimeMillis.asInstanceOf[java.lang.Long])
+		cv.put(RETRYCNT, 0.asInstanceOf[java.lang.Integer])
+		cv.put(CALL, call)
+		cv.put(MSGID, "")
+		cv.put(TYPE, msgType.asInstanceOf[java.lang.Integer])
+		cv.put(TEXT, text)
+		if (subject != null && subject.nonEmpty)
+			cv.put(SUBJECT, subject)
+		addMessage(cv)
 	}
 
 	def getPendingMessages(retries : Int) = {

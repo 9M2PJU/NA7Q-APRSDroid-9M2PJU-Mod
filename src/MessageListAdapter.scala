@@ -14,8 +14,10 @@ object MessageListAdapter {
 	val LIST_FROM = Array("TSS", CALL, TEXT)
 	val LIST_TO = Array(R.id.listts, R.id.liststatus, R.id.listmessage)
 
-	// null, incoming, out-new, out-acked, out-rejected, out-aborted
-	val COLORS = Array(0, 0xff8080b0, 0xff80a080, 0xff30b030, 0xffb03030, 0xffa08080)
+	// null, incoming, out-new, out-acked, out-rejected, out-aborted,
+	// winlink-in, winlink-out, winlink-out-sent
+	val COLORS = Array(0, 0xff8080b0, 0xff80a080, 0xff30b030, 0xffb03030, 0xffa08080,
+		0xff6080c0, 0xff80a080, 0xff30b030)
 }
 
 class MessageListAdapter(context : Context, prefs : PrefsWrapper,
@@ -38,10 +40,11 @@ class MessageListAdapter(context : Context, prefs : PrefsWrapper,
 		import StorageDatabase.Message._
 		val msgtype = cursor.getInt(COLUMN_TYPE)
 		val retrycnt = cursor.getInt(COLUMN_RETRYCNT)
+		val colorIdx = if (msgtype < MessageListAdapter.COLORS.length) msgtype else 0
 		view.findViewById(R.id.listmessage).asInstanceOf[TextView]
-			.setTextColor(MessageListAdapter.COLORS(msgtype))
+			.setTextColor(MessageListAdapter.COLORS(colorIdx))
 		val statusview = view.findViewById(R.id.liststatus).asInstanceOf[TextView]
-		statusview.setTextColor(MessageListAdapter.COLORS(msgtype))
+		statusview.setTextColor(MessageListAdapter.COLORS(colorIdx))
 		super.bindView(view, context, cursor)
 		val status = msgtype match {
 		case TYPE_INCOMING =>
@@ -54,6 +57,14 @@ class MessageListAdapter(context : Context, prefs : PrefsWrapper,
 			"%s %s".format(mycall, context.getString(R.string.msg_type_rejected))
 		case TYPE_OUT_ABORTED =>
 			"%s %s".format(mycall, context.getString(R.string.msg_type_aborted))
+		case TYPE_WINLINK_IN =>
+			"WLNK-1"
+		case TYPE_WINLINK_OUT =>
+			"%s >WLNK".format(mycall)
+		case TYPE_WINLINK_OUT_SENT =>
+			"%s >WLNK ✓".format(mycall)
+		case _ =>
+			targetcall
 		}
 		statusview.setText(status)
 	}

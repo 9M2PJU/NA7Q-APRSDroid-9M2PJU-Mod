@@ -650,4 +650,49 @@
 <string name="freq_control_title">Set Frequency</string>
 <string name="freq_control_hint">144.390</string>
 
+<!-- Winlink APRSLink -->
+<string name="p__winlink">Winlink</string>
+<string name="p_winlink">Winlink Email</string>
+<string name="p_winlink_summary">Send/receive Winlink email via APRSLink</string>
+<string name="p_winlink_password">Winlink Password</string>
+<string name="p_winlink_password_summary">Your Winlink account password (for secure login)</string>
+<string name="p_winlink_password_entry">Enter your Winlink password</string>
+<string name="p_winlink_autologin">Auto-login on service start</string>
+<string name="p_winlink_autologin_summary">Automatically login to Winlink when APRS service starts</string>
+
+<string name="winlink_status_logged_out">Logged out</string>
+<string name="winlink_status_logging_in">Logging in…</string>
+<string name="winlink_status_logged_in">Logged in</string>
+<string name="winlink_status_error">Login failed</string>
+
+<string name="winlink_login">Login</string>
+<string name="winlink_logout">Logout</string>
+<string name="winlink_list">List Messages</string>
+<string name="winlink_compose">Compose Email</string>
+<string name="winlink_help">Help</string>
+
+<string name="winlink_compose_to">To (email or callsign)</string>
+<string name="winlink_compose_subject">Subject</string>
+<string name="winlink_compose_body">Message body</string>
+<string name="winlink_compose_hint_to">john@example.com</string>
+<string name="winlink_compose_hint_subject">Test message</string>
+<string name="winlink_compose_hint_body">Type your message here…</string>
+<string name="winlink_sending">Sending email…</string>
+<string name="winlink_no_password">No Winlink password set. Go to Preferences → Winlink to set it.</string>
+<string name="winlink_no_callsign">No callsign set. Go to Preferences to set your callsign first.</string>
+<string name="winlink_not_logged_in">Not logged in. Tap Login first.</string>
+<string name="winlink_login_started">Login initiated. Waiting for challenge…</string>
+<string name="winlink_logged_in">Winlink login successful.</string>
+<string name="winlink_login_failed">Winlink login failed. Check your password.</string>
+<string name="winlink_no_messages">No pending messages.</string>
+<string name="winlink_email_sent">Email sent.</string>
+<string name="winlink_email_failed">Failed to send email.</string>
+<string name="winlink_logged_out">Logged out of Winlink.</string>
+<string name="winlink_msg_from">From: %1$s</string>
+<string name="winlink_msg_subject">Subj: %1$s</string>
+<string name="winlink_read">Read</string>
+<string name="winlink_reply">Reply</string>
+<string name="winlink_delete">Delete</string>
+<string name="winlink_pending">Pending: %1$d</string>
+
 </resources>

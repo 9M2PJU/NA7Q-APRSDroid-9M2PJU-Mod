@@ -128,4 +128,8 @@ class PrefsWrapper(val context : Context) {
 	def getPTTPort() = getString("afsk.pttport", "")
 	def getAfskBluetooth() = getBoolean("afsk.btsco", false) && getAfskHQ()
 	def getAfskOutput() = if (getAfskBluetooth()) AudioManager.STREAM_VOICE_CALL else getStringInt("afsk.output", 0)
+
+	// Winlink APRSLink
+	def getWinlinkPassword() = prefs.getString("winlink_password", "")
+	def isWinlinkAutoLogin() = prefs.getBoolean("winlink_autologin", false)
 }
