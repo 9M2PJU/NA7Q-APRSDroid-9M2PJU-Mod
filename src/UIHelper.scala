@@ -434,15 +434,6 @@ trait UIHelper extends Activity
 		val nav = findViewById(R.id.bottom_nav).asInstanceOf[View]
 		if (nav == null) return
 		val bn = nav.asInstanceOf[BottomNavigationView]
-		// Highlight the current tab
-		val currentNavId = menu_id match {
-			case R.id.hub => R.id.nav_hub
-			case R.id.log => R.id.nav_log
-			case R.id.map => R.id.nav_map
-			case R.id.conversations => R.id.nav_messages
-			case _ => R.id.nav_log
-		}
-		bn.setSelectedItemId(currentNavId)
 		bn.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener {
 			override def onNavigationItemSelected(item : MenuItem) : Boolean = {
 				item.getItemId match {
@@ -475,6 +466,22 @@ trait UIHelper extends Activity
 				}
 			}
 		})
+		highlightBottomNav()
+	}
+
+	// Highlight the current tab — called from setupBottomNav() and onResume()
+	def highlightBottomNav() {
+		val nav = findViewById(R.id.bottom_nav).asInstanceOf[View]
+		if (nav == null) return
+		val bn = nav.asInstanceOf[BottomNavigationView]
+		val currentNavId = menu_id match {
+			case R.id.hub => R.id.nav_hub
+			case R.id.log => R.id.nav_log
+			case R.id.map => R.id.nav_map
+			case R.id.conversations => R.id.nav_messages
+			case _ => R.id.nav_log
+		}
+		bn.setSelectedItemId(currentNavId)
 	}
 
 	// Show the old options menu as a popup anchored above the bottom nav.

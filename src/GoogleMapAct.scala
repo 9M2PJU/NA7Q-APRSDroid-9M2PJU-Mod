@@ -102,6 +102,7 @@ class GoogleMapAct extends Activity with MapLoaderBase
                 applySystemBarInsets()
                 setKeepScreenOn()
                 setVolumeControls()
+                highlightBottomNav()
                 mapview.onResume()
                 if (targetcall != "")
                         startFollowStation(targetcall)

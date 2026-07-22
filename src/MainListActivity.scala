@@ -39,6 +39,7 @@ class MainListActivity(actname : String, menuid : Int) extends LoadingListActivi
 		setTitleStatus()
 		setupButtons(AprsService.running)
 		makeLaunchActivity(actname)
+		highlightBottomNav()
 
 		// Check for app updates from GitHub Releases (at most once per day)
 		UpdateChecker.checkForUpdates(this)

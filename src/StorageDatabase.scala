@@ -18,7 +18,7 @@ object StorageDatabase {
 	val DB_VERSION = 5
 	val DB_NAME = "storage.db"
 
-	val TSS_COL = "strftime('%d/%m/%y %H:%M:%S', TS/1000, 'unixepoch', 'localtime') as TSS"
+	val TSS_COL = "substr(datetime(TS/1000, 'unixepoch', 'localtime'), 9, 2) || '/' || substr(datetime(TS/1000, 'unixepoch', 'localtime'), 6, 2) || '/' || substr(datetime(TS/1000, 'unixepoch', 'localtime'), 3, 2) || substr(datetime(TS/1000, 'unixepoch', 'localtime'), 11) as TSS"
 	val TABLE_INDEX = "CREATE INDEX idx_%1$s_%2$s ON %1$s (%2$s)"
 
 	object Post {

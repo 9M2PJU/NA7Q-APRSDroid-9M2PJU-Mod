@@ -26,5 +26,6 @@ class LoadingListActivity extends ListActivity
 		applySystemBarInsets()
 		setKeepScreenOn()
 		setVolumeControls()
+		highlightBottomNav()
         }
 }
