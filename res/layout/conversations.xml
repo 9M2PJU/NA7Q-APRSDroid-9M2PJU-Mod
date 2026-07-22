@@ -44,10 +44,10 @@
 		<Button
 			android:id="@+id/winlink_conversation"
 			android:layout_width="0dp"
-			android:layout_height="0dp"
+			android:layout_height="wrap_content"
 			app:layout_columnWeight="1"
-			app:layout_rowWeight="1"
-			app:layout_gravity="fill"
+			
+			app:layout_gravity="fill_horizontal"
 			android:text="@string/p_winlink"
 			android:textSize="11sp"
 			android:maxLines="1"
@@ -58,10 +58,10 @@
 		<Button
 			android:id="@+id/wtsapp_conversation"
 			android:layout_width="0dp"
-			android:layout_height="0dp"
+			android:layout_height="wrap_content"
 			app:layout_columnWeight="1"
-			app:layout_rowWeight="1"
-			app:layout_gravity="fill"
+			
+			app:layout_gravity="fill_horizontal"
 			android:text="@string/p__wtsapp"
 			android:textSize="11sp"
 			android:maxLines="1"
@@ -72,10 +72,10 @@
 		<Button
 			android:id="@+id/bot_conversation"
 			android:layout_width="0dp"
-			android:layout_height="0dp"
+			android:layout_height="wrap_content"
 			app:layout_columnWeight="1"
-			app:layout_rowWeight="1"
-			app:layout_gravity="fill"
+			
+			app:layout_gravity="fill_horizontal"
 			android:text="@string/p__bot"
 			android:textSize="10sp"
 			android:maxLines="1"
@@ -86,10 +86,10 @@
 		<Button
 			android:id="@+id/aprsmy_conversation"
 			android:layout_width="0dp"
-			android:layout_height="0dp"
+			android:layout_height="wrap_content"
 			app:layout_columnWeight="1"
-			app:layout_rowWeight="1"
-			app:layout_gravity="fill"
+			
+			app:layout_gravity="fill_horizontal"
 			android:text="@string/p__aprsmy"
 			android:textSize="11sp"
 			android:maxLines="1"
@@ -100,10 +100,10 @@
 		<Button
 			android:id="@+id/mailmy_conversation"
 			android:layout_width="0dp"
-			android:layout_height="0dp"
+			android:layout_height="wrap_content"
 			app:layout_columnWeight="1"
-			app:layout_rowWeight="1"
-			app:layout_gravity="fill"
+			
+			app:layout_gravity="fill_horizontal"
 			android:text="@string/p__mailmy"
 			android:textSize="11sp"
 			android:maxLines="1"
@@ -114,10 +114,10 @@
 		<Button
 			android:id="@+id/repeat_conversation"
 			android:layout_width="0dp"
-			android:layout_height="0dp"
+			android:layout_height="wrap_content"
 			app:layout_columnWeight="1"
-			app:layout_rowWeight="1"
-			app:layout_gravity="fill"
+			
+			app:layout_gravity="fill_horizontal"
 			android:text="@string/p__repeat"
 			android:textSize="11sp"
 			android:maxLines="1"
@@ -128,10 +128,10 @@
 		<Button
 			android:id="@+id/callmy_conversation"
 			android:layout_width="0dp"
-			android:layout_height="0dp"
+			android:layout_height="wrap_content"
 			app:layout_columnWeight="1"
-			app:layout_rowWeight="1"
-			app:layout_gravity="fill"
+			
+			app:layout_gravity="fill_horizontal"
 			android:text="@string/p__callmy"
 			android:textSize="11sp"
 			android:maxLines="1"
@@ -142,10 +142,10 @@
 		<Button
 			android:id="@+id/bbsmy_conversation"
 			android:layout_width="0dp"
-			android:layout_height="0dp"
+			android:layout_height="wrap_content"
 			app:layout_columnWeight="1"
-			app:layout_rowWeight="1"
-			app:layout_gravity="fill"
+			
+			app:layout_gravity="fill_horizontal"
 			android:text="@string/p__bbsmy"
 			android:textSize="11sp"
 			android:maxLines="1"
@@ -156,10 +156,10 @@
 		<Button
 			android:id="@+id/gamemy_conversation"
 			android:layout_width="0dp"
-			android:layout_height="0dp"
+			android:layout_height="wrap_content"
 			app:layout_columnWeight="1"
-			app:layout_rowWeight="1"
-			app:layout_gravity="fill"
+			
+			app:layout_gravity="fill_horizontal"
 			android:text="@string/p__gamemy"
 			android:textSize="11sp"
 			android:maxLines="1"
