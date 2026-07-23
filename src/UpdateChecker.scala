@@ -389,7 +389,7 @@ object UpdateChecker {
                 if (info == null) {
                     Log.w(TAG, "onPostExecute: info is null, fetch failed")
                     if (force)
-                        Toast.makeText(act, R.string.update_check_failed, Toast.LENGTH_SHORT).show()
+                        showResultDialog(act, act.getString(R.string.update_check_failed), false)
                     return
                 }
 
@@ -409,9 +409,28 @@ object UpdateChecker {
                 } else {
                     Log.d(TAG, s"Up to date: $localVersion (latest: ${info.tag})")
                     if (force)
-                        Toast.makeText(act, act.getString(R.string.up_to_date, info.tag), Toast.LENGTH_SHORT).show()
+                        showResultDialog(act, act.getString(R.string.up_to_date, info.tag), true)
                 }
             }
         }.execute()
+    }
+
+    /**
+     * Show a Material dialog with the update check result (up to date or
+     * failed). Used for manual/forced checks so the user gets clear,
+     * readable feedback instead of a tiny Toast that may be truncated.
+     */
+    private def showResultDialog(act : Activity, message : String, success : Boolean) : Unit = {
+        try {
+            new com.google.android.material.dialog.MaterialAlertDialogBuilder(act)
+                .setTitle(if (success) R.string.up_to_date_title else R.string.update_check_failed_title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, null)
+                .create().show()
+        } catch {
+            case _ : Exception =>
+                // Fallback to Toast if Material dialog fails
+                Toast.makeText(act, message, Toast.LENGTH_LONG).show()
+        }
     }
 }
