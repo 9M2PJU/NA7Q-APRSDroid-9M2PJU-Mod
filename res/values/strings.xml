@@ -116,7 +116,7 @@
 <string name="update_check_failed">Could not check for updates. Check your internet connection.</string>
 <string name="update_check_failed_title">Update check failed</string>
 <string name="ad_license_title">License</string>
-<string name="ad_thanks_all">Bob Bruninga, WB4APR (1947-2022): Creator of APRS\nGeorg Lukas, DO1GL: Original APRSdroid author\nMike, NA7Q: BLE TNC, digipeater, IGate, MBTiles mapping, https://na7q.com/aprsdroid-osm/\n9M2PJU: 9M2PJU Mod -, https://hamradio.my\nMichael, DO3BOX: idea\nDirk, DB5OY: motivation and support\nBastian, DB1BM: AFSK implementation\nMatti, OH2MQK and John, AB0OO: Java APRS\nSivan, 4X6IZ: AFSK demodulator, https://github.com/sivantoledo/javAX25\nSmartBeaconing™ by HamHUD Nichetronix, LLC, http://hamhud.net</string>
+<string name="ad_thanks_all">Bob Bruninga, WB4APR (1947-2022): Creator of APRS\nGeorg Lukas, DO1GL: Original APRSdroid author\nMike, NA7Q: BLE TNC, digipeater, IGate, MBTiles mapping, https://na7q.com/aprsdroid-osm/\nFaizul 9M2PJU: Some updates and improvements, https://hamradio.my\nMichael, DO3BOX: idea\nDirk, DB5OY: motivation and support\nBastian, DB1BM: AFSK implementation\nMatti, OH2MQK and John, AB0OO: Java APRS\nSivan, 4X6IZ: AFSK demodulator, https://github.com/sivantoledo/javAX25\nSmartBeaconing™ by HamHUD Nichetronix, LLC, http://hamhud.net</string>
 <string name="report_bug">Report a bug</string>
 <string name="report_bug_subject">APRSdroid 9M2PJU Mod bug report</string>
 <string name="report_bug_body">Please describe the bug:\n\n\nApp version: %1$s\nAndroid: %2$s\nDevice: %3$s\n</string>
