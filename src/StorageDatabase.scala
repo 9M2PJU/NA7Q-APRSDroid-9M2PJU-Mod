@@ -509,10 +509,19 @@ class StorageDatabase(context : Context) extends
 	}
 
 	def getConversations() = {
-		getReadableDatabase().query("(SELECT * FROM messages ORDER BY _id DESC)", Message.COLUMNS,
+		// Use MAX(_id) so SQLite's "bare column" rule guarantees that all
+		// other columns (text, type, ts, ...) are taken from the row with
+		// the highest _id -- i.e. the LATEST message -- for each call.
+		// Without MAX(_id), SQLite may use the `call` index for GROUP BY
+		// and pick the oldest row per group instead of the newest, so the
+		// conversation preview shows the first sent message rather than
+		// the most recent reply. The trailing MAX(_id) column (index 9)
+		// is not read by any adapter.
+		val cols = Message.COLUMNS :+ "MAX(_id)"
+		getReadableDatabase().query(Message.TABLE, cols,
 			null, null,
 			"call", null,
-			"_id DESC", null)
+			"MAX(_id) DESC", null)
 	}
 
 }
