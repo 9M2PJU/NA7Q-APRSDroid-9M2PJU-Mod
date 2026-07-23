@@ -98,7 +98,7 @@ The direct upstream is [NA7Q's fork](https://github.com/na7q/aprsdroid).
 - **Bottom nav highlighting fix** -- correct tab highlighting with
   `FLAG_ACTIVITY_REORDER_TO_FRONT` across all activities
 - **App name and About dialog unified** across all 52 locale files
-- **Version bumped** to `v2.0.10` (tocall `APDR20`)
+- **Version bumped** to `v2.0.13` (tocall `APDR20`)
 
 > **Changelog:** Per-version release notes are now maintained on the
 > [GitHub Releases](https://github.com/9M2PJU/APRSdroid-9M2PJU-Mod/releases)
