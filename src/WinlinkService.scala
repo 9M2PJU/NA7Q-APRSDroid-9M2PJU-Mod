@@ -81,9 +81,18 @@ class WinlinkService(s : AprsService) {
 	// Callback to update UI (set by MessageActivity when it's active)
 	@volatile var statusCallback : (Int => Unit) = null
 
+	// Active login timeout runnable -- scheduled in login(), cancelled on
+	// success/challenge. Without this, the passive check in getState() only
+	// fires when something calls getState() (user interaction or incoming
+	// message), so if WLNK-1 never replies the Login button stays disabled
+	// indefinitely with no feedback to the user.
+	private var loginTimeoutRunnable : Runnable = null
+
 	def getState = {
-		// Check for login timeout -- if stuck in LOGIN_STARTED or CHALLENGE
-		// for too long, reset to LOGGED_OUT so buttons work again
+		// Passive backup check for login timeout -- if stuck in
+		// LOGIN_STARTED or CHALLENGE for too long, reset to LOGGED_OUT.
+		// The active timer in scheduleLoginTimeout() is the primary
+		// mechanism, but this catches edge cases (e.g. process restart).
 		if (state == STATE_LOGIN_STARTED || state == STATE_CHALLENGE) {
 			if (loginStartTime > 0 &&
 			    (System.currentTimeMillis - loginStartTime) > LOGIN_TIMEOUT_MS) {
@@ -102,6 +111,35 @@ class WinlinkService(s : AprsService) {
 		state = newState
 		if (statusCallback != null) {
 			try { statusCallback(newState) } catch { case _ : Throwable => }
+		}
+	}
+
+	// Schedule an active login timeout. When it fires, reset to
+	// LOGGED_OUT and notify the user via toast + statusCallback so
+	// the Login button is re-enabled and the user knows what happened.
+	private def scheduleLoginTimeout() {
+		cancelLoginTimeout()
+		loginTimeoutRunnable = new Runnable {
+			override def run() : Unit = {
+				if (state == STATE_LOGIN_STARTED || state == STATE_CHALLENGE) {
+					Log.w(TAG, "login timed out (no reply from WLNK-1), resetting")
+					loginStartTime = 0
+					setState(STATE_LOGGED_OUT)
+					// Notify the user -- s is the AprsService Context
+					Toast.makeText(s, s.getString(R.string.winlink_login_timeout),
+						Toast.LENGTH_LONG).show()
+				}
+				loginTimeoutRunnable = null
+			}
+		}
+		s.handler.postDelayed(loginTimeoutRunnable, LOGIN_TIMEOUT_MS)
+	}
+
+	// Cancel any pending login timeout timer.
+	private def cancelLoginTimeout() {
+		if (loginTimeoutRunnable != null) {
+			s.handler.removeCallbacks(loginTimeoutRunnable)
+			loginTimeoutRunnable = null
 		}
 	}
 
@@ -155,6 +193,9 @@ class WinlinkService(s : AprsService) {
 		// Send "L" -- WLNK-1 will respond with a login challenge
 		messageList.clear()
 		sendToWlnk("L")
+		// Schedule active timeout so we don't hang forever if WLNK-1
+		// never replies (no digipeater heard, poor RF path, etc.)
+		scheduleLoginTimeout()
 	}
 
 	/**
@@ -162,6 +203,7 @@ class WinlinkService(s : AprsService) {
 	 */
 	def logout() {
 		if (state != STATE_LOGGED_OUT) {
+			cancelLoginTimeout()
 			sendToWlnk("B")
 			setState(STATE_LOGGED_OUT)
 			composeState = COMPOSE_IDLE
@@ -403,6 +445,8 @@ class WinlinkService(s : AprsService) {
 	 * Response = those 3 password chars + 3 random chars, all shuffled.
 	 */
 	private def handleChallenge(text : String) {
+		// Got a reply from WLNK-1 -- cancel the login timeout timer
+		cancelLoginTimeout()
 		// Store the challenge text so the user sees it in the conversation
 		storeFromWlnk(text, null)
 
@@ -460,6 +504,7 @@ class WinlinkService(s : AprsService) {
 
 	private def handleLoginSuccess(text : String) {
 		Log.i(TAG, "login success: " + text)
+		cancelLoginTimeout()
 		loginTime = System.currentTimeMillis()
 		loginStartTime = 0
 		setState(STATE_LOGGED_IN)
@@ -515,6 +560,7 @@ class WinlinkService(s : AprsService) {
 
 	/** Reset the service state (e.g. when APRS service stops). */
 	def reset() {
+		cancelLoginTimeout()
 		setState(STATE_LOGGED_OUT)
 		composeState = COMPOSE_IDLE
 		pendingBodyLines.clear()
