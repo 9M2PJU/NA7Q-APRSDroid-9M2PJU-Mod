@@ -107,7 +107,7 @@ The direct upstream is [NA7Q's fork](https://github.com/na7q/aprsdroid).
   above the soft keyboard via IME inset handling
 - **Realtime message replies fix** -- package-directed broadcasts for
   Android 14+ `RECEIVER_NOT_EXPORTED` compatibility
-- **Version bumped** to `v2.0.18` (tocall `APDR20`)
+- **Version bumped** to `v2.0.24` (tocall `APDR20`)
 
 > **Changelog:** Per-version release notes are now maintained on the
 > [GitHub Releases](https://github.com/9M2PJU/APRSdroid-9M2PJU-Mod/releases)
