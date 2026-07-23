@@ -84,7 +84,7 @@ class FirstRunActivity extends AppCompatActivity {
 
         if (need_request.isEmpty) {
             Toast.makeText(this, R.string.firstrun_perms_already_granted,
-                Toast.LENGTH_SHORT).show()
+                Toast.LENGTH_LONG).show()
         } else {
             ActivityCompat.requestPermissions(this, need_request, REQUEST_ALL_PERMISSIONS)
         }
@@ -107,11 +107,11 @@ class FirstRunActivity extends AppCompatActivity {
                 }
             } else {
                 Toast.makeText(this, R.string.firstrun_storage_already_granted,
-                    Toast.LENGTH_SHORT).show()
+                    Toast.LENGTH_LONG).show()
             }
         } else {
             Toast.makeText(this, R.string.firstrun_storage_not_needed,
-                Toast.LENGTH_SHORT).show()
+                Toast.LENGTH_LONG).show()
         }
     }
 
@@ -123,7 +123,7 @@ class FirstRunActivity extends AppCompatActivity {
             val total = grantResults.length
             if (granted == total) {
                 Toast.makeText(this, R.string.firstrun_perms_granted,
-                    Toast.LENGTH_SHORT).show()
+                    Toast.LENGTH_LONG).show()
             } else {
                 Toast.makeText(this,
                     getString(R.string.firstrun_perms_partial, granted: Integer, total: Integer),
@@ -136,10 +136,10 @@ class FirstRunActivity extends AppCompatActivity {
         if (requestCode == REQUEST_MANAGE_STORAGE) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && Environment.isExternalStorageManager()) {
                 Toast.makeText(this, R.string.firstrun_storage_granted,
-                    Toast.LENGTH_SHORT).show()
+                    Toast.LENGTH_LONG).show()
             } else {
                 Toast.makeText(this, R.string.firstrun_storage_denied,
-                    Toast.LENGTH_SHORT).show()
+                    Toast.LENGTH_LONG).show()
             }
         }
     }

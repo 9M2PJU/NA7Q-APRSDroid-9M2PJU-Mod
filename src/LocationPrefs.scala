@@ -72,7 +72,7 @@ class LocationPrefs extends PreferenceActivity with OnSharedPreferenceChangeList
 			pe.putString("manual_lat", l.getLatitude().toString())
 			pe.putString("manual_lon", l.getLongitude().toString())
 			pe.commit()
-		} else Toast.makeText(this, getString(R.string.map_track_unknown, prefs.getCallsign()), Toast.LENGTH_SHORT).show()
+		} else Toast.makeText(this, getString(R.string.map_track_unknown, prefs.getCallsign()), Toast.LENGTH_LONG).show()
 	}
 	override def onPermissionsFailedCancel(action: Int): Unit = {
 		// nop

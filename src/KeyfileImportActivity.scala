@@ -84,7 +84,7 @@ class KeyfileImportActivity extends AppCompatActivity {
 					.edit().putString("callsign", callsign).commit()
 
 				val msg = getString(R.string.ssl_import_ok, callsign)
-				Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+				Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
 				db.addPost(System.currentTimeMillis(), StorageDatabase.Post.TYPE_INFO,
 					getString(R.string.post_info), msg)
 				startActivity(new Intent(this, classOf[LogActivity]))

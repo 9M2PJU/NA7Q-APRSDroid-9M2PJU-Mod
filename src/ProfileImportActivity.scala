@@ -52,7 +52,7 @@ class ProfileImportActivity extends AppCompatActivity {
 			}
 			prefsedit.commit()
 			val msg = getString(R.string.profile_import_done, getIntent.getData().getPath())
-			Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+			Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
 			db.addPost(System.currentTimeMillis(), StorageDatabase.Post.TYPE_INFO,
 				getString(R.string.profile_import_activity), msg)
 			startActivity(new Intent(this, classOf[LogActivity]))

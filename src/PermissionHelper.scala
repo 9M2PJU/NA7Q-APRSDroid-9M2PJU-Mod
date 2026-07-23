@@ -23,7 +23,7 @@ trait PermissionHelper extends Activity {
 				need_dialog |= (checkSelfPermission(p) != PackageManager.PERMISSION_GRANTED)
 			if (need_dialog) {
 				//if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE))
-				//	Toast.makeText(this, "No permission!", Toast.LENGTH_SHORT).show()
+				//	Toast.makeText(this, "No permission!", Toast.LENGTH_LONG).show()
 				requestPermissions(permissions, action)
 				false
 			} else {

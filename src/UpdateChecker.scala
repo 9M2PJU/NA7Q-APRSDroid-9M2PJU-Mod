@@ -323,7 +323,7 @@ object UpdateChecker {
             override def onCancelled() : Unit = {
                 progress.dismiss()
                 Toast.makeText(act, R.string.update_download_cancelled,
-                    Toast.LENGTH_SHORT).show()
+                    Toast.LENGTH_LONG).show()
             }
         }.execute()
     }
