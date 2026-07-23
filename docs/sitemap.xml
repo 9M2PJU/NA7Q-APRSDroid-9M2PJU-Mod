@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <url>
+    <loc>https://aprsdroid.hamradio.my/</loc>
+    <lastmod>2026-07-23T12:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://aprsdroid.hamradio.my/assets/icon-512.webp</image:loc>
+      <image:title>APRSdroid 9M2PJU Mod app icon</image:title>
+      <image:caption>APRSdroid 9M2PJU Mod -- enhanced APRS client for Android</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://aprsdroid.hamradio.my/assets/screenshots/screenshot-map.png</image:loc>
+      <image:title>APRSdroid map view with offline OSM tiles</image:title>
+      <image:caption>Map screen showing APRS stations on offline OpenStreetMap tiles</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://aprsdroid.hamradio.my/assets/screenshots/screenshot-hub.png</image:loc>
+      <image:title>APRSdroid hub -- nearby stations list</image:title>
+      <image:caption>Hub screen showing nearby APRS stations sorted by distance</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://aprsdroid.hamradio.my/assets/screenshots/screenshot-log.png</image:loc>
+      <image:title>APRSdroid packet log</image:title>
+      <image:caption>Log screen showing raw APRS packet TX/RX log</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://aprsdroid.hamradio.my/assets/screenshots/screenshot-messages.png</image:loc>
+      <image:title>APRSdroid messaging -- conversations</image:title>
+      <image:caption>Messages screen showing APRS conversations</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://aprsdroid.hamradio.my/assets/screenshots/screenshot-about.png</image:loc>
+      <image:title>APRSdroid About dialog</image:title>
+      <image:caption>About screen with Material Design dialog</image:caption>
+    </image:image>
+  </url>
+
+</urlset>

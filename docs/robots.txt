@@ -1,0 +1,59 @@
+# robots.txt for APRSdroid 9M2PJU Mod
+# https://aprsdroid.hamradio.my/
+
+User-agent: *
+Allow: /
+Disallow: /version.json
+
+# Crawl delay to be gentle on GitHub Pages
+Crawl-delay: 1
+
+# Allow major search engines explicitly
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: TelegramBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+# Block AI training crawlers (optional -- remove if you want AI indexing)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+# Sitemap
+Sitemap: https://aprsdroid.hamradio.my/sitemap.xml

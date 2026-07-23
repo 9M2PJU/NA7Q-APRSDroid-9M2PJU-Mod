@@ -1,0 +1,27 @@
+{
+  "name": "APRSdroid 9M2PJU Mod",
+  "short_name": "APRSdroid",
+  "description": "Enhanced APRS client for Android -- offline maps, BLE TNC, digipeater, I-gate, Mic-E, APRS messaging, SmartBeaconing, Winlink APRSLink.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0D182D",
+  "theme_color": "#0D182D",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/icon-256.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icon-512.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["communication", "navigation", "utilities"],
+  "lang": "en",
+  "dir": "ltr"
+}
