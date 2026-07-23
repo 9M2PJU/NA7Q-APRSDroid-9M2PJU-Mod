@@ -6,9 +6,9 @@ import org.mapsforge.v3.android.maps.mapgenerator.tiledownloader.TileDownloader;
 import org.mapsforge.v3.core.Tile;
 
 public class OsmTileDownloader extends TileDownloader {
-    private static final String HOST_NAME_ONLINE = "a.basemaps.cartocdn.com";
+    private static final String HOST_NAME_ONLINE = "a.tile.openstreetmap.fr";
     private static final String HOST_NAME_OFFLINE = "127.0.0.1"; // New hostname for offline maps
-    private static final byte ZOOM_MAX = 19;
+    private static final byte ZOOM_MAX = 20;
     private final StringBuilder stringBuilder = new StringBuilder();
     private static final String TAG = "OsmTileDownloader"; // Tag for logging
     private final PrefsWrapper prefsWrapper; // Instance of PrefsWrapper
@@ -60,8 +60,8 @@ public class OsmTileDownloader extends TileDownloader {
     @Override
     public String getTilePath(Tile tile) {
         this.stringBuilder.setLength(0);
-        // CartoDB Voyager basemap: /rastertiles/voyager/{z}/{x}/{y}.png
-        this.stringBuilder.append("/rastertiles/voyager/");
+        // OSM France tiles: /osmfr/{z}/{x}/{y}.png
+        this.stringBuilder.append("/osmfr/");
         this.stringBuilder.append(tile.zoomLevel);
         this.stringBuilder.append('/');
         this.stringBuilder.append(tile.tileX);
