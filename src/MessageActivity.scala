@@ -228,24 +228,32 @@ class MessageActivity extends StationHelper(R.string.app_messages)
 
 	def updateWinlinkStatus() {
 		if (winlinkStatusView == null) return
-		val state = if (AprsService.running) {
-			AprsService.serviceInstance match {
-				case s : AprsService => s.winlinkService.getState
-				case _ => WinlinkService.STATE_LOGGED_OUT
-			}
-		} else WinlinkService.STATE_LOGGED_OUT
+		val ws = getWinlinkService
+		val state = ws match {
+			case Some(w) => w.getState
+			case None => WinlinkService.STATE_LOGGED_OUT
+		}
+		val inCooldown = ws.exists(_.isInLoginCooldown)
 		val statusText = state match {
 		case WinlinkService.STATE_LOGGED_OUT => getString(R.string.winlink_status_logged_out)
 		case WinlinkService.STATE_LOGIN_STARTED => getString(R.string.winlink_status_logging_in)
 		case WinlinkService.STATE_CHALLENGE => getString(R.string.winlink_status_logging_in)
 		case WinlinkService.STATE_LOGGED_IN => getString(R.string.winlink_status_logged_in)
-		case WinlinkService.STATE_ERROR => getString(R.string.winlink_status_error)
+		case WinlinkService.STATE_ERROR =>
+			if (inCooldown) {
+				val mins = ws.map(w => (w.loginCooldownRemaining / 60000).toInt).getOrElse(0)
+				getString(R.string.winlink_status_cooldown, mins.asInstanceOf[Integer])
+			} else {
+				getString(R.string.winlink_status_error)
+			}
 		case _ => getString(R.string.winlink_status_logged_out)
 		}
 		winlinkStatusView.setText(statusText)
 		val logged_in = state == WinlinkService.STATE_LOGGED_IN
-		// Enable/disable buttons based on state
-		winlinkBtnLogin.setEnabled(state == WinlinkService.STATE_LOGGED_OUT || state == WinlinkService.STATE_ERROR)
+		// Enable Login button only when logged out or in error state,
+		// AND not in a rate-limit cooldown
+		val loginEnabled = (state == WinlinkService.STATE_LOGGED_OUT || state == WinlinkService.STATE_ERROR) && !inCooldown
+		winlinkBtnLogin.setEnabled(loginEnabled)
 		winlinkBtnLogout.setEnabled(logged_in)
 		winlinkBtnHelp.setEnabled(logged_in)
 		winlinkBtnList.setEnabled(logged_in)
@@ -287,8 +295,10 @@ class MessageActivity extends StationHelper(R.string.app_messages)
 		}
 		getWinlinkService match {
 			case Some(ws) =>
-				ws.login()
-				Toast.makeText(this, R.string.winlink_login_started, Toast.LENGTH_LONG).show()
+				// login() returns false (and shows its own toast) if
+				// blocked by cooldown, missing credentials, etc.
+				if (ws.login())
+					Toast.makeText(this, R.string.winlink_login_started, Toast.LENGTH_LONG).show()
 			case None =>
 				Toast.makeText(this, R.string.winlink_not_logged_in, Toast.LENGTH_LONG).show()
 		}

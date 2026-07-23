@@ -66,6 +66,12 @@ class WinlinkService(s : AprsService) {
 	private var lastChallengeTime : Long = 0
 	private var challengeAnswer : String = ""
 
+	// Login cooldown: when WLNK-1 rate-limits us ("too many login attempts
+	// -- try again later (2H)"), we store the time until which login
+	// attempts should be blocked. Parsed from the "(Nh)" or "(Nm)" suffix
+	// in the error message, defaulting to 2 hours if unparseable.
+	private var loginCooldownUntil : Long = 0
+
 	// Pending email body lines to send (for multi-line SP command)
 	private val pendingBodyLines = mutable.Queue.empty[String]
 	private var composeSubject : String = ""
@@ -105,6 +111,67 @@ class WinlinkService(s : AprsService) {
 	}
 	def isLoggedIn = getState == STATE_LOGGED_IN
 	def isComposing = composeState != COMPOSE_IDLE
+
+	// Returns true if we're currently in a login cooldown (rate-limited
+	// by WLNK-1). Used by login() and auto-login to prevent spamming
+	// WLNK-1 with login attempts that will just be rejected.
+	def isInLoginCooldown : Boolean = {
+		loginCooldownUntil > 0 && System.currentTimeMillis < loginCooldownUntil
+	}
+
+	// Remaining cooldown in milliseconds, or 0 if not in cooldown.
+	def loginCooldownRemaining : Long = {
+		if (isInLoginCooldown) loginCooldownUntil - System.currentTimeMillis else 0
+	}
+
+	// Parse a cooldown duration from a WLNK-1 rate-limit error message.
+	// Looks for patterns like "(2H)", "(30M)", "(45m)", "(2h)", etc.
+	// Defaults to 2 hours if no duration is found.
+	private def parseCooldown(text : String) : Long = {
+		val lower = text.toLowerCase
+		// Match "(<number><h or m>)" pattern
+		val pattern = """\((\d+)\s*([hm])\)""".r
+		pattern.findFirstMatchIn(lower) match {
+		case Some(m) =>
+			val num = m.group(1).toInt
+			val unit = m.group(2)
+			val ms = if (unit == "h") num * 60L * 60 * 1000 else num * 60L * 1000
+			Log.i(TAG, "parsed cooldown: %d%s = %dms".format(num, unit, ms))
+			ms
+		case None =>
+			Log.i(TAG, "no cooldown duration found in error, defaulting to 2h")
+			2L * 60 * 60 * 1000
+		}
+	}
+
+	// Check whether an incoming message text is a login error (rate limit,
+	// invalid credentials, blocked, etc.). Returns true if it's an error
+	// that should transition us to STATE_ERROR.
+	private def isLoginError(text : String) : Boolean = {
+		val lower = text.toLowerCase
+		lower.contains("too many") || lower.contains("try again later") ||
+		lower.contains("rate limit") || lower.contains("locked") ||
+		lower.contains("blocked") || lower.contains("not allowed") ||
+		lower.contains("denied") || lower.contains("invalid") ||
+		lower.contains("incorrect") || lower.contains("failed") ||
+		lower.contains("error")
+	}
+
+	// Handle a login error: cancel timeout, parse cooldown if rate-limited,
+	// transition to ERROR state, and store the message.
+	private def handleLoginError(text : String) {
+		cancelLoginTimeout()
+		val lower = text.toLowerCase
+		if (lower.contains("too many") || lower.contains("try again later") ||
+		    lower.contains("rate limit")) {
+			val cooldown = parseCooldown(text)
+			loginCooldownUntil = System.currentTimeMillis + cooldown
+			Log.w(TAG, "login rate-limited, cooldown for %dms".format(cooldown))
+		}
+		loginStartTime = 0
+		setState(STATE_ERROR)
+		storeFromWlnk(text, null)
+	}
 
 	private def setState(newState : Int) {
 		Log.d(TAG, "state %d -> %d".format(state, newState))
@@ -172,20 +239,31 @@ class WinlinkService(s : AprsService) {
 	 * with a login challenge if you're not authenticated. Once you
 	 * respond to the challenge, WLNK-1 processes the original command.
 	 */
-	def login() {
+	def login() : Boolean = {
 		val password = s.prefs.getWinlinkPassword()
 		val callsign = s.prefs.getCallsign()
 		if (callsign.isEmpty) {
 			Log.w(TAG, "no callsign set")
-			return
+			Toast.makeText(s, R.string.winlink_no_callsign, Toast.LENGTH_LONG).show()
+			return false
 		}
 		if (password.isEmpty) {
 			Log.w(TAG, "no Winlink password set")
-			return
+			Toast.makeText(s, R.string.winlink_no_password, Toast.LENGTH_LONG).show()
+			return false
 		}
 		if (!AprsService.running) {
 			Log.w(TAG, "APRS service not running")
-			return
+			return false
+		}
+		// Check if we're in a rate-limit cooldown from WLNK-1
+		if (isInLoginCooldown) {
+			val remaining = loginCooldownRemaining
+			val mins = (remaining / 60000).toInt
+			Log.w(TAG, "login blocked by cooldown (%d min remaining)".format(mins))
+			Toast.makeText(s, s.getString(R.string.winlink_login_cooldown, mins.asInstanceOf[Integer]),
+				Toast.LENGTH_LONG).show()
+			return false
 		}
 		Log.i(TAG, "initiating Winlink login by sending L command")
 		loginStartTime = System.currentTimeMillis()
@@ -196,6 +274,7 @@ class WinlinkService(s : AprsService) {
 		// Schedule active timeout so we don't hang forever if WLNK-1
 		// never replies (no digipeater heard, poor RF path, etc.)
 		scheduleLoginTimeout()
+		true
 	}
 
 	/**
@@ -398,6 +477,10 @@ class WinlinkService(s : AprsService) {
 				// Some servers may skip challenge if secure login not enabled
 				handleLoginSuccess(text)
 				true
+			} else if (isLoginError(text)) {
+				// WLNK-1 rejected the login (rate limit, invalid, etc.)
+				handleLoginError(text)
+				true
 			} else {
 				// Unexpected response, store it
 				storeFromWlnk(text, null)
@@ -409,12 +492,9 @@ class WinlinkService(s : AprsService) {
 			if (text.toLowerCase.startsWith("hello")) {
 				handleLoginSuccess(text)
 				true
-			} else if (text.toLowerCase.contains("invalid") ||
-				   text.toLowerCase.contains("incorrect") ||
-				   text.toLowerCase.contains("failed")) {
-				Log.w(TAG, "login failed: " + text)
-				setState(STATE_ERROR)
-				storeFromWlnk(text, null)
+			} else if (isLoginError(text)) {
+				// Login failed (invalid password, rate limit, etc.)
+				handleLoginError(text)
 				true
 			} else {
 				// Store unexpected responses
@@ -569,5 +649,8 @@ class WinlinkService(s : AprsService) {
 		loginTime = 0
 		loginStartTime = 0
 		challengeAnswer = ""
+		// Note: do NOT clear loginCooldownUntil here -- if WLNK-1 has
+		// rate-limited us, the cooldown persists across service restarts
+		// so auto-login doesn't immediately spam WLNK-1 again.
 	}
 }

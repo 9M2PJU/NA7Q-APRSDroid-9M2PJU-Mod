@@ -207,6 +207,8 @@ class AprsService extends Service {
 			} else if (winlinkService.getState == WinlinkService.STATE_LOGIN_STARTED ||
 				   winlinkService.getState == WinlinkService.STATE_CHALLENGE) {
 				Log.d(TAG, "Winlink login already in progress, skipping")
+			} else if (winlinkService.isInLoginCooldown) {
+				Log.d(TAG, "Winlink login in cooldown (rate-limited by WLNK-1), skipping auto-login")
 			} else {
 				Log.i(TAG, "auto-login to Winlink enabled, initiating")
 				winlinkService.login()

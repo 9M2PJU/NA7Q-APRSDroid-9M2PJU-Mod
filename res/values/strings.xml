@@ -669,8 +669,10 @@
 <string name="winlink_status_logging_in">Logging in…</string>
 <string name="winlink_status_logged_in">Logged in</string>
 <string name="winlink_status_error">Login failed</string>
+<string name="winlink_status_cooldown">Rate-limited by WLNK-1, try again in %d min</string>
 
 <string name="winlink_login_timeout">Winlink login timed out - no reply from WLNK-1. Try again when you have a better RF path.</string>
+<string name="winlink_login_cooldown">WLNK-1 is rate-limiting logins. Try again in %d minutes.</string>
 <string name="winlink_login">Login</string>
 <string name="winlink_logout">Logout</string>
 <string name="winlink_list">List</string>
