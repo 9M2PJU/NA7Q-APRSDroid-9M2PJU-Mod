@@ -214,6 +214,7 @@ class AprsService extends Service {
 		}
 
 		sendBroadcast(new Intent(SERVICE_STARTED)
+			.setPackage(PACKAGE)
 			.putExtra(API_VERSION, API_VERSION_CODE)
 			.putExtra(CALLSIGN, callssid))
 
@@ -265,7 +266,7 @@ class AprsService extends Service {
 			// play stop tracking sound if configured
 			playNotifySound("stop_notify_ringtone")
 
-			sendBroadcast(new Intent(SERVICE_STOPPED))
+			sendBroadcast(new Intent(SERVICE_STOPPED).setPackage(PACKAGE))
 		}
 		msgService.stop()
 		winlinkService.reset()
@@ -560,6 +561,7 @@ class AprsService extends Service {
 		db.addPosition(ts, ap, pos, cse, objectname)
 
 		sendBroadcast(new Intent(POSITION)
+			.setPackage(PACKAGE)
 			.putExtra(SOURCE, ap.getSourceCall())
 			.putExtra(LOCATION, AprsPacket.position2location(ts, pos, cse))
 			.putExtra(CALLSIGN, if (objectname != null) objectname else ap.getSourceCall())
@@ -577,6 +579,7 @@ class AprsService extends Service {
 			Log.d(TAG, "addPost: " + status + " - " + message)
 		}
 		sendBroadcast(new Intent(UPDATE)
+			.setPackage(PACKAGE)
 			.putExtra(TYPE, t)
 			.putExtra(STATUS, message))
 	}
@@ -622,14 +625,14 @@ class AprsService extends Service {
 
 	def postLinkOn(link : Int) {
                 link_error = 0
-		sendBroadcast(new Intent(LINK_ON).putExtra(LINK_INFO, link))
+		sendBroadcast(new Intent(LINK_ON).setPackage(PACKAGE).putExtra(LINK_INFO, link))
 		val message = getString(R.string.status_linkon, getString(link))
 		ServiceNotifier.instance.start(this, message)
 	}
 
 	def postLinkOff(link : Int) {
                 link_error = link
-		sendBroadcast(new Intent(LINK_OFF).putExtra(LINK_INFO, link))
+		sendBroadcast(new Intent(LINK_OFF).setPackage(PACKAGE).putExtra(LINK_INFO, link))
 		val message = getString(R.string.status_linkoff, getString(link))
 		ServiceNotifier.instance.start(this, message)
 	}

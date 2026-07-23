@@ -114,15 +114,19 @@ object UIHelper
 						var bottomPad = 0
 						var leftPad = 0
 						var rightPad = 0
+						var imePad = 0
 						if (Build.VERSION.SDK_INT >= 30) {
 							val status = insets.getInsets(
 								android.view.WindowInsets.Type.statusBars())
 							val nav = insets.getInsets(
 								android.view.WindowInsets.Type.navigationBars())
+							val ime = insets.getInsets(
+								android.view.WindowInsets.Type.ime())
 							topPad = status.top
 							leftPad = status.left
 							rightPad = status.right
 							bottomPad = nav.bottom
+							imePad = ime.bottom
 						} else {
 							// API 20-29: use getSystemWindowInset*
 							topPad = insets.getSystemWindowInsetTop()
@@ -159,16 +163,22 @@ object UIHelper
 
 						// Find the message input bar (MessageActivity:
 						// EditText + Send button) and apply bottom padding
-						// so it stays above the system nav bar.
+						// so it stays above the system nav bar AND above the
+						// soft keyboard (IME). In edge-to-edge mode, adjustResize
+						// does not resize the window, so we must handle the IME
+						// inset manually here.
 						val bl = act.findViewById(R.id.buttonlayout).asInstanceOf[View]
 						if (bl != null && bn == null) {
 							// Only apply if there's no BottomNavigationView
 							// below it (main.xml has buttonlayout above the
 							// BottomNavigationView, so it doesn't need this).
+							// Use the larger of nav bar or IME (keyboard) inset
+							// so the input bar is always visible.
+							val blBottom = math.max(bottomPad, imePad)
 							bl.setPadding(bl.getPaddingLeft(),
 								bl.getPaddingTop(),
 								bl.getPaddingRight(),
-								bottomPad)
+								blBottom)
 						}
 						insets
 					}
@@ -648,7 +658,7 @@ trait UIHelper extends Activity
 						Log.d("onClick", "clicked on: " + d + " " + which)
 						val min = getResources().getStringArray(R.array.age_minutes)(which)
 						prefs.prefs.edit().putString("show_age", min).commit()
-						sendBroadcast(new Intent(AprsService.UPDATE))
+						sendBroadcast(new Intent(AprsService.UPDATE).setPackage("org.aprsdroid.app"))
 						onStartLoading()
 						d.dismiss()
 					}})
@@ -659,6 +669,7 @@ trait UIHelper extends Activity
 
 	def sendMessageBroadcast(dest : String, body : String) {
 		sendBroadcast(new Intent(AprsService.MESSAGETX)
+			.setPackage("org.aprsdroid.app")
 			.putExtra(AprsService.SOURCE, prefs.getCallSsid())
 			.putExtra(AprsService.DEST, dest)
 			.putExtra(AprsService.BODY, body)
@@ -843,7 +854,7 @@ trait UIHelper extends Activity
 		}
 		override def onPostExecute(x : Unit) {
 			Log.d("StorageCleaner", "broadcasting...")
-			sendBroadcast(new Intent(AprsService.UPDATE))
+			sendBroadcast(new Intent(AprsService.UPDATE).setPackage("org.aprsdroid.app"))
 		}
 	}
 	class MessageCleaner(storage : StorageDatabase, call : String) extends MyAsyncTask[Unit, Unit] {

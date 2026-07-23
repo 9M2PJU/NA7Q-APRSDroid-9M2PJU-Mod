@@ -32,6 +32,7 @@ class MessageService(s : AprsService) {
 			ServiceNotifier.instance.notifyMessage(s, s.prefs, srccall, msg.getMessageBody())
 
 		s.sendBroadcast(new Intent(AprsService.MESSAGE)
+			.setPackage("org.aprsdroid.app")
 			.putExtra(AprsService.SOURCE, srccall)
 			.putExtra(AprsService.DEST, msg.getTargetCallsign())
 			.putExtra(AprsService.BODY, msg.getMessageBody())
