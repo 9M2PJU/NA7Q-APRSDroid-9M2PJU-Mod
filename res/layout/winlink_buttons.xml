@@ -17,6 +17,24 @@ android:layout_height="wrap_content"
 android:orientation="vertical"
 android:background="#222" >
 
+	<!-- Title row -->
+	<LinearLayout
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:orientation="horizontal"
+	android:padding="4dp" >
+
+		<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_vertical"
+		android:layout_weight="1"
+		android:text="@string/p_winlink"
+		android:textColor="#2196f3"
+		android:textSize="12sp"
+		android:paddingLeft="6dp" />
+	</LinearLayout>
+
 	<!-- Status row -->
 	<LinearLayout
 	android:layout_width="fill_parent"
