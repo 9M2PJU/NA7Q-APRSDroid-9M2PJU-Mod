@@ -61,6 +61,12 @@ class MapAct extends MapActivity with MapMenuHelper {
 		mapview.setBuiltInZoomControls(true)
 		mapview.getOverlays().add(staoverlay)
 		mapview.setTextScale(getResources().getDisplayMetrics().density)
+		// Increase in-memory tile cache so more tiles stay in RAM
+		// during a session, reducing re-downloads when panning.
+		mapview.getInMemoryTileCache().setCapacity(50)
+		// Enable persistent disk cache so downloaded tiles survive
+		// across app restarts -- no re-download on next launch.
+		mapview.getFileSystemTileCache().setPersistent(true)
 		// Apply hardware acceleration preference
 		applyHardwareAcceleration(prefs.getBoolean("hardware_acceleration", true), mapview)
 		setupBottomNav()
@@ -313,6 +319,62 @@ class StationOverlay(icons : Drawable, context : MapAct, db : StorageDatabase) e
 
 	icons.setBounds(0, 0, symbolSize, symbolSize)
 
+	// Cached Paint objects -- allocated once instead of per-frame.
+	// Previously these were created fresh on every drawOverlayBitmap() call,
+	// causing heavy GC pressure and slowing map rendering.
+	lazy val fontSize = drawSize*7/8
+
+	lazy val textPaint = {
+		val p = new Paint()
+		p.setColor(0xff000000)
+		p.setTextAlign(Paint.Align.CENTER)
+		p.setTextSize(fontSize)
+		p.setTypeface(Typeface.MONOSPACE)
+		p.setAntiAlias(true)
+		p
+	}
+
+	lazy val strokePaint = {
+		val p = new Paint(textPaint)
+		p.setColor(0xffc8ffc8)
+		p.setStyle(Paint.Style.STROKE)
+		p.setStrokeWidth(drawSize.asInstanceOf[Float]/12.0f)
+		p.setShadowLayer(10, 0, 0, 0x80c8ffc8)
+		p
+	}
+
+	lazy val zoomTextPaint = {
+		val p = new Paint(textPaint)
+		p.setTextSize(fontSize * 0.7f)
+		p
+	}
+
+	lazy val tracePaint = {
+		val p = new Paint()
+		p.setARGB(128, 100, 100, 255)
+		p.setStyle(Paint.Style.STROKE)
+		p.setStrokeJoin(Paint.Join.ROUND)
+		p.setStrokeCap(Paint.Cap.ROUND)
+		p.setStrokeWidth(drawSize/6)
+		p.setAntiAlias(true)
+		p
+	}
+
+	lazy val dotPaint = {
+		val p = new Paint()
+		p.setARGB(128, 255, 0, 0)
+		p.setStyle(Paint.Style.FILL)
+		p.setAntiAlias(true)
+		p
+	}
+
+	// Reusable Path and Point for drawTrace -- avoids per-call allocation.
+	val tracePath = new Path()
+	val tracePoint = new Point()
+
+	// Reusable Point for drawOverlayBitmap -- avoids per-station allocation.
+	val drawPoint = new Point()
+
 	override def size() = stations.size()
 	override def createItem(idx : Int) : OSMStation = stations.get(idx)
 
@@ -334,98 +396,48 @@ class StationOverlay(icons : Drawable, context : MapAct, db : StorageDatabase) e
 	}
 
 	def drawTrace(c : Canvas, proj : Projection, s : OSMStation) : Unit = {
-		//Log.d(TAG, "drawing trace of %s".format(call))
-
-		val tracePaint = new Paint()
-		tracePaint.setARGB(128, 100, 100, 255)
-		tracePaint.setStyle(Paint.Style.STROKE)
-		tracePaint.setStrokeJoin(Paint.Join.ROUND)
-		tracePaint.setStrokeCap(Paint.Cap.ROUND)
-		tracePaint.setStrokeWidth(drawSize/6)
-		tracePaint.setAntiAlias(true)
-
-		val dotPaint = new Paint()
-		dotPaint.setARGB(128, 255, 0, 0)
-		dotPaint.setStyle(Paint.Style.FILL)
-		dotPaint.setAntiAlias(true)
-
-
-		val path = new Path()
-		val point = new Point()
-
 		if (s.movelog.size() < 2) {
 			return
 		}
+		tracePath.reset()
 		var first = true
 		for (p <- s.movelog) {
-			proj.toPixels(p, point)
+			proj.toPixels(p, tracePoint)
 			if (first) {
-				path.moveTo(point.x, point.y)
+				tracePath.moveTo(tracePoint.x, tracePoint.y)
 				first = false
 			} else
-				path.lineTo(point.x, point.y)
-			c.drawCircle(point.x, point.y, drawSize/12, dotPaint)
+				tracePath.lineTo(tracePoint.x, tracePoint.y)
+			c.drawCircle(tracePoint.x, tracePoint.y, drawSize/12, dotPaint)
 		}
-		c.drawPath(path, tracePaint)
+		c.drawPath(tracePath, tracePaint)
 	}
 
 	override def drawOverlayBitmap(c : Canvas, dp : Point, proj : Projection, zoom : Byte) : Unit = {
 
 		if (!context.mapview.getMapPosition.isValid)
 			return
-		Log.d(TAG, "draw: symbolSize=" + symbolSize + " drawSize=" + drawSize)
-		val fontSize = drawSize*7/8
-		val textPaint = new Paint()
-		textPaint.setColor(0xff000000)
-		textPaint.setTextAlign(Paint.Align.CENTER)
-		textPaint.setTextSize(fontSize)
-		textPaint.setTypeface(Typeface.MONOSPACE)
-		textPaint.setAntiAlias(true)
-
-		val symbPaint = new Paint(textPaint)
-		symbPaint.setARGB(255, 255, 255, 255)
-		symbPaint.setTextSize(drawSize*3/4 - 1)
-
-		val strokePaint = new Paint(textPaint)
-		strokePaint.setColor(0xffc8ffc8)
-		strokePaint.setStyle(Paint.Style.STROKE)
-		strokePaint.setStrokeWidth(drawSize.asInstanceOf[Float]/12.0f)
-
-		strokePaint.setShadowLayer(10, 0, 0, 0x80c8ffc8)
-
-		// Create a separate Paint for the zoom level text
-		val zoomTextPaint = new Paint(textPaint)
-		val zoomFontSize = fontSize * 0.7f  // Adjust zoom text size here
-		zoomTextPaint.setTextSize(zoomFontSize)
-
-		val p = new Point()
 		val (width, height) = (c.getWidth(), c.getHeight())
 		val ss = drawSize/2
-		
+
 		// Draw the zoom level text in the bottom-left corner
 		val zoomText = s"Zoom: $zoom"
-		
-		// Measure the width of the zoom text
 		val textWidth = zoomTextPaint.measureText(zoomText)
-
-		// Get the canvas dimensions
 		val xPos = 20 + (textWidth / 2)
 		val yPos = height - 20
-
-		// Draw the zoom level text
 		c.drawText(zoomText, xPos, yPos, zoomTextPaint)
-		
+
 		for (s <- stations) {
-			proj.toPixels(s.pt, p)
-			if (p.x >= 0 && p.y >= 0 && p.x < width && p.y < height) {
+			proj.toPixels(s.pt, drawPoint)
+			if (drawPoint.x >= 0 && drawPoint.y >= 0 && drawPoint.x < width && drawPoint.y < height) {
 				val srcRect = symbol2rect(s.symbol)
-				val destRect = new Rect(p.x-ss, p.y-ss, p.x+ss, p.y+ss)
+				val destRect = new Rect(drawPoint.x-ss, drawPoint.y-ss, drawPoint.x+ss, drawPoint.y+ss)
 				// first draw callsign and trace
 				if (zoom >= 10) {
 					drawTrace(c, proj, s)
 
-					c.drawText(s.call, p.x, p.y+ss+fontSize, strokePaint)
-					c.drawText(s.call, p.x, p.y+ss+fontSize, textPaint)
+					c.drawText(s.call, drawPoint.x, drawPoint.y+ss+fontSize, strokePaint)
+					c.drawText(s.call, drawPoint.x, drawPoint.y+ss+fontSize, textPaint)
 				}
 				// then the bitmap
 				c.drawBitmap(iconbitmap, srcRect, destRect, null)

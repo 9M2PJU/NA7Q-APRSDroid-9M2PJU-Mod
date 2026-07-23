@@ -6,9 +6,9 @@ import org.mapsforge.v3.android.maps.mapgenerator.tiledownloader.TileDownloader;
 import org.mapsforge.v3.core.Tile;
 
 public class OsmTileDownloader extends TileDownloader {
-    private static final String HOST_NAME_ONLINE = "tile.openstreetmap.org";
+    private static final String HOST_NAME_ONLINE = "a.basemaps.cartocdn.com";
     private static final String HOST_NAME_OFFLINE = "127.0.0.1"; // New hostname for offline maps
-    private static final byte ZOOM_MAX = 18;
+    private static final byte ZOOM_MAX = 19;
     private final StringBuilder stringBuilder = new StringBuilder();
     private static final String TAG = "OsmTileDownloader"; // Tag for logging
     private final PrefsWrapper prefsWrapper; // Instance of PrefsWrapper
@@ -42,39 +42,34 @@ public class OsmTileDownloader extends TileDownloader {
             }
         }
         String hostName = offline ? HOST_NAME_OFFLINE : HOST_NAME_ONLINE;
-        Log.d(TAG, "Getting host name: " + hostName);
         return hostName;
     }
 
     @Override
     public String getProtocol() {
         boolean offline = prefsWrapper.isOfflineMap();
-        String protocol = offline ? "http" : "https";
-        Log.d(TAG, "Getting protocol: " + protocol);
-        return protocol;
+        return offline ? "http" : "https";
     }
 
     @Override
     public int getPort() {
         boolean offline = prefsWrapper.isOfflineMap();
-        int port = offline ? 8080 : 443;
-        Log.d(TAG, "Getting port: " + port);
-        return port;
+        return offline ? 8080 : 443;
     }
 
     @Override
     public String getTilePath(Tile tile) {
         this.stringBuilder.setLength(0);
-		this.stringBuilder.append('/');
+        // CartoDB Voyager basemap: /rastertiles/voyager/{z}/{x}/{y}.png
+        this.stringBuilder.append("/rastertiles/voyager/");
         this.stringBuilder.append(tile.zoomLevel);
         this.stringBuilder.append('/');
         this.stringBuilder.append(tile.tileX);
         this.stringBuilder.append('/');
         this.stringBuilder.append(tile.tileY);
         this.stringBuilder.append(".png");
-        
+
         String tilePath = this.stringBuilder.toString();
-        Log.d(TAG, "Generated tile path: " + tilePath); // Log the generated tile path
         return tilePath;
     }
 
