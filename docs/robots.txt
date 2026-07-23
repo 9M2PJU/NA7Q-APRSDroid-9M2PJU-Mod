@@ -45,15 +45,21 @@ Allow: /
 User-agent: Applebot
 Allow: /
 
-# Block AI training crawlers (optional -- remove if you want AI indexing)
+# Allow AI indexing
 User-agent: GPTBot
-Disallow: /
+Allow: /
 
 User-agent: CCBot
-Disallow: /
+Allow: /
 
 User-agent: anthropic-ai
-Disallow: /
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
 
 # Sitemap
 Sitemap: https://aprsdroid.hamradio.my/sitemap.xml
