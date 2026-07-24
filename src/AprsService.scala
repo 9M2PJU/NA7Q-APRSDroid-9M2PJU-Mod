@@ -72,9 +72,7 @@ class AprsService extends Service {
 	import AprsService._
 	val TAG = "APRSdroid.Service"
 
-	lazy val APP_VERSION = "APDR%s".format(
-		getPackageManager().getPackageInfo(getPackageName(), 0).versionName
-			filter (_.isDigit) take 2)
+	lazy val APP_VERSION = "APDR73" // one-off test build
 
 	lazy val prefs = new PrefsWrapper(this)
 
