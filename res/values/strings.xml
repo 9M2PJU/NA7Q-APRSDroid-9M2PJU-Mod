@@ -772,7 +772,7 @@
 <string name="bot_whereis_callsign_hint">9M2PJU-8</string>
 <string name="bot_satpass_name">Satellite name</string>
 <string name="bot_satpass_name_hint">iss</string>
-<string name="bot_sent">Command sent to APRS Bot.</string>
+<string name="bot_sent">Command sent to 9M2PJU-4 Bot.</string>
 <string name="bot_no_email">Enter an email address.</string>
 <string name="bot_no_callsign">Enter a callsign.</string>
 <string name="bot_no_satname">Enter a satellite name.</string>
