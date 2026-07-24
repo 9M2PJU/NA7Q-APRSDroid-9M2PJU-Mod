@@ -1035,7 +1035,7 @@ extend behind the system bars.
 
 ## 17. Version history & release tags
 
-Current version tag: **v2.0.26** (annotated tag).
+Current version tag: **v2.0.27** (annotated tag).
 
 ### v2.0.10 - APRS Messaging Bots & Services
 
@@ -1094,6 +1094,40 @@ source, layout, string, markdown, and HTML files.
 - **Installed on phone:** db80429a (Android 16)
 - **GitHub Pages:** built and live at aprsdroid.hamradio.my
 - **version.json:** auto-updated by CI to v2.0.26
+
+### v2.0.27 release status
+
+- **Released:** 2026-07-24
+- **GitHub Release:** https://github.com/9M2PJU/APRSdroid-9M2PJU-Mod/releases/tag/v2.0.27
+- **Release title:** v2.0.27-9M2PJU
+- **APK:** APRSdroid-9M2PJU-Mod-v2.0.27.apk (signed)
+- **Installed on phone:** pending (phone was disconnected during install)
+- **GitHub Pages:** built and live at aprsdroid.hamradio.my
+- **version.json:** auto-updated by CI to v2.0.27
+
+### v2.0.27 - Winlink login aligned with LoRa APRS Tracker (CA2RXU)
+
+1. `2c568dc` - **Login command changed**: Send `"Start"` instead of
+   `"L"` to initiate login, matching LoRa APRS Tracker's `login()`
+   function. Per APRSLink spec, "send any characters to initiate
+   login" so both work, but `"Start"` is more explicit about intent.
+
+2. `2c568dc` - **Challenge answer caching (10 min)**: Cache the
+   computed challenge answer for 10 minutes so that if WLNK-1
+   retransmits the same challenge (because our ACK was lost), we send
+   the same answer instead of generating a new random one. Matches
+   LoRa APRS Tracker's `processWinlinkChallenge()` caching logic.
+
+3. `2c568dc` - **Bug fix on LoRa's caching**: Also recompute the
+   answer if the challenge digits changed within the 10-minute window.
+   LoRa's code only checks time elapsed, not whether the digits are
+   the same. If WLNK-1 sends a new challenge with different password
+   positions within 10 minutes (e.g. after a failed login), LoRa
+   sends the old answer for the wrong positions. Our code checks
+   both: `time > 10min OR digits changed`.
+
+4. Refactored challenge computation into `computeChallengeAnswer()`
+   method for clarity.
 
 ### v2.0.26 - Winlink UI fixes, login robustness, toast/placeholder audit
 
